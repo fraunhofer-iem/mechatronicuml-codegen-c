@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project default="main" name="de.uni_paderborn.fujaba.muml.codegen.c.arduino">
+<project default="main" name="org.muml.codegen.c.arduino">
     <property name="ECLIPSE_HOME" value="../../../eclipse"/>
     <property name="ECLIPSE_WORKSPACE" value="../.."/>
 
     <!-- The classpath with only the dependencies used by the project -->
-    <path id="de.uni_paderborn.fujaba.muml.codegen.c.arduino.libraryclasspath">
-        <pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml.codegen.c.arduino/bin"/>
+    <path id="org.muml.codegen.c.arduino.libraryclasspath">
+        <pathelement location="${ECLIPSE_WORKSPACE}/org.muml.codegen.c.arduino/bin"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.core.runtime_3.11.1.v20150903-1804.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/javax.annotation_1.2.0.v201401042248.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/javax.inject_1.0.0.v20091030.jar"/>
@@ -34,23 +34,23 @@
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.acceleo.engine_3.6.1.201509091420.jar"/>
     </path>
 
-    <path id="de.uni_paderborn.fujaba.muml.codegen.c.arduino.classpath">
-        <path refid="de.uni_paderborn.fujaba.muml.codegen.c.arduino.libraryclasspath"/>
+    <path id="org.muml.codegen.c.arduino.classpath">
+        <path refid="org.muml.codegen.c.arduino.libraryclasspath"/>
     </path>
 
     <!-- The classpath with only the jars available in the plugin folder of Eclipse -->
-    <path id="de.uni_paderborn.fujaba.muml.codegen.c.arduino.libraryclasspath.alljars">
-        <pathelement location="../de.uni_paderborn.fujaba.muml.codegen.c.arduino/bin"/>
+    <path id="org.muml.codegen.c.arduino.libraryclasspath.alljars">
+        <pathelement location="../org.muml.codegen.c.arduino/bin"/>
         <fileset dir="${ECLIPSE_HOME}/plugins/" includes="*.jar"/>
     </path>
 
-    <path id="de.uni_paderborn.fujaba.muml.codegen.c.arduino.classpath.alljars">
-        <path refid="de.uni_paderborn.fujaba.muml.codegen.c.arduino.libraryclasspath.alljars"/>
+    <path id="org.muml.codegen.c.arduino.classpath.alljars">
+        <path refid="org.muml.codegen.c.arduino.libraryclasspath.alljars"/>
     </path>
 
     <!-- The default task with the jars used by this project -->
     <target name="main">
-        <java classname="de.uni_paderborn.fujaba.muml.codegen.c.arduino.main.Main" classpathref="de.uni_paderborn.fujaba.muml.codegen.c.arduino.classpath">
+        <java classname="de.uni_paderborn.fujaba.muml.codegen.c.arduino.main.Main" classpathref="org.muml.codegen.c.arduino.classpath">
             <arg value="${model}"/>
             <arg value="${target}"/>
         </java>
@@ -61,7 +61,7 @@
         Keep in mind that having two versions of the same jar can create problems
     -->
     <target name="main.alljars">
-        <java classname="de.uni_paderborn.fujaba.muml.codegen.c.arduino.main.Main" classpathref="de.uni_paderborn.fujaba.muml.codegen.c.arduino.classpath">
+        <java classname="de.uni_paderborn.fujaba.muml.codegen.c.arduino.main.Main" classpathref="org.muml.codegen.c.arduino.classpath">
             <arg value="${model}"/>
             <arg value="${target}"/>
         </java>
