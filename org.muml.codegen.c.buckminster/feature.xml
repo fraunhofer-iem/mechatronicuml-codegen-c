@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="de.uni_paderborn.muml.codegen.buckminster"
+      id="org.muml.codegen.c.buckminster"
       label="Buckminster"
       version="1.0.0.qualifier">
 
@@ -17,7 +17,7 @@
    </license>
 
    <includes
-         id="de.uni_paderborn.fujaba.muml.codegen.c.feature"
+         id="org.muml.codegen.c.feature"
          version="0.0.0"/>
 
    <plugin

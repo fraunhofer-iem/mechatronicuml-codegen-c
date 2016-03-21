@@ -1,24 +1,24 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Acceleo Arduino Module IDE Plug-in
-Bundle-SymbolicName: de.uni_paderborn.fujaba.muml.codegen.c.arduino.ui;singleton:=true
+Bundle-SymbolicName: org.muml.codegen.c.arduino.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.uni_paderborn.fujaba.muml.codegen.c.arduino.ui.Activator
 Bundle-Vendor: Eclipse Modeling Project
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
- de.uni_paderborn.fujaba.muml.codegen.c.arduino,
+ org.muml.codegen.c.arduino,
  org.eclipse.emf.ecore,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.ocl,
  org.eclipse.ocl.ecore,
  org.eclipse.acceleo.model,
  org.eclipse.acceleo.engine,
- de.uni_paderborn.fujaba.muml.codegen.export.ui;bundle-version="1.0.0",
+ org.muml.codegen.c.export.ui;bundle-version="1.0.0",
  org.muml.pim,
  org.eclipse.gmf.runtime.notation.edit,
- de.uni_paderborn.fujaba.muml.codegen.c;bundle-version="0.5.0",
+ org.muml.codegen.c;bundle-version="0.5.0",
  org.apache.commons.io;bundle-version="2.2.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy

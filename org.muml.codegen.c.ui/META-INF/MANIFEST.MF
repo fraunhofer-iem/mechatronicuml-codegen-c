@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: MechatronicUML C Codegenerator UI
-Bundle-SymbolicName: de.uni_paderborn.fujaba.muml.codegen.c.ui;singleton:=true
+Bundle-SymbolicName: org.muml.codegen.c.ui;singleton:=true
 Bundle-Version: 0.5.0.qualifier
 Bundle-Activator: de.uni_paderborn.fujaba.muml.codegen.c.ui.Activator
 Bundle-Vendor: %Bundle-Vendor
@@ -19,10 +19,10 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.osgi,
  org.eclipse.swt,
  org.eclipse.gmf.runtime.notation,
- de.uni_paderborn.fujaba.muml.codegen.c,
- de.uni_paderborn.fujaba.muml.codegen.c.nxtOSEK;bundle-version="1.0.0",
+ org.muml.codegen.c,
+ org.muml.codegen.c.nxtOSEK;bundle-version="1.0.0",
  org.muml.core.export;bundle-version="0.4.0",
- de.uni_paderborn.fujaba.muml.codegen.export.ui,
+ org.muml.codegen.c.export.ui,
  org.apache.commons.io;bundle-version="2.2.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
