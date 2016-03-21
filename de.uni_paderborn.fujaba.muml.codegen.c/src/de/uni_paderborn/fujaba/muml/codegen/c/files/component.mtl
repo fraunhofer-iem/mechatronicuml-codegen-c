@@ -1,0 +1,333 @@
+[comment encoding = UTF-8 /]
+[**
+ * The documentation of the module generate_rtsc.
+ */]
+[module component('http://www.fujaba.de/muml/connector/0.4.0', 'http://www.fujaba.de/muml/behavior/0.4.0',
+				'http://www.storydriven.org/core/0.3.1',
+				'http://www.fujaba.de/muml/actionlanguage/0.4.0',
+				'http://www.fujaba.de/muml/msgtype/0.4.0',
+				'http://www.fujaba.de/muml/types/0.4.0',
+				'http://www.fujaba.de/modelinstance/0.4.0',
+				'http://www.fujaba.de/muml/component/0.4.0',
+				'http://www.fujaba.de/muml/instance/0.4.0',
+				'http://www.fujaba.de/muml/realtimestatechart/0.4.0')]
+
+
+[import de::uni_paderborn::fujaba::muml::codegen::c::queries::stringQueries]
+[import de::uni_paderborn::fujaba::muml::codegen::c::queries::modelQueries]
+[import de::uni_paderborn::fujaba::muml::codegen::c::actionlanguage::expression]
+[import de::uni_paderborn::fujaba::muml::codegen::c::files::RealtimeStatechart]
+
+
+[**
+ * Generates the class for the given component.
+ * 
+ * @param component The component for which the class will be generated.
+ * @param statechart The behaviour of the component, if one exist otherwise NULL.
+ */]
+[template public generate_ComponentClass(component : Component, path : String, useSubDir : Boolean)]
+	[file (path+getFileName(component, false, useSubDir), false, 'UTF-8')]
+		[includes(component, useSubDir)/]
+
+		[variables(component)/]
+	
+		[initialize(component)/]
+
+		[constructor(component)/]
+
+		[destroy(component)/]
+		
+		[processStep(component)/]
+	
+		[getterAndSetter(component)/]
+
+		[queueMethods(component)/]
+
+	[/file]
+[/template]
+
+[**
+ * @param component
+ * @param statechart
+*/]
+[template private includes(component : Component, useSubDir : Boolean) post(cdtbeautifier())]
+	#include "[if (useSubDir)]../[/if][getFileName(component, true, useSubDir)/]"
+[/template]
+
+[**
+ * Generates the member variables.
+ * 
+ * @param component
+ * @param statechart
+*/]
+[template private variables (component : Component) post(cdtbeautifier())]
+	
+[/template]
+
+[**
+ * @param component
+ * @param statechart
+*/]
+[template private initialize (component : Component) post(cdtbeautifier())]
+	void [getInitializeMethodName(component)/]([getClassName(component)/]* component) {
+		[if component.oclIsKindOf(StructuredComponent)]
+		[for (cpart : ComponentPart | component.oclAsType(StructuredComponent).embeddedComponentParts)]
+			[if cpart.multiPart]
+				//initialize all parts of multipart [cpart.name/]
+			if (component->[getVariableName(cpart)/] != NULL) {
+				[cpart.getClassName()/] * nxt = component->[getVariableName(cpart)/];
+				while (nxt != NULL){
+					[getInitializeMethodName(cpart)/](nxt);
+					nxt = nxt->next;	
+				}
+			}
+			[else]
+			[getInitializeMethodName(cpart)/](component->[getVariableName(cpart)/]);
+			[/if]
+		[/for]
+		[/if]
+
+
+		[if component.oclIsKindOf(AtomicComponent)]
+			[getInitializeMethodName(component.oclAsType(AtomicComponent).behavior.oclAsType(RealtimeStatechart))/](component->stateChart);	
+		[/if]
+	
+			[comment Initialization of Ports/]
+			[for (port : Port | component.ports) ? (port.oclIsTypeOf(DiscretePort))]
+				component->[port.getVariableName()/] = NULL;
+			[/for]
+	}
+[/template]
+
+[**
+ * Generates the constructor.
+ * 
+ * @param component
+ * @param statechart
+*/]
+[template public constructor (component : Component) post(cdtbeautifier())]
+	[getClassName(component)/]* [getCreateMethodName(component)/](void) {
+		
+		[getClassName(component)/]* component = ([getClassName(component)/]*)malloc(sizeof([getClassName(component)/]));
+
+		if(component != NULL){
+			
+			[comment Initialization of Ports/]
+			[for (port : Port | component.ports) ? (port.oclIsTypeOf(DiscretePort))]
+				component->[port.getVariableName()/] = NULL;
+			[/for]
+			
+
+
+		
+			[comment Initialization of StateMachine /]	
+			[if (component.oclIsKindOf(AtomicComponent))]
+				component->stateChart = NULL;
+			[/if]	
+
+			[comment Initialization of SubComponents /]	
+			[if (component.oclIsKindOf(StructuredComponent))]
+			[for (cpart : ComponentPart | component.oclAsType(StructuredComponent).embeddedComponentParts)]
+				component->[getVariableName(cpart)/] = NULL;
+			[/for]
+			[/if]	
+
+			
+
+			} 	
+		 else {
+			
+		}	
+
+		return component;
+	}
+[/template]
+
+[**
+ * 
+*/]
+[template private destroy(component : Component) post(cdtbeautifier())]
+	void [getDestroyMethodName(component)/]([getClassName(component)/]* component) {
+		if(component != NULL) {
+			[if component.oclIsKindOf(StructuredComponent)]
+				[for (cpart : ComponentPart | component.oclAsType(StructuredComponent).embeddedComponentParts)]
+				[if cpart.multiPart]
+				//destroy all parts of multipart [cpart.name/]
+				if (component->[getVariableName(cpart)/] != NULL) {
+					[cpart.getClassName()/] * nxt = component->[getVariableName(cpart)/]->next;
+					while (nxt != NULL){
+						[getDestroyMethodName(cpart)/](nxt);
+						[cpart.getClassName()/] * toDel = nxt;
+						nxt = nxt->next;
+						free(toDel);	
+					}
+					free(component->[getVariableName(cpart)/]);
+				}
+				[else]
+				//destroy part [cpart.name/]
+				[getDestroyMethodName(cpart)/](component->[getVariableName(cpart)/]);		
+				[/if]
+			[/for]
+			[/if]
+			[if component.oclIsTypeOf(AtomicComponent)]
+				[getDestroyMethodName(component.oclAsType(AtomicComponent).behavior.oclAsType(RealtimeStatechart))/](component->stateChart);	
+			[/if]
+		
+			[for (port : Port | component.ports)]
+				[comment @TODO multiports/]
+				[if port.oclIsKindOf(DiscretePort)]
+					[getDestroyMethodName(port)/](component->[getVariableName(port)/]);
+				[/if]
+			[/for]
+
+			[if component.oclIsKindOf(StructuredComponent)]
+			[for (connector : Connector | component.oclAsType(StructuredComponent).connectors)]		
+			[if ((connector.connectorEndpoints->at(1).oclIsTypeOf(DiscretePort)) and (connector.connectorEndpoints->at(2).oclIsTypeOf(DiscretePort)))]				
+			[comment connectors/]
+
+				[/if]
+			[/for]
+			[/if]
+
+			//suicide
+			free(component);
+		}
+	}
+[/template]
+
+[**
+ * Generates the isTerminated method.
+ * 
+ * @param component
+ * @param statechart
+*/]
+[template private isTerminated (component : Component) post (trim())]
+	bool_t [getTerminateMethodName(component)/]([getClassName(component)/]* component) {
+		return 
+			[if (component.oclIsKindOf(AtomicComponent))]
+				[let rtsc : RealtimeStatechart = component.oclAsType(AtomicComponent).behavior.oclAsType(RealtimeStatechart)]		
+				[getTerminateMethodName(rtsc)/](component->stateChart);
+				[/let]
+				[elseif (component.oclIsKindOf(StructuredComponent))]
+				(
+					[for (cpart : ComponentPart | component.oclAsType(StructuredComponent).embeddedComponentParts) separator (' || ')]
+						[if cpart.multiPart]
+						[getTerminateMethodName(cpart)/](component->[cpart.getVariableName()/])
+						[else]
+						[getTerminateMethodName(cpart)/](component->[getVariableName(cpart)/])
+						[/if]
+					[/for]
+				);
+			[else]
+				false;
+			[/if]		
+	}
+[/template]
+
+[**
+ * Generated the processStep method.
+ * 
+ * @param component
+ * @param statechart
+*/]
+[template private processStep (component : Component) post (trim())]
+	void [getProcessMethodName(component)/]([getClassName(component)/]* component) {
+		
+
+	[if component.oclIsKindOf(StructuredComponent)]
+		[for (cpart : ComponentPart | component.oclAsType(StructuredComponent).embeddedComponentParts)]
+			[if cpart.multiPart]
+			//execute all parts of multipart [cpart.name/]
+			if (component->[getVariableName(cpart)/] != NULL) {
+				[cpart.getClassName()/] * nxt = component->[getVariableName(cpart)/];
+				while (nxt != NULL){
+					[getProcessMethodName(cpart)/](nxt);
+					nxt = nxt->next;	
+				}
+			}
+			[else]
+			//execute single part [cpart.name/]
+			[getProcessMethodName(cpart)/](component->[getVariableName(cpart)/]);		
+			[/if]
+		[/for]
+		//execute communication of all connectors
+		if (component->connectorList != NULL){
+			DiscreteConnectionListNode * nextNode = component->connectorList->head;
+			while (nextNode != NULL){
+				DiscreteConnection_transfer(nextNode->connector);
+				nextNode = nextNode->next;
+			}
+		}
+	[/if]
+	[if component.oclIsKindOf(AtomicComponent)]
+		[for (hPort : HybridPort | component.eAllContents(HybridPort)) ? (hPort.inPort)]
+			component->stateChart->[hPort.getVariableName()/] = component->getterOf_[hPort.getName()/]();
+		[/for]
+
+		[let rtsc : RealtimeStatechart = component.oclAsType(AtomicComponent).behavior.oclAsType(RealtimeStatechart)]
+			component->stateChart->[rtsc.getExecutionVerifierName()/] = true;
+		[for (region : Region | rtsc.eAllContents(Region))]
+			component->stateChart->[region.embeddedStatechart.getExecutionVerifierName()/] = true;
+		[/for]
+		[getProcessMethodName(rtsc)/](component->stateChart);
+		[/let]
+		[for (hPort : HybridPort | component.eAllContents(HybridPort))? (hPort.outPort)]
+			component->setterOf_[hPort.getName()/](component->stateChart->[hPort.getVariableName()/]);
+		[/for]
+	[/if]
+}	
+[/template]
+
+
+
+[**
+ * Generates the getter methods for the statechart and all ports.
+ * 
+ * @param component
+ * @param statechart
+*/]
+[template private getterAndSetter (component : Component) post (trim())]
+[if (component.oclIsKindOf(AtomicComponent))]
+		[getClassName(component.oclAsType(AtomicComponent).behavior.oclAsType(RealtimeStatechart))/]* [getGetterName(component)/]([getClassName(component)/]* component) {
+			return component->stateChart;
+		} 
+	[/if]
+
+	[for (port : Port | component.ports)]
+	[if (port.oclIsKindOf(DiscretePort))]
+		Port* [getGetterName(port)/]([getClassName(component)/]* component) {
+			return component->[getVariableName(port)/];
+		}
+	[/if]
+	[/for]
+[/template]
+
+
+[**
+ * Generates the queue methods for multiparts.
+ * 
+ * @param component
+*/]
+[template private queueMethods (component : Component) ? (oclIsKindOf(StructuredComponent)) post (trim())]
+[for (compPart : ComponentPart | component.oclAsType(StructuredComponent).embeddedComponentParts->asSet())]
+
+	//Queue methods for component parts of type '[getName(compPart)/]'
+	void [getAddMethodName(component,compPart)/]([getClassName(component)/]* component, [getClassName(compPart)/]* multiPart){
+		if (component->[compPart.getVariableName()/] == NULL)
+			component->[compPart.getVariableName()/] = multiPart;
+		else{
+			[compPart.getClassName()/] * nxt = component->[compPart.getVariableName()/];
+			while (nxt->next != NULL){
+				nxt = nxt->next;	
+			}
+			nxt->next = multiPart;
+			
+		}
+	}
+	void [getRemoveMethodName(component, compPart)/]([getClassName(compPart)/]* component, [getClassName(compPart)/]* multiPart){
+		//implementation
+	}
+[/for]
+
+[/template]
+

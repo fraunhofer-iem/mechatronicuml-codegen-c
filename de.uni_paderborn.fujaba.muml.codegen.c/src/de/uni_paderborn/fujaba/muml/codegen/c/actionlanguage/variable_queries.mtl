@@ -1,0 +1,157 @@
+[module variable_queries('http://www.fujaba.de/muml/connector/0.4.0', 'http://www.fujaba.de/muml/behavior/0.4.0',
+				'http://www.storydriven.org/core/0.3.1',
+				'http://www.fujaba.de/muml/actionlanguage/0.4.0',
+				'http://www.fujaba.de/muml/msgtype/0.4.0',
+				'http://www.fujaba.de/muml/types/0.4.0',
+				'http://www.fujaba.de/modelinstance/0.4.0',
+				'http://www.fujaba.de/muml/component/0.4.0',
+				'http://www.fujaba.de/muml/instance/0.4.0',
+				'http://www.fujaba.de/muml/realtimestatechart/0.4.0')/]
+
+[**
+ * Returns the fully qualified name of the typed named element. The name
+ * of the typed named element is prefixed with the fqname and a dot (if fqname <> '').
+ * @param typedNamedElement the typed named element
+ * @param fqname a fully qualified name or the empty string
+*/]
+[query public getFullyQualifiedName(typedNamedElement : TypedNamedElement, fqname : String) : String =
+	if fqname = '' then
+			typedNamedElement.getTypedNamedElementName()
+	else
+		--fqname + '->' + typedNamedElement.getTypedNamedElementName()
+		if typedNamedElement.oclIsKindOf(Variable) then
+			let myFqname : String = ''
+			in
+			if myFqname = '' then
+				''
+			else
+				myFqname + '.'
+			endif + typedNamedElement.getTypedNamedElementName()
+		else
+			if typedNamedElement.oclIsKindOf(HybridPort) then
+				typedNamedElement.getTypedNamedElementName()
+			else
+				-- can this happen?
+				fqname + '.' + typedNamedElement.getTypedNamedElementName()
+			endif
+		endif
+	endif
+/]
+
+[**
+ * Returns the statechart which directly or indirectly the
+ * passed typed named element.
+ * @param typedNamedElement the typed named element
+*/]
+[query private getContainingRTSC(typedNamedElement : TypedNamedElement) : RealtimeStatechart =
+	typedNamedElement.oclAsType(EObject)->asSet()->closure(e |
+		if e.oclIsKindOf(RealtimeStatechart) then
+			e
+		else
+			e.eContainer()
+		endif
+	)->select(oclIsKindOf(RealtimeStatechart))
+	 ->collect(oclAsType(RealtimeStatechart))->any(true)
+/]
+
+[**
+ * Returns the name of the TypedNamedElement
+ * @param typedNamedElement the TypedNamedElement
+*/]
+[query public getTypedNamedElementName(typedNamedElement : TypedNamedElement) : String =
+	if typedNamedElement.eContainer().oclIsKindOf(LocalVariableDeclarationStatement) then
+		getUniqueLocalVariableName(typedNamedElement.eContainer().oclAsType(LocalVariableDeclarationStatement))
+	else if typedNamedElement.oclIsKindOf(Parameter) then
+		typedNamedElement.name
+	
+		else
+		'stateChart->'+typedNamedElement.name
+	endif
+	endif
+/]
+
+[**
+ * Returns a unique name for a local variable
+ * @param lVarDecl the local variable declaration statement
+*/]
+[query private getUniqueLocalVariableName(lVarDecl : LocalVariableDeclarationStatement) : String =
+	-- find the enclosing rtsc
+	let lVarNames : Set(String) = lVarDecl.getEnclosingRTSC().getAllLocalVariableDeclarationStatements()->select(
+		i : LocalVariableDeclarationStatement | i <> lVarDecl)->collect(variable.name)->asSet()
+	in
+	if lVarNames->includes(lVarDecl.variable.name) then
+		getUniqueLocalVariableNameRec(lVarDecl.variable.name + '_' + lVarDecl.variable.dataType.name, lVarNames)
+	else
+		lVarDecl.variable.name
+	endif  
+/]
+
+[**
+ * Returns a unique by recursively adding a "_local" suffix to the name
+ * @param name the current name
+ * @param lVarNames the existing local Variable names
+*/]
+[query private getUniqueLocalVariableNameRec(name : String, lVarNames : Set(String)) : String =
+	if lVarNames->includes(name) then
+		getUniqueLocalVariableNameRec(name + '_local', lVarNames)
+	else
+		name
+	endif
+/]
+
+[**
+ * Returns the enclosing realtime statechart
+ * @param lVarDecl the local variable declaration statement
+*/]
+[query private getEnclosingRTSC(lVarDecl : LocalVariableDeclarationStatement) : RealtimeStatechart =
+	lVarDecl.oclAsType(ecore::EObject)->asSet()->closure(v : ecore::EObject |
+		if v.oclIsKindOf(RealtimeStatechart) then
+			v
+		 else
+			v.eContainer()
+		 endif
+	)->select(oclIsKindOf(RealtimeStatechart))->asOrderedSet()->last().oclAsType(RealtimeStatechart)
+/]
+
+[**
+ * Returns all local variable declaration statements
+ * @param expr the expression
+*/]
+[query public getAllLocalVariableDeclarationStatements(expr : Expression) : Set(LocalVariableDeclarationStatement) =
+	expr.oclAsType(
+		ecore::EObject
+	)->asSet()->closure(v : ecore::EObject |
+		v.eContents()->select(oclIsKindOf(ecore::EObject))->collect(oclAsType(ecore::EObject))
+	)->select(oclIsKindOf(LocalVariableDeclarationStatement))
+/]
+
+[**
+ * Returns all local variable declaration statements which are used
+ * inside a transition action.
+ * @param rtsc the realtime statechart
+*/]
+[query public getAllLocalVariableDeclarationStatements(rtsc : RealtimeStatechart) : Set(LocalVariableDeclarationStatement) =
+	rtsc.transitions->select(
+		not action.oclIsUndefined() and action.expressions->notEmpty()
+	)->collect(action)->union(rtsc.states->select(
+		not entryEvent.oclIsUndefined() and not entryEvent.action.oclIsUndefined() and entryEvent.action.expressions->notEmpty()
+	)->collect(entryEvent.action))->union(rtsc.states->select(
+		not exitEvent.oclIsUndefined() and not exitEvent.action.oclIsUndefined() and exitEvent.action.expressions->notEmpty()
+	)->collect(exitEvent.action))->collect(
+		expressions->at(1).getAllLocalVariableDeclarationStatements()
+	)->asSet()
+/]
+
+[**
+ * Returns a set containing a representant for each LocalVariableDeclarationStatement
+ * @param lVarDecls the set of local variable declaration statements 
+*/]
+[query public getLocalVariableDeclarationStatementRepr(lVarDecls : Set(LocalVariableDeclarationStatement)) : Set(LocalVariableDeclarationStatement) =
+	lVarDecls->iterate(l : LocalVariableDeclarationStatement; r : Set(LocalVariableDeclarationStatement) = Set{} |
+		if r->any(variable.name = l.variable.name and variable.dataType = l.variable.dataType).oclIsUndefined() then
+			r->including(l)
+		else
+			r
+		endif
+	)
+/]

@@ -1,0 +1,26 @@
+<!-- ===================================================================== -->
+<!-- Custom targets.                                                       -->
+<!-- Set customBuildCallbacks = build.acceleo in your build.properties.    -->
+<!-- ===================================================================== -->
+<project name="Build Acceleo Module" default="noDefault">    
+    <!-- ================================================================= -->
+    <!-- Default target                                                    -->
+    <!-- ================================================================= -->
+    <target name="noDefault">
+        <echo message="This file must be called with explicit targets" />
+    </target>
+
+    <!-- ================================================================= -->
+    <!-- This will be called automatically after the compilation of each   -->
+    <!-- Bundle... in dependency order.                                    -->
+    <!-- ================================================================= -->
+    <target name="post.compile.@dot">
+        <acceleoCompiler 
+            sourceFolder="${target.folder}/../src"
+            outputFolder="${target.folder}/../bin"
+            dependencies="${target.folder}/../../de.uni_paderborn.fujaba.muml.codegen.c.beautifier;"
+            binaryResource="false"
+            packagesToRegister=""de.uni_paderborn.fujaba.muml.swplatform.SwplatformPackage;de.uni_paderborn.fujaba.muml.psm.PsmPackage;de.uni_paderborn.fujaba.muml.hardware.HardwarePackage;de.uni_paderborn.fujaba.muml.MumlPackage;de.uni_paderborn.fujaba.muml.instance.InstancePackage;de.uni_paderborn.fujaba.muml.component.ComponentPackage;de.uni_paderborn.fujaba.muml.actionlanguage.ActionlanguagePackage;de.uni_paderborn.fujaba.muml.behavior.BehaviorPackage;org.storydriven.core.CorePackage;de.uni_paderborn.fujaba.muml.connector.ConnectorPackage;de.uni_paderborn.fujaba.muml.protocol.ProtocolPackage;de.uni_paderborn.fujaba.muml.realtimestatechart.RealtimestatechartPackage;de.uni_paderborn.fujaba.muml.types.TypesPackage;de.uni_paderborn.fujaba.muml.valuetype.ValuetypePackage;de.uni_paderborn.fujaba.modelinstance.ModelinstancePackage;org.storydriven.core.expressions.ExpressionsPackage;org.storydriven.core.expressions.common.CommonExpressionsPackage;org.storydriven.core.CorePackage"">
+        </acceleoCompiler>
+    </target>    
+</project>

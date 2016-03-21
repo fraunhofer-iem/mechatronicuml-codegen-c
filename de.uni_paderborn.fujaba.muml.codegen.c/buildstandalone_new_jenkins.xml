@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="compile" name="de.uni_paderborn.fujaba.muml.codegen.c">
+    
+    <property name="ECLIPSE_HOME" value="/data/jenkins/jobs/Eclipse Target Platform/lastSuccessful/archive/targetPlatform"/>
+    <property name="ECLIPSE_WORKSPACE" value="../"/>
+
+    <property name="SOURCE_FOLDER" value="${basedir}/src/"/>    
+    <property name="OUTPUT_FOLDER" value="${basedir}/bin/"/>
+
+    <path id="de.uni_paderborn.fujaba.muml.codegen.c.classpath">
+        <path refid="de.uni_paderborn.fujaba.muml.codegen.c.libraryclasspath" />
+    </path>
+
+    <!-- The classpath with only the dependencies used by the project (a dependency with the parser is required) -->
+    <path id="de.uni_paderborn.fujaba.muml.codegen.c.libraryclasspath">
+        <pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml.codegen.c.beautifier/bin"/>
+    	<pathelement location="${ECLIPSE_WORKSPACE}/org.storydriven.core/target/classes"/>
+    	<pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml.hardware/bin"/>
+    	<pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml/bin"/>
+    	<pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml.psm/bin"/>
+    	<pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.modelinstance/bin"/>
+    	<pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml.actionlanguage/bin"/>
+    	<pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml.swplatform/bin"/>
+    	<fileset dir="${ECLIPSE_HOME}/plugins">
+                <include name="*.jar"/>
+            </fileset>
+    </path>
+
+    
+    <taskdef id="acceleoCompiler" name="acceleoCompiler" classname="org.eclipse.acceleo.parser.compiler.AcceleoCompiler" classpathref="de.uni_paderborn.fujaba.muml.codegen.c.libraryclasspath" >
+    </taskdef>
+
+    <!-- Change the value of the property SOURCE_FOLDERS to match the configuration of your project. -->
+    <target name="compile">
+    <acceleoCompiler sourceFolder="${SOURCE_FOLDER}"
+                         outputFolder="${OUTPUT_FOLDER}"
+                         dependencies=""
+                         binaryResource="false"
+    					 usePlatformResourcePath="true"
+    					 packagesToRegister="de.uni_paderborn.fujaba.muml.swplatform.SwplatformPackage;de.uni_paderborn.fujaba.muml.psm.PsmPackage;de.uni_paderborn.fujaba.muml.hardware.HardwarePackage;de.uni_paderborn.fujaba.muml.MumlPackage;de.uni_paderborn.fujaba.muml.instance.InstancePackage;de.uni_paderborn.fujaba.muml.component.ComponentPackage;de.uni_paderborn.fujaba.muml.actionlanguage.ActionlanguagePackage;de.uni_paderborn.fujaba.muml.behavior.BehaviorPackage;org.storydriven.core.CorePackage;de.uni_paderborn.fujaba.muml.connector.ConnectorPackage;de.uni_paderborn.fujaba.muml.protocol.ProtocolPackage;de.uni_paderborn.fujaba.muml.realtimestatechart.RealtimestatechartPackage;de.uni_paderborn.fujaba.muml.types.TypesPackage;de.uni_paderborn.fujaba.muml.valuetype.ValuetypePackage;de.uni_paderborn.fujaba.modelinstance.ModelinstancePackage;org.storydriven.core.expressions.ExpressionsPackage;org.storydriven.core.expressions.common.CommonExpressionsPackage;org.storydriven.core.CorePackage">		
+        </acceleoCompiler>
+    </target>
+</project>

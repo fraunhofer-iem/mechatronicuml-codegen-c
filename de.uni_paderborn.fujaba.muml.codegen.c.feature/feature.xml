@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.uni_paderborn.fujaba.muml.codegen.c.feature"
+      label="%featureName"
+      version="0.5.0.qualifier"
+      provider-name="%providerName">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.jface.text" version="3.8.2" match="greaterOrEqual"/>
+      <import plugin="org.apache.commons.logging" version="1.0.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.emf.ecore.xmi"/>
+      <import plugin="org.eclipse.ocl"/>
+      <import plugin="org.eclipse.ocl.ecore"/>
+      <import plugin="org.eclipse.acceleo.model" version="3.2.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.acceleo.engine" version="3.2.1" match="greaterOrEqual"/>
+      <import plugin="de.uni_paderborn.fujaba.muml" version="0.4.0" match="greaterOrEqual"/>
+      <import plugin="org.muml.core.modelinstance" version="0.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.osgi"/>
+      <import plugin="org.eclipse.swt"/>
+      <import plugin="org.eclipse.gmf.runtime.notation"/>
+      <import plugin="de.uni_paderborn.fujaba.muml.codegen.c.nxtOSEK" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.acceleo.common" version="3.2.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.acceleo.profiler" version="3.2.1" match="greaterOrEqual"/>
+      <import plugin="de.uni_paderborn.fujaba.muml.actionlanguage" version="0.4.0" match="greaterOrEqual"/>
+      <import plugin="de.uni_paderborn.fujaba.muml.codegen.c.beautifier" version="0.4.0" match="greaterOrEqual"/>
+      <import plugin="org.muml.ape"/>
+      <import plugin="org.eclipse.acceleo.common" version="3.3.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.acceleo.model" version="3.3.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.acceleo.profiler" version="3.3.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.acceleo.engine" version="3.3.0" match="greaterOrEqual"/>
+      <import plugin="de.uni_paderborn.fujaba.muml.codegen.c" version="0.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.cdt.core" version="5.4.1" match="greaterOrEqual"/>
+      <import plugin="org.muml.core.export" version="0.4.0" match="greaterOrEqual"/>
+      <import plugin="de.uni_paderborn.fujaba.muml.common" version="0.5.0" match="greaterOrEqual"/>
+      <import plugin="de.uni_paderborn.fujaba.muml.psm" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf.common"/>
+      <import plugin="org.eclipse.e4.core.di" version="1.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.equinox.registry"/>
+      <import plugin="de.uni_paderborn.fujaba.muml.codegen.export.ui" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.gmf.runtime.notation.edit"/>
+      <import plugin="de.uni_paderborn.fujaba.muml.codegen.c" version="0.5.0" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="de.uni_paderborn.fujaba.muml.codegen.c.beautifier"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.uni_paderborn.fujaba.muml.codegen.c.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.uni_paderborn.fujaba.muml.codegen.c"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.uni_paderborn.fujaba.muml.codegen.c.nxtOSEK"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.uni_paderborn.fujaba.muml.codegen.export.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.uni_paderborn.fujaba.muml.codegen.c.arduino"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.uni_paderborn.fujaba.muml.codegen.c.arduino.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

@@ -1,0 +1,75 @@
+[comment encoding = UTF-8 /]
+[module make('http://www.fujaba.de/muml/connector/0.4.0', 'http://www.fujaba.de/muml/behavior/0.4.0',
+				'http://www.storydriven.org/core/0.3.1',
+				'http://www.fujaba.de/muml/actionlanguage/0.4.0',
+				'http://www.fujaba.de/muml/msgtype/0.4.0',
+				'http://www.fujaba.de/muml/types/0.4.0',
+				'http://www.fujaba.de/modelinstance/0.4.0',
+				'http://www.fujaba.de/muml/component/0.4.0',
+				'http://www.fujaba.de/muml/instance/0.4.0',
+				'http://www.fujaba.de/muml/realtimestatechart/0.4.0')]
+
+[import de::uni_paderborn::fujaba::muml::codegen::c::queries::stringQueries]
+[import de::uni_paderborn::fujaba::muml::codegen::c::queries::modelQueries]
+[template public generateMakeFile(CIs : OrderedSet(ComponentInstance), path : String, useSubDir: Boolean)]
+
+[file (path+'makefile', false, 'UTF-8')]
+[let atomics : Set(AtomicComponent) = (CIs.eAllContents(AtomicComponentInstance).componentType)->select(c | c.componentKind = ComponentKind::SOFTWARE_COMPONENT)->asSet()->union(CIs->selectByKind(AtomicComponentInstance).componentType->select(c | c.componentKind = ComponentKind::SOFTWARE_COMPONENT)->asSet())]
+[let rootNode : RootNode = CIs->any(true).eContainer().eContainer().eContainer().oclAsType(RootNode)]
+RTSC = [for (comp : Component | CIs.componentType->asSet())][if ((comp.oclIsKindOf(AtomicComponent)) and (comp.componentKind = ComponentKind::SOFTWARE_COMPONENT))][comp.oclAsType(AtomicComponent).behavior.oclAsType(RealtimeStatechart).getClassName().toLowerFirst()/].o [/if][/for]
+COMP = [for (comp : Component | CIs.componentType->asSet())][if ((componentKind=ComponentKind::SOFTWARE_COMPONENT and oclIsKindOf(AtomicComponent)))][comp.getClassName().toLowerFirst()/].o [/if][/for] 
+OPR = [for (opRep : OperationRepository | rootNode.eAllContents(OperationRepository))][opRep.getClassName().toLowerFirst()/].o [/for]
+LIB = [if CIs.componentType->select( c | c.componentKind=ComponentKind::CONTINUOUS_COMPONENT)->size()>0]contImplementations.o[/if] port.o MessageBuffer.o NetworkMessageBuffer.o NetworkInterface.o Messages.o Debug.o
+MW = MiddlewareCore.o MiddlewareInternalLogic.o NetworkInterfaceImplementation.o
+CC = gcc
+CFLAGS = -c
+all: protobuf app
+protobuf: messages/Messages.proto
+	java -jar messages/protoc-1.0M4.jar -I=messages --c_out=messages Messages.proto
+app : main.o $(RTSC) $(COMP) $(LIB) $(HYB) $(MW) $(OPR) 
+	$(CC) main.o $(RTSC) $(COMP) $(LIB) $(HYB) $(MW) $(OPR) -o app
+[for (comp : Component | CIs.componentType->asSet())? (componentKind=ComponentKind::SOFTWARE_COMPONENT and oclIsKindOf(AtomicComponent))]
+[let rtsc : RealtimeStatechart = comp.oclAsType(AtomicComponent).behavior.oclAsType(RealtimeStatechart)]
+[rtsc.getClassName().toLowerFirst()/].o: [rtsc.getFileName(false,useSubDir)/]
+	$(CC) $(CFLAGS) [rtsc.getFileName(false,useSubDir)/]
+[/let]
+[/for]
+[for (comp : Component | CIs.componentType->asSet()) ? (not(componentKind=ComponentKind::CONTINUOUS_COMPONENT) and oclIsKindOf(AtomicComponent))]
+[comp.getClassName().toLowerFirst()/].o: [comp.getFileName(false,useSubDir)/]
+	$(CC) $(CFLAGS) [comp.getFileName(false,useSubDir)/]
+[/for]
+[if CIs.componentType->select( c | c.componentKind=ComponentKind::CONTINUOUS_COMPONENT)->size()>0]
+contImplementations.o: [getFileName4ContinuousImpl(false, useSubDir)/]
+	$(CC) $(CFLAGS) [getFileName4ContinuousImpl(false, useSubDir)/]
+[/if]
+port.o: [if (useSubDir)]lib/[/if]port.c
+	$(CC) $(CFLAGS) [if (useSubDir)]lib/[/if]port.c
+Debug.o: [if (useSubDir)]lib/[/if]Debug.c
+	$(CC) $(CFLAGS) [if (useSubDir)]lib/[/if]Debug.c
+MessageBuffer.o: [if (useSubDir)]lib/[/if]MessageBuffer.c
+	$(CC) $(CFLAGS) [if (useSubDir)]lib/[/if]MessageBuffer.c
+NetworkMessageBuffer.o: [if (useSubDir)]lib/[/if]NetworkMessageBuffer.c
+	$(CC) $(CFLAGS) [if (useSubDir)]lib/[/if]NetworkMessageBuffer.c
+NetworkInterface.o: [if (useSubDir)]lib/[/if]NetworkInterface.c
+	$(CC) $(CFLAGS) [if (useSubDir)]lib/[/if]NetworkInterface.c
+Messages.o: [if (useSubDir)]messages/[/if]Messages.c
+	$(CC) $(CFLAGS) [if (useSubDir)]messages/[/if]Messages.c
+MiddlewareCore.o: [if (useSubDir)]Middleware/[/if]MiddlewareCore.c
+	$(CC) $(CFLAGS) [if (useSubDir)]Middleware/[/if]MiddlewareCore.c
+MiddlewareInternalLogic.o: [if (useSubDir)]Middleware/[/if]MiddlewareInternalLogic.c
+	$(CC) $(CFLAGS) [if (useSubDir)]Middleware/[/if]MiddlewareInternalLogic.c
+NetworkInterfaceImplementation.o: [if (useSubDir)]Middleware/[/if]NetworkInterfaceImplementation.c
+	$(CC) $(CFLAGS) [if (useSubDir)]Middleware/[/if]NetworkInterfaceImplementation.c
+[if (rootNode.eAllContents(OperationRepository)->asSet()->size() > 0)]
+[for (opRep : OperationRepository | rootNode.eAllContents(OperationRepository))]
+[opRep.getClassName().toLowerFirst()/].o: [opRep.getFileName(false,useSubDir)/]
+	$(CC) $(CFLAGS) [opRep.getFileName(false,useSubDir)/]
+[/for]
+[/if]
+[/let]
+[/let]
+
+clean:
+	rm -rf *o app
+[/file]
+[/template]

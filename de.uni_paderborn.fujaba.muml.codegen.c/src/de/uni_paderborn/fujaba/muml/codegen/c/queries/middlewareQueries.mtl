@@ -1,0 +1,89 @@
+[comment encoding = UTF-8 /]
+[**
+ * The documentation of the module generate.
+ */]
+[module middlewareQueries('http://www.fujaba.de/muml/connector/0.4.0', 'http://www.fujaba.de/muml/behavior/0.4.0',
+				'http://www.storydriven.org/core/0.3.1',
+				'http://www.fujaba.de/muml/actionlanguage/0.4.0',
+				'http://www.fujaba.de/muml/msgtype/0.4.0',
+				'http://www.fujaba.de/muml/types/0.4.0',
+				'http://www.fujaba.de/modelinstance/0.4.0',
+				'http://www.fujaba.de/muml/component/0.4.0',
+				'http://www.fujaba.de/muml/instance/0.4.0',
+				'http://www.fujaba.de/muml/realtimestatechart/0.4.0')]
+
+[import de::uni_paderborn::fujaba::muml::codegen::c::queries::stringQueries]
+[import de::uni_paderborn::fujaba::muml::codegen::c::actionlanguage::expression]
+
+
+
+[**
+ * returns the IdentifierName (C-Macro definition) for a given DiscretePortInstance
+ * @param pi a DiscretePortInstance
+ * @return the IdentifierVarialbeName for the given DiscretePortInstance
+*/]
+[query public getIdentifierVariableName (pi: DiscretePortInstance) : String = 
+'PORT_'+pi.componentInstance.getName().toUpperCase()+pi.componentInstance.componentType.getName().toUpperCase()+pi.getName().toUpperCase()/]
+
+
+
+[**
+ * returns the IdentifierName (C-Macro definition) for a given MessageType
+ * @param msgT the MessageType
+ * @return the IdentifierVarialbeName for the given MessageType
+*/]
+[query public getIdentifierVariableName (msgT: MessageType) : String = 
+'MESSAGE_'+msgT.getVariableName().toUpperCase()/]
+
+[**
+ * returns the C-type name for a given MessageType
+ * @param msgT the message type
+ * @return C-type for a the given message type
+*/]
+[query public getTypeName (msgT: MessageType) : String = 
+msgT.getVariableName()+'_Message'/]
+
+
+
+[query public getStructName(msgType : MessageType) : String = 
+	msgType.getName() + msgType.repository.getName() +'Message'
+/]
+
+
+[**
+ * returns the name of the initialize-function for a given RefinedStructuredResourceInstance (ECU)
+ * e.g. initializeMyECUNameCIC . After using this template, you have to complete the signature of the function
+ * by providing brackets and a semicolon. This functions expects no parameters.
+ * @param rsri the RefinedStructuredResource
+ * @return the name of the initialize-function for the given RefinedStructuredResourceInstance (ECU)
+*/]
+
+[**
+ * This query returns the Protobuf-Embedded-C specific Unmarshallaing-function name for a given
+ * message type. This function is not defined by the middleware, but by the protobuf-files, 
+ * which are generated during the code generation process.
+ * It returns only the name for the function, you have to add brackets and parameters
+ * 
+ * @param msgT a message type
+ * @return the protobuf unmarshalling function
+*/]
+[query public getUnmarshallingMethodName (msgT: MessageType) : String = 
+msgT.getVariableName()+'_read_delimited_from'/]
+
+[**
+ * This query returns the Protobuf-Embedded-C specific marshallaing-function name for a given
+ * message type. This function is not defined by the middleware, but by the protobuf-files, 
+ * which are generated during the code generation process.
+ * It returns only the name for the function, you have to add brackets and parameters
+ * 
+ * @param msgT a message type
+ * @return the protobuf marshalling function
+*/]
+[query public getMarshallingMethodName (msgT: MessageType) : String = 
+msgT.getVariableName()+'_write_delimited_to'/]
+
+
+[query public getMethodName(op : Operation) : String =
+	op.getName()	
+/]
+

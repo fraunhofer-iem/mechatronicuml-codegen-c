@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="de.uni_paderborn.fujaba.muml.codegen.targetPlatformExtension" name="TargetPlatform" schema="schema/de.uni_paderborn.fujaba.muml.codegen.targetPlatformExtension.exsd"/>
+   <extension
+         point="org.eclipse.ui.exportWizards">
+         <wizard
+            category="de.uni_paderborn.fujaba.export"
+            class="de.uni_paderborn.fujaba.muml.codegen.export.ui.FujabaSourceCodeExportWizard"
+            id="de.uni_paderborn.fujaba.codegen.c.export"
+            name="SourceCode">
+      </wizard>
+   </extension>
+
+</plugin>

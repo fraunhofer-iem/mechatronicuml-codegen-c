@@ -1,0 +1,734 @@
+[comment encoding = UTF-8 /]
+[**
+ * The documentation of the module generate_rtsc.
+ */]
+[module RealtimeStatechart('http://www.fujaba.de/muml/connector/0.4.0', 'http://www.fujaba.de/muml/behavior/0.4.0',
+				'http://www.storydriven.org/core/0.3.1',
+				'http://www.fujaba.de/muml/actionlanguage/0.4.0',
+				'http://www.fujaba.de/muml/msgtype/0.4.0',
+				'http://www.fujaba.de/muml/types/0.4.0',
+				'http://www.fujaba.de/modelinstance/0.4.0',
+				'http://www.fujaba.de/muml/component/0.4.0',
+				'http://www.fujaba.de/muml/instance/0.4.0',
+				'http://www.fujaba.de/muml/realtimestatechart/0.4.0',
+				'http://www.fujaba.de/muml/psm/codegen/0.4.0/',
+				'http://www.fujaba.de/muml/psm/0.4.0/')]
+[import de::uni_paderborn::fujaba::muml::codegen::c::queries::stringQueries]
+[import de::uni_paderborn::fujaba::muml::codegen::c::queries::modelQueries]
+[import de::uni_paderborn::fujaba::muml::codegen::c::queries::middlewareQueries]
+[import de::uni_paderborn::fujaba::muml::codegen::c::actionlanguage::expression]
+[import de::uni_paderborn::fujaba::muml::codegen::c::actionlanguage::operation_queries]
+
+
+[**
+ * Generates the implementation file for a given realtime statechart
+ * @param component the component which is embedding the statechart
+ * @param rtsc the realtime statechart
+ */]
+[template public generate_RTSC(component : Component, rtsc : RealtimeStatechart, path : String, useSubDir: Boolean) post(cdtbeautifier())]
+	[file (path+getFileName(rtsc, false, useSubDir), false, 'UTF-8')]
+
+
+		[includes(rtsc, component, useSubDir)/]
+
+
+
+		[initialize(rtsc)/]
+
+		[constructor(component, rtsc)/]
+
+		[destroy(component, rtsc)/]
+
+
+		
+		[process(component, rtsc)/]
+		
+		[exit(component, rtsc)/]		
+			
+		[isInState(component, rtsc)/]
+
+		[generateRTSCOperations(component, rtsc)/]
+
+	[/file]
+[/template]
+
+
+
+
+
+[** generates all needed #includes
+ * @param component
+ * @param rtsc
+*/]
+[template public includes(rtsc : RealtimeStatechart, component : Component, useSubDir: Boolean) post(cdtbeautifier())]
+
+	#include "[if useSubDir]../[/if][getFileName(component, true, useSubDir)/]"
+
+[/template]
+
+
+
+[** generates the initialize methods for the realtime statechart and all its regions
+ * @param rtsc the realtime statechart
+*/]
+[template private initialize (rtsc : RealtimeStatechart) post(cdtbeautifier())]
+	
+	[for (region: Region | rtsc.eAllContents(Region))]
+		 [let firstState : State = region.embeddedStatechart.getInitalState()]
+			[if not (region.embeddedStatechart.oclIsUndefined())]
+				void [getInitializeMethodName(region)/]([getSuperClassName(rtsc)/]* stateChart) {
+					[comment Member variables for the clocks of each region. /]
+					[for (clock : Clock | region.embeddedStatechart.clocks->collect(oclAsType(Clock)))]
+						Clock_reset(stateChart->[getVariableName(clock)/]);
+					[/for]
+
+			
+					[for (state : State | region.embeddedStatechart.states) ? (not state.doEvent.oclIsUndefined())]					
+						Clock_reset(stateChart->[getClockVariableName(state)/]);
+					[/for]
+					[comment Member variables for the variables of each region. /]	
+					[for (variable : Variable | region.embeddedStatechart.variables)]			
+						[if (variable.dataType.oclIsKindOf(StructureDataType))]
+							[variable.initializeExpression.generateExpression('')/]
+						[/if]
+
+						[comment @TODO array data types are currently not initilized/]
+						[if (variable.dataType.oclIsKindOf(PrimitiveDataType))]
+							stateChart->[variable.getVariableName()/] = [getDefaultValue(variable, 'stateChart->')/];
+						[/if]	
+					[/for]
+					[if rtsc.oclIsKindOf(ParameterizedRealtimeStatechart)]
+						[for (variable : Variable | region.embeddedStatechart.oclAsType(ParameterizedRealtimeStatechart).parameters->select(p|p.oclIsKindOf(Variable)).oclAsType(Variable))]	
+								[getDefaultValue(variable,'stateChart->')/];			
+						[/for]
+					[/if]
+			
+			[else]
+					static void [getInitializeMethodName(region)/]([getSuperClassName(rtsc)/]* stateChart) {
+			[/if]
+					stateChart->[getVariableName(region)/] = [getName(firstState)/];
+	
+					[entryActions(rtsc, firstState)/]
+	
+					[for (innerRegion : Region | firstState.embeddedRegions)]
+						[getInitializeMethodName(innerRegion)/](stateChart);
+					[/for]
+				stateChart->[region.embeddedStatechart.getExecutionVerifierName()/] = true;
+	
+				}
+ 		[/let]
+	[/for]
+
+
+
+[comment init for rootStateChart/]
+[let firstState : State = rtsc.getInitalState()] 
+				void [getInitializeMethodName(rtsc)/]([getSuperClassName(rtsc)/]* stateChart) {
+				[comment Member variables for the clocks of each region. /]
+				//initialize clocks
+				[for (clock : Clock | rtsc.clocks->collect(oclAsType(Clock)))]
+					Clock_reset(stateChart->[getVariableName(clock)/]);
+				[/for]
+		
+				[comment initialize HybridPorts/]
+				//initialize hybrid ports
+				[for (hPort : HybridPort | behavioralElement.oclAsType(AtomicComponent).ports->select( port : Port  | port.oclIsKindOf(HybridPort)))]
+					[if not hPort.initializeExpression.oclIsUndefined()]
+					stateChart->[hPort.getVariableName()/] = [hPort.initializeExpression.generateExpression('')/];
+					[/if]
+				[/for]
+
+				[comment reset member variables for the clocks of do actions. /]
+				[for (state : State | rtsc.states) ? (not state.doEvent.oclIsUndefined())]					
+					Clock_reset(stateChart->[getClockVariableName(state)/]);
+				[/for]
+
+				[comment Member variables for the variables of each region. /]	
+				//initialize variables of the root statechart
+				[for (variable : Variable | rtsc.variables->collect(oclAsType(Variable)))]
+					[if (variable.dataType.oclIsKindOf(StructureDataType))]
+						[variable.initializeExpression.generateExpression('')/]
+					[elseif (variable.dataType.oclIsKindOf(ArrayDataType))]
+					[generateArrayInitializer(variable)/]
+						[else]
+						stateChart->[getVariableName(variable)/] = [getDefaultValue(variable, 'stateChart->')/];
+					[/if]
+
+				[/for]
+			
+				//initialize init state
+				stateChart->[getVariableName(rtsc)/] = [getName(firstState)/];
+
+				[entryActions(rtsc, firstState)/]
+
+				[for (innerRegion : Region | firstState.embeddedRegions)]
+					[getInitializeMethodName(innerRegion)/](stateChart);
+				[/for]
+			}
+ 		[/let]
+
+[/template]
+
+
+[** generates the constructor for a realtime statechart
+ * @param rtsc the realtime statechart
+*/]
+[template public constructor (component : Component, rtsc : RealtimeStatechart) post(cdtbeautifier())]
+	[getClassName(rtsc)/]* [getCreateMethodName(rtsc)/]([getClassName(component)/]* parentComponent) {
+		[getClassName(rtsc)/]* stateChart = ([getClassName(rtsc)/]*)malloc(sizeof([getClassName(rtsc)/]));
+		if (stateChart != NULL) {
+			stateChart->parentComponent = parentComponent;		
+			[for (variable : Variable | rtsc.variables->collect(oclAsType(Variable)))]
+					[if (variable.dataType.oclIsKindOf(StructureDataType))]
+					[comment]
+					//allocate memory for structured datatypes of the statechart
+					[let sType : StructureDataType = dataType.oclAsType(StructureDataType)]			
+					stateChart->[variable.getVariableName()/] = ([getTypeName(sType)/]*)malloc(sizeof([getTypeName(sType)/]));
+					if (stateChart->[variable.getVariableName()/] == NULL)
+					{	
+						
+
+						[getDestroyMethodName(rtsc)/](stateChart);
+						stateChart = NULL;
+					}
+					[/let]
+					[/comment]
+					[/if]	
+				[/for]
+			if (stateChart->parentComponent != NULL) {
+				[getInitializeMethodName(rtsc)/](stateChart);
+			} else {
+				
+
+				[getDestroyMethodName(rtsc)/](stateChart);
+				stateChart = NULL;
+			}
+		} else {
+			
+		}
+		return stateChart;
+	}
+[/template]
+
+
+[** generates the destructor for a realtime statechart
+ * @param component
+ * @param rtsc
+*/]
+[template private destroy(component : Component, rtsc:RealtimeStatechart)]
+	void [getDestroyMethodName(rtsc)/]([getSuperClassName(rtsc)/]* stateChart) {
+		if(stateChart != NULL) {
+
+
+			free(stateChart);
+		}
+	}
+[/template]
+
+[** generates the processStep-methods for a realtime statechart and all its regions. This methode will execute one execution
+ * step of the statechart / of a region
+ *
+ * @param component
+ * @param rtsc the realtime statechart
+*/]
+[template private process (component: Component, rtsc : RealtimeStatechart) post(cdtbeautifier())]
+[for (state : State | rtsc.states)]
+				[if (not state.oclAsType(State).simple)]
+					[for (region : Region | state.embeddedRegions)]
+						[process(component, region.embeddedStatechart)/]
+					[/for]
+				[/if]
+		[/for]
+		 void [getProcessMethodName(rtsc)/]([getSuperClassName(rtsc)/]* stateChart) {
+			switch (stateChart->[getVariableName(rtsc)/]) {
+				[for (state : State | rtsc.states)]
+					case [getName(state)/]:
+						[if (state.outgoingTransitions->size() > 0)]
+							[for (outgoingTransition : Transition | state.outgoingTransitions->sortedBy(priority)->reverse()) separator(' else ')]
+								[if outgoingTransition.synchronization.oclIsUndefined()]
+								if ( [transitionCondition(component, rtsc, outgoingTransition)/] ) {
+						    		[transition(component, outgoingTransition)/]
+								}
+								[else] 
+									[transitionWithSync(component, rtsc, outgoingTransition)/]
+								[/if]
+							[/for] 
+							else {
+						[/if]
+						
+
+						[if (not state.doEvent.oclIsUndefined())]
+						//execute doEvent
+							if (Clock_getTime(stateChart->[state.getClockVariableName()/]) >= [doEvent.period.value.generateExpression('')/] * [doEvent.period.getTimeUnitFactor()/]){
+								//execute action [state.doEvent.action.name/]
+								[for (expression : Expression | state.doEvent.action.expressions)]
+									[state.doEvent.action.expressions.generateExpression('')/]
+								[/for]
+								Clock_reset(stateChart->[state.getClockVariableName()/]);
+							}
+						[/if]
+
+					
+						[comment Execute the inner regions /]	
+						[for (reg : Region | state.embeddedRegions->sortedBy(priority)->reverse())]
+							if (stateChart->[reg.embeddedStatechart.getExecutionVerifierName()/])
+								[getProcessMethodName(reg.embeddedStatechart)/](stateChart);
+						[/for]
+
+
+						[if (state.outgoingTransitions->size() > 0)]
+							}
+						[/if]
+					break;
+				[/for]
+				default: break;
+			}
+			stateChart->[rtsc.getExecutionVerifierName()/] = false;
+		}		
+[/template]
+
+
+
+[** generates all needed commands for fireing a transition. This includes all events, actions
+ * clock resets and changing the state 
+ *
+ * @param component
+ * @param rtsc
+*/]
+[template private transition (component : Component, transition : Transition) post(cdtbeautifier()) {
+	source : Vertex = transition.source; 
+	target : Vertex = transition.target;
+	targetRTSC : RealtimeStatechart = target.oclAsType(State).parentStatechart;
+	targetParentState : State = target.eContainer(State);
+	rtsc : RealtimeStatechart = transition.eContainer(RealtimeStatechart);
+}]
+	
+[comment Trigger events /]
+	[if (not transition.triggerMessageEvent.oclIsUndefined())]	
+	[let msg: Message = transition.triggerMessageEvent.message]
+		MiddlewareMessage* mwMsg = Port_receiveMessage([getGetterName(getPortForRegion(transition.statechart.parentRegion))/](stateChart->parentComponent),[msg.instanceOf.getIdentifierVariableName()/]);				
+		
+		[if msg.instanceOf.parameters->size() > 0]
+			struct [msg.instanceOf.getTypeName()/] *  msg = ([msg.instanceOf.getTypeName()/]*) malloc(sizeof(struct [msg.instanceOf.getTypeName()/]));
+			[msg.instanceOf.getUnmarshallingMethodName()/](mwMsg->_mumlMsg, msg, 0);
+			[comment do something with the message/]
+		[/if]
+#ifdef DEBUG
+printDebugInformation("[component.getQualifiedName()/] received message of type[msg.instanceOf.getTypeName()/]");
+#endif
+	
+	[/let]
+	[/if]
+
+	[comment Exit actions/]	
+	[if (source.oclIsTypeOf(State))]
+		// execute exit actions
+		[exitActionRecursive(component, rtsc, source.oclAsType(State))/]
+	[/if]	
+
+	[comment Transition effects/]
+	// Transition Effects (incl. clock resets)
+	[if (not (transition.action.oclIsUndefined() and transition.clockResets->isEmpty()))]
+	[if (not (transition.action.oclIsUndefined()))]
+	
+	[for (exp : Expression | transition.action.expressions)]
+		[if (exp.oclIsKindOf(OperationCall))]
+			[getOperationMethodCall(exp.oclAsType(OperationCall))/];
+		[else]
+			[generateExpression(exp, '')/];
+		[/if]
+	[/for]
+
+	[/if]
+	[for (clock : Clock |  transition.clockResets)]
+		Clock_reset(stateChart->[getVariableName(clock)/]);
+	[/for]
+	[else]
+		// nothing to do
+	[/if]
+	
+	[comment Raise events/]	
+		[if (not transition.raiseMessageEvent.oclIsUndefined())]	
+			[for (msg : Message | transition.raiseMessageEvent.message)]
+				[if msg.instanceOf.parameters->size() > 0]
+					//create new Parameter struct for [msg.instanceOf.getStructName()/]
+					struct [msg.instanceOf.getStructName()/] *  msg = ([msg.instanceOf.getTypeName()/]*) malloc(sizeof(struct [msg.instanceOf.getTypeName()/]));
+					[comment parameter binding to message parameters/]
+					[for (pb : ParameterBinding | msg.parameterBinding)]
+						msg->_[pb.parameter.getName()/] = [generateExpression(pb.value, '')/];
+					[/for]
+				[/if]
+
+				//send Message
+				MW_sendMessage(MW_getTargetPortIDforIdentifier(stateChart->parentComponent->[getVariableName(getPortForRegion(transition.statechart.parentRegion))/]->ID),[msg.instanceOf.getIdentifierVariableName()/],[if msg.instanceOf.parameters->size() > 0] msg[else]NULL[/if]);
+				#ifdef DEBUG
+				printDebugInformation("[component.getQualifiedName()/] sent message of type [msg.instanceOf.getIdentifierVariableName()/]");
+				#endif		
+[/for]
+
+		[else]
+			// nothing to do			
+		[/if]
+
+		[comment release Trigger events /]
+//release all created received events
+	[if (not transition.triggerMessageEvent.oclIsUndefined())]	
+	[let msg: Message = transition.triggerMessageEvent.message]	
+		[if msg.instanceOf.parameters->size() > 0]
+		free(msg);
+		[/if]
+		free(mwMsg);
+
+	[/let]
+	[/if]	
+		[comment release Trigger events /]
+//release all created sent events
+	[if (not transition.raiseMessageEvent.oclIsUndefined())]	
+	[let msg: Message = transition.raiseMessageEvent.message]	
+		[if msg.instanceOf.parameters->size() > 0]
+		free(msg);
+		[/if]
+	[/let]
+	[/if]	
+	[comment State change /]	
+	// change the state
+	[if (transition.target.oclIsKindOf(State))]		
+		stateChart->[getVariableName(targetRTSC)/] = [getName(transition.target.oclAsType(State))/];
+		#ifdef DEBUG
+printDebugInformation("[getVariableName(targetRTSC)/] switched state to [getName(transition.target.oclAsType(State))/]" );
+#endif		
+		[comment reset doEvent-Clock for state/]
+		[if (not target.oclAsType(State).doEvent.oclIsUndefined())]
+			Clock_reset(stateChart->[target.oclAsType(State).getClockVariableName()/]);
+		[/if]
+	[elseif (transition.target.oclIsTypeOf(EntryPoint))]
+		stateChart->[getVariableName(target.oclAsType(EntryPoint).state.parentStatechart)/] = [getName(transition.target.oclAsType(EntryPoint).state)/];
+	[/if]
+
+
+
+	[if (target.oclIsTypeOf(State))]		
+		[entryActionsRecursive(rtsc, target.oclAsType(State))/]
+	[elseif (target.oclIsTypeOf(EntryPoint))]
+		[entryActions(rtsc, targetParentState)/]
+		[for (t : Transition | target.outgoingTransitions)]
+		[transition(component, t)/]		
+		[/for]
+	[elseif (target.oclIsTypeOf(ExitPoint))]
+		[exitActionRecursive(component, rtsc, target.oclAsType(ExitPoint).state)/]
+		[transition(component, target.outgoingTransitions->first())/]
+	[/if]
+
+[/template]
+
+
+[** generates the condition for a given transition
+ * @param component
+ * @param rtsc the realtime statechart
+ * @param transition the transition
+*/]
+[template public transitionCondition (component:Component, rtsc : RealtimeStatechart, transition : Transition)]
+	[if (transition.target.oclIsKindOf(State))]
+		[singleTransitionCondition(component, rtsc, transition)/]
+	[else]
+	[singleTransitionCondition(component, rtsc, transition)/] 
+		[if not (transition.target.incomingTransitions->reject(tr | tr = transition)->isEmpty())]
+		&&
+			[for (t : Transition | transition.target.incomingTransitions->reject(tr | tr = transition)) separator(' && ')]
+				 [transitionConditionRecursive(component, rtsc, t)/]
+			[/for]
+		[/if]
+	[/if]
+
+[/template]
+
+[template public transitionConditionRecursive (component:Component, rtsc : RealtimeStatechart, transition : Transition)]
+	[if (transition.source.oclIsKindOf(State))]
+		[singleTransitionCondition(component, rtsc, transition)/] && (stateChart->[getVariableName(transition.statechart)/] == [transition.source.oclAsType(State).getName()/])
+	[else]
+		[singleTransitionCondition(component, rtsc, transition)/] && [for (pt : Transition | transition.source.incomingTransitions->reject(tr | tr = transition)) separator(' && ')]
+[transitionConditionRecursive(component, pt.statechart, pt)/]
+ [/for]
+	[/if] 
+[/template]
+
+
+[template public singleTransitionCondition(component:Component, rtsc : RealtimeStatechart, transition : Transition)]
+	[if (transition.triggerMessageEvent.oclIsUndefined() and transition.clockConstraints->size()=0 and transition.guard.oclIsUndefined())]
+		1
+	[else]
+		[comment checks for trigger events /]	
+		[if (transition.triggerMessageEvent->size()>0)]	
+		[for (msg : Message | transition.triggerMessageEvent.message) separator(' && ')]			
+			Port_doesMessageExist([getGetterName(getPortForRegion(transition.statechart.parentRegion))/](stateChart->parentComponent), [msg.instanceOf.getIdentifierVariableName()/])
+		[/for]
+		[/if]
+
+		[comment checks the clock guard /]		
+		[if (transition.clockConstraints->size()>0)]
+	 		[if (transition.triggerMessageEvent->size() > 0)]
+			 &&
+			[/if]
+	 		[getClockConstraint(rtsc, transition)/]
+		[/if]
+
+		[comment checks the conditional guard/]		
+		[if (transition.guard->size()>0)]
+	 		[if (transition.clockConstraints->size()>0 or transition.triggerMessageEvent->size() > 0)]
+	 		&&
+			[/if]
+	 		[getGuardConstraint(component, rtsc, transition)/]
+
+	    [/if]
+	[/if] 
+[/template]
+
+[template public transitionWithSync (component:Component, rtsc : RealtimeStatechart, transition : Transition)]
+   [for (partnerTransition : Transition | component.oclAsType(AtomicComponent).behavior.oclAsType(RealtimeStatechart).eAllContents(Transition)->sortedBy(priority)->reverse())]
+		[if (not partnerTransition.synchronization.oclIsUndefined() and not (partnerTransition = transition))]
+		[if partnerTransition.synchronization.syncChannel.getVariableName() = transition.synchronization.syncChannel.getVariableName()]
+		[if ((partnerTransition.synchronization.kind = SynchronizationKind::SEND) and (transition.synchronization.kind = SynchronizationKind::RECEIVE))]
+			if ((stateChart->[partnerTransition.statechart.getExecutionVerifierName()/]) &&(stateChart->[getVariableName(partnerTransition.statechart)/] == [partnerTransition.source.oclAsType(State).getName()/])){
+				if ([transitionCondition(component, component.oclAsType(AtomicComponent).getRTSC(), partnerTransition)/] && [transitionCondition(component, component.oclAsType(AtomicComponent).getRTSC(), transition)/]){
+					[transition(component, partnerTransition)/]
+					[transition(component, transition)/]
+		stateChart->[partnerTransition.statechart.getExecutionVerifierName()/] = false;
+		stateChart->[transition.statechart.getExecutionVerifierName()/] = false;
+//break;
+				}
+			}
+			else
+		[elseif ((partnerTransition.synchronization.kind = SynchronizationKind::RECEIVE) and (transition.synchronization.kind = SynchronizationKind::SEND))]
+			if ((stateChart->[partnerTransition.statechart.getExecutionVerifierName()/]) &&(stateChart->[getVariableName(partnerTransition.statechart)/] == [partnerTransition.source.oclAsType(State).getName()/])){
+				if ([transitionCondition(component, component.oclAsType(AtomicComponent).getRTSC(), partnerTransition)/] && [transitionCondition(component, component.oclAsType(AtomicComponent).getRTSC(), transition)/]){
+					[transition(component, transition)/]
+					[transition(component, partnerTransition)/]
+		stateChart->[partnerTransition.statechart.getExecutionVerifierName()/] = false;
+		stateChart->[transition.statechart.getExecutionVerifierName()/] = false;
+//break;
+				}
+			}
+			else [/if][/if][/if] [/for]
+if (0){
+	//dummy
+}
+[/template]
+
+
+
+[**
+ * generates a clock clock constraint for a given transition
+ * @param rtsc the realtime statechart
+ * @param transition the transition 
+*/]
+[template private getClockConstraint(rtsc : RealtimeStatechart, transition : Transition) post(cdtbeautifier())]
+	[if (transition.clockConstraints->size()>0)]
+	[for (clockCons : ClockConstraint | transition.clockConstraints) separator (' && ')]Clock_getTime(stateChart->[clockCons.clock.getVariableName()/])[clockCons.operator.getOpSymbol()/][clockCons.bound.value.generateExpression('')/] * [clockCons.bound.getTimeUnitFactor()/] [/for]
+	[/if]
+[/template]
+
+
+[**
+ * generates a guard constraint for a given transition
+ * @param rtsc the realtime statechart
+ * @param transition the transition 
+*/]
+[template private getGuardConstraint(component: Component, rtsc : RealtimeStatechart, transition : Transition) post(cdtbeautifier())]
+[getGuardExpression(transition.guard)/]
+[/template]
+
+[**
+ * Generates a guard expression
+ * @param expression the expression
+*/]
+[template public getGuardExpression(expression : Expression)]
+[if expression.oclIsKindOf(ComparisonExpression) or expression.oclIsKindOf(LogicalExpression) or expression.oclIsKindOf(TypedNamedElementExpression)]
+	[generateExpression(expression, '')/]
+[elseif expression.oclIsKindOf(Block)]
+	[expression.oclAsType(Block).expressions->at(1).getGuardExpression()/]
+[elseif expression.oclIsKindOf(LiteralExpression)]
+	[expression.oclAsType(LiteralExpression).value/]
+[elseif expression.oclIsKindOf(OperationCall)]
+[getOperationMethodCall(expression.oclAsType(OperationCall))/]
+[else]
+	[generateExpression(expression, '')/]
+[/if]
+
+[/template]
+
+
+
+[**
+ * Performs the entry behaviour of the state.
+ * 
+ * @param component 
+ * @param statechart
+ * @param state
+*/]
+[template private entryActions(rtsc : RealtimeStatechart, state : State) post(cdtbeautifier())]
+	// execute entry actions
+	[if (state.entryEvent.oclIsUndefined() or ( state.entryEvent.action.oclIsUndefined() and state.entryEvent.clockResets->isEmpty() ))]
+		// nothing to do
+	[else]				
+		[if (not state.entryEvent.action.oclIsUndefined())]
+			[for (exp : Expression | state.entryEvent.action.expressions)]
+				[generateExpression(exp,'')/];
+			[/for]
+		[/if]				
+		
+		[comment clock reset/]		
+		[for (clock : Clock | state.entryEvent.clockResets)]
+			Clock_reset(stateChart->[getVariableName(clock)/]);
+		[/for]
+	[/if]
+[/template]
+
+[**
+ * Performs the entry behaviour of the state and activates all inner regions. 
+ * 
+ * @param component 
+ * @param statechart
+ * @param state
+*/]
+[template private entryActionsRecursive(rtsc : RealtimeStatechart, state : State) post(cdtbeautifier())]
+	[entryActions(rtsc, state)/]
+	[for (innerReg : Region | state.getInnerRegions() )]
+			[getInitializeMethodName(innerReg)/](stateChart);
+	[/for]
+[/template]
+
+[**
+ * Performs the exit behaviour of the state.
+ * 
+ * @param component 
+ * @param statechart
+ * @param state
+*/]
+[template private exitAction(component : Component, rtsc : RealtimeStatechart, state : State) post(cdtbeautifier())]
+	[if (state.exitEvent.oclIsUndefined() or state.exitEvent.action.oclIsUndefined() and state.exitEvent.clockResets->size()=0)]
+		// nothing to do
+	[else]
+		[if (not (state.exitEvent.action.oclIsUndefined()))]
+			[generateExpression(state.exitEvent.action.expressions->at(1), '')/]
+		[/if]
+		[for (clock : Clock | state.exitEvent.clockResets)]
+			Clock_reset(stateChart->[getVariableName(clock)/]);
+		[/for]
+	[/if]
+[/template]
+
+[**
+ * Performs the exit behaviour of the state and calls the exit functions of all sub regions.
+ * 
+ * @param component 
+ * @param statechart
+ * @param state
+*/]
+[template private exitActionRecursive(component : Component, rtsc : RealtimeStatechart, state : State) post(cdtbeautifier())]
+	[exitAction(component, rtsc, state)/]
+	[for (innerReg : Region | state.getInnerRegions())]
+		[getExitMethodName(innerReg)/](stateChart);
+		stateChart->[getVariableName(innerReg)/] = [getStateInactiveString(rtsc)/]
+	[/for]
+
+[/template]
+
+[**
+ * Generates the exit methods for the statechart and each region, if necessary.
+ * 
+ * @param component
+ * @param rtsc
+*/]
+[template private exit (component : Component, rtsc : RealtimeStatechart) post(cdtbeautifier())]
+	[for (region : Region | rtsc.getAllRegions())]
+		 void [getExitMethodName(region)/]([getClassName(rtsc)/]* stateChart) {
+			switch (stateChart->[getVariableName(region)/]) {
+				[for (innerState : State | region.embeddedStatechart.states)]
+					case [getName(innerState)/]:
+						[exitActionRecursive(component, rtsc, innerState)/]
+						break;
+				[/for]
+				default: break;
+			}
+			stateChart->[getVariableName(region)/] = [getStateInactiveString(rtsc)/]
+		}
+	[/for]
+[/template]
+
+[**
+ * Generates the isInState method.
+ * 
+ * @param component
+ * @param statechart
+*/]
+[template private isInState (component : Component, rtsc : RealtimeStatechart) post(cdtbeautifier())]
+	bool_t [getIsInStateMethodName(rtsc)/]([getSuperClassName(rtsc)/]* stateChart, [getSuperClassName(rtsc, true)/] state) {
+		[if (rtsc.getAllRegions()->size()>0)]
+		return ([for (region : Region | rtsc.getAllRegions()->collect(oclAsType(Region))) separator (' || ')]stateChart->[getVariableName(region)/] == state[/for]);
+		[else]
+		return (stateChart->currentState == state);
+		[/if]	
+
+} 
+[/template]
+
+
+[template private getOperationMethodCall (opCall : OperationCall) post(cdtbeautifier())]
+[opCall.operation.getMethodName()/]([if (not opCall.operation.isRepositoryOperation())]stateChart[if (operation.parameters->size() >0)],[/if][/if][for (pBinding:ParameterBinding | opCall.parameterBinding)separator (', ')][pBinding.getValue()/][/for])
+[/template]
+
+[template private getRegionVariables (rtsc: RealtimeStatechart, state : State) post(cdtbeautifier())]
+	[if (not state.oclAsType(State).simple)]
+		[for (region : Region | state.embeddedRegions)]	
+			[getClassName(rtsc, true)/] [getVariableName(region.embeddedStatechart)/];
+				[for (innerState : State | region.embeddedStatechart.states)]
+					[getRegionVariables(rtsc, state)/]
+				[/for]
+		[/for]
+	[/if]
+[/template]
+
+[template public generateRTSCOperations(component : Component, rtsc : RealtimeStatechart) post(cdtbeautifier())]
+[comment generate operation declarations for the RTSC/]
+//implementations for RTSC internal operations
+
+[let allOperation : Set(Operation) = rtsc.eAllContents(Operation)->asSet()]
+[for (operation : Operation | allOperation)]
+
+
+[operation.returnType.getTypeName()/] [operation.getName()/]([if (not operation.isRepositoryOperation())][rtsc.getClassName()/]* stateChart[if (operation.parameters->size() >0)],[/if][/if][for (p: Parameter | operation.parameters)separator (', ')][p.dataType.getTypeName()/] [p.getName()/][/for]){
+
+[if (operation.implementations->at(1).oclIsUndefined())]
+
+
+
+//@TODO: add your implementation here
+#warning Missing implemenation of RTSC operation '[operation.getName()/]'
+	[if not (operation.returnType.name = 'VOID' or operation.returnType.name = 'void')]
+	//default return value
+	[operation.returnType.getTypeName()/] ret = [operation.returnType.getDefaultValue()/];
+	return ret;
+	[/if]
+
+
+
+[else]
+ /** auto generated implementation **/
+[if not (operation.returnType.name = 'VOID' or operation.returnType.name = 'void')]
+	[operation.returnType.getTypeName()/] [operation.getOperationOutputVariableName()/] = [operation.returnType.getDefaultValue()/];
+[/if]
+	[generateExpression(operation.implementations->at(1),'')/]
+[if not (operation.returnType.name = 'VOID' or operation.returnType.name = 'void')]
+	return [operation.getOperationOutputVariableName()/];
+[/if]
+[/if]
+
+}
+
+
+[/for]
+[/let]
+	
+[/template]
+
+

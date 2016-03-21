@@ -1,0 +1,86 @@
+
+
+[comment encoding = UTF-8 /]
+[**
+ * The documentation of the module main.
+ */]
+[module main('http://www.fujaba.de/muml/connector/0.4.0', 'http://www.fujaba.de/muml/behavior/0.4.0',
+				'http://www.storydriven.org/core/0.3.1',
+				'http://www.fujaba.de/muml/actionlanguage/0.4.0',
+				'http://www.fujaba.de/muml/msgtype/0.4.0',
+				'http://www.fujaba.de/muml/types/0.4.0',
+				'http://www.fujaba.de/modelinstance/0.4.0',
+				'http://www.fujaba.de/muml/component/0.4.0',
+				'http://www.fujaba.de/muml/instance/0.4.0',
+				'http://www.fujaba.de/muml/realtimestatechart/0.4.0')]
+
+
+
+[import de::uni_paderborn::fujaba::muml::codegen::c::arduino::files::main_Arduino]
+[import de::uni_paderborn::fujaba::muml::codegen::c::arduino::files::make_Arduino]
+[import de::uni_paderborn::fujaba::muml::codegen::c::files::RealtimeStatechart]
+[import de::uni_paderborn::fujaba::muml::codegen::c::files::RealtimeStatechartHeader]
+[import de::uni_paderborn::fujaba::muml::codegen::c::queries::stringQueries]
+[import de::uni_paderborn::fujaba::muml::codegen::c::queries::modelQueries]
+[import de::uni_paderborn::fujaba::muml::codegen::c::files::componentHeader]
+[import de::uni_paderborn::fujaba::muml::codegen::c::files::component]
+[import de::uni_paderborn::fujaba::muml::codegen::c::files::Message]
+[import de::uni_paderborn::fujaba::muml::codegen::c::files::operations]
+[import de::uni_paderborn::fujaba::muml::codegen::c::files::ContinuousPorts]
+[import de::uni_paderborn::fujaba::muml::codegen::c::main::main]
+[import de::uni_paderborn::fujaba::muml::codegen::c::files::customTypes]
+[import de::uni_paderborn::fujaba::muml::codegen::c::files::LocalMiddleware]
+
+
+[template public generate(cic: ComponentInstanceConfiguration)]
+[comment @main/]
+
+[comment only generate, if CIC is a root-CIC/]
+[if cic.eContainer().oclIsKindOf(ModelElementCategory)]	
+	[comment generate software parts/]
+	[generateArduino(cic.eAllContents(ComponentInstance)->asOrderedSet(),cic.name, cic.name+'/', false)/]
+	
+	[comment generate mini version for middleware/]
+	[generateLocalMiddleware(cic.eAllContents(ComponentInstance)->asOrderedSet(), cic.name+'/', false)/]
+[/if]
+
+[/template]
+
+
+[**
+ * Generates a main file. This file contains code to create, initialize
+ * and execute a given MUML model on nxtOSEK.
+ * @param aModelElementCategory
+ */]
+[template public generateArduino(CIs : OrderedSet(ComponentInstance),inoName: String, path : String, useSubDir : Boolean)]
+
+[comment generate file for OS variable/]
+[generateOSFileDummy(path, 'ARDUINO', useSubDir)/]
+[comment create files for every component type/]
+[generateTypeFiles(CIs, path, useSubDir)/]
+
+[generateContinuousPortFiles(CIs, path, useSubDir)/]
+
+
+[comment create message file/]
+[generateProtobufMessageFile(CIs, path, useSubDir)/]
+[comment create header for using protobuf/]
+[generateProtobufNewHeader(CIs,path, useSubDir)/]
+
+[comment craeate files for RTSCs/]
+[generateRTSCFiles(CIs,path, useSubDir)/]
+
+[comment create makefile/]
+[generateMakeFileForArduino(CIs,path)/]
+
+[comment create Operation files/]
+[generateOperationFiles(CIs,path, useSubDir)/]
+
+[comment generate main file/]
+[generateArduinoMainFile(CIs, inoName, path)/]
+
+[generateCustomTypes(CIs, path, useSubDir)/]
+
+
+
+[/template]

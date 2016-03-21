@@ -1,0 +1,328 @@
+[comment encoding = UTF-8 /]
+[**
+ * The documentation of the module generate.
+ */]
+[module modelQueries('http://www.fujaba.de/muml/connector/0.4.0', 'http://www.fujaba.de/muml/behavior/0.4.0',
+				'http://www.storydriven.org/core/0.3.1',
+				'http://www.fujaba.de/muml/actionlanguage/0.4.0',
+				'http://www.fujaba.de/muml/msgtype/0.4.0',
+				'http://www.fujaba.de/muml/types/0.4.0',
+				'http://www.fujaba.de/modelinstance/0.4.0',
+				'http://www.fujaba.de/muml/component/0.4.0',
+				'http://www.fujaba.de/muml/instance/0.4.0',
+				'http://www.fujaba.de/muml/realtimestatechart/0.4.0',
+'http://www.fujaba.de/muml/valuetype/0.4.0')]
+
+
+
+[query public getRTSC(comp : AtomicComponent) : RealtimeStatechart =
+	comp.behavior.oclAsType(RealtimeStatechart)
+/]
+
+[query public getTargetPortInstance(dpi : DiscretePortInstance) : DiscretePortInstance =
+if (dpi.portConnectorInstances.connectorEndpointInstances->at(1) = dpi) then
+	if (dpi.portConnectorInstances.connectorEndpointInstances->at(2).connectorInstances->size()>1) then
+		getTargetPortInstance(dpi.portConnectorInstances->at(1), dpi.portConnectorInstances.connectorEndpointInstances->at(2).oclAsType(DiscretePortInstance))
+	else
+		dpi.portConnectorInstances.connectorEndpointInstances->at(2).oclAsType(DiscretePortInstance)
+	endif
+else
+	if (dpi.portConnectorInstances.connectorEndpointInstances->at(1).connectorInstances->size()>1) then
+		getTargetPortInstance(dpi.portConnectorInstances->at(1), dpi.portConnectorInstances.connectorEndpointInstances->at(1).oclAsType(DiscretePortInstance))
+	else
+		dpi.portConnectorInstances.connectorEndpointInstances->at(1).oclAsType(DiscretePortInstance)
+	endif
+endif
+/]
+
+[query public getTargetPortInstance(connector : ConnectorInstance, dpi : DiscretePortInstance) : DiscretePortInstance =
+if (dpi.connectorInstances->at(1) = connector) then
+	if (dpi.connectorInstances->at(2).connectorEndpointInstances->at(1) = dpi) then
+		if (dpi.connectorInstances->at(2).connectorEndpointInstances->at(2).connectorInstances->size()>1) then
+			getTargetPortInstance(dpi.connectorInstances->at(2), dpi.connectorInstances->at(2).connectorEndpointInstances->at(2).oclAsType(DiscretePortInstance))
+		else
+			dpi.connectorInstances->at(2).connectorEndpointInstances->at(2).oclAsType(DiscretePortInstance)
+		endif
+	else
+		if (dpi.connectorInstances->at(2).connectorEndpointInstances->at(1).connectorInstances->size()>1) then
+			getTargetPortInstance(dpi.connectorInstances->at(2), dpi.connectorInstances->at(2).connectorEndpointInstances->at(1).oclAsType(DiscretePortInstance))
+		else
+			dpi.connectorInstances->at(2).connectorEndpointInstances->at(1).oclAsType(DiscretePortInstance)
+		endif
+	endif
+else
+	if (dpi.connectorInstances->at(1).connectorEndpointInstances->at(1) = dpi) then
+		if (dpi.connectorInstances->at(1).connectorEndpointInstances->at(2).connectorInstances->size()>1) then
+			getTargetPortInstance(dpi.connectorInstances->at(1), dpi.connectorInstances->at(1).connectorEndpointInstances->at(2).oclAsType(DiscretePortInstance))
+		else
+			dpi.connectorInstances->at(1).connectorEndpointInstances->at(2).oclAsType(DiscretePortInstance)
+		endif
+	else
+		if (dpi.connectorInstances->at(1).connectorEndpointInstances->at(1).connectorInstances->size()>1) then
+			getTargetPortInstance(dpi.connectorInstances->at(1), dpi.connectorInstances->at(1).connectorEndpointInstances->at(1).oclAsType(DiscretePortInstance))
+		else
+			dpi.connectorInstances->at(1).connectorEndpointInstances->at(1).oclAsType(DiscretePortInstance)
+		endif
+	endif
+endif
+/]
+
+[query public getContinuousPortInstance(hpi : HybridPortInstance) : ContinuousPortInstance =
+if (hpi.portConnectorInstances.connectorEndpointInstances->at(1) = hpi) then
+	if (hpi.portConnectorInstances.connectorEndpointInstances->at(2).connectorInstances->size()>1) then
+		if (hpi.portConnectorInstances.connectorEndpointInstances->at(2).oclIsKindOf(HybridPortInstance)) then
+			getContinuousPortInstance(hpi.portConnectorInstances->at(1), hpi.portConnectorInstances.connectorEndpointInstances->at(2).oclAsType(HybridPortInstance))
+		else
+					getContinuousPortInstance(hpi.portConnectorInstances->at(1), hpi.portConnectorInstances.connectorEndpointInstances->at(2).oclAsType(ContinuousPortInstance))
+		endif
+	else
+		hpi.portConnectorInstances.connectorEndpointInstances->at(2).oclAsType(ContinuousPortInstance)
+	endif
+else
+	if (hpi.portConnectorInstances.connectorEndpointInstances->at(1).connectorInstances->size()>1) then
+		if (hpi.portConnectorInstances.connectorEndpointInstances->at(1).oclIsKindOf(HybridPortInstance)) then
+			getContinuousPortInstance(hpi.portConnectorInstances->at(1), hpi.portConnectorInstances.connectorEndpointInstances->at(1).oclAsType(HybridPortInstance))
+		else
+			getContinuousPortInstance(hpi.portConnectorInstances->at(1), hpi.portConnectorInstances.connectorEndpointInstances->at(1).oclAsType(ContinuousPortInstance))
+		endif
+	else
+		hpi.portConnectorInstances.connectorEndpointInstances->at(1).oclAsType(ContinuousPortInstance)
+	endif
+endif
+/]
+
+[query public getContinuousPortInstance(connector : ConnectorInstance, hpi : HybridPortInstance) : ContinuousPortInstance =
+if (hpi.connectorInstances->at(1) = connector) then
+	if (hpi.portConnectorInstances->at(2).connectorEndpointInstances->at(1) = hpi) then
+		if (hpi.portConnectorInstances->at(2).connectorEndpointInstances->at(2).oclIsKindOf(HybridPortInstance)) then
+			getContinuousPortInstance(hpi.portConnectorInstances->at(2), hpi.portConnectorInstances.connectorEndpointInstances->at(2).oclAsType(HybridPortInstance))
+		else
+			getContinuousPortInstance(hpi.portConnectorInstances.connectorEndpointInstances->at(2).oclAsType(ContinuousPortInstance))
+		endif
+	else
+		if (hpi.portConnectorInstances->at(2).connectorEndpointInstances->at(1).oclIsKindOf(HybridPortInstance)) then
+			getContinuousPortInstance(hpi.portConnectorInstances->at(2), hpi.portConnectorInstances.connectorEndpointInstances->at(1).oclAsType(HybridPortInstance))
+		else
+			getContinuousPortInstance(hpi.portConnectorInstances.connectorEndpointInstances->at(1).oclAsType(ContinuousPortInstance))
+		endif
+	endif
+else
+	if (hpi.portConnectorInstances->at(1).connectorEndpointInstances->at(1) = hpi) then
+		if (hpi.portConnectorInstances->at(1).connectorEndpointInstances->at(2).oclIsKindOf(HybridPortInstance)) then
+			getContinuousPortInstance(hpi.portConnectorInstances->at(1), hpi.portConnectorInstances.connectorEndpointInstances->at(2).oclAsType(HybridPortInstance))
+		else
+			getContinuousPortInstance(hpi.portConnectorInstances.connectorEndpointInstances->at(2).oclAsType(ContinuousPortInstance))
+		endif
+	else
+		if (hpi.portConnectorInstances->at(1).connectorEndpointInstances->at(1).oclIsKindOf(HybridPortInstance)) then
+			getContinuousPortInstance(hpi.portConnectorInstances->at(1), hpi.portConnectorInstances.connectorEndpointInstances->at(1).oclAsType(HybridPortInstance))
+		else
+			getContinuousPortInstance(hpi.portConnectorInstances.connectorEndpointInstances->at(1).oclAsType(ContinuousPortInstance))
+		endif
+	endif
+endif
+/]
+
+[query public getContinuousPortInstance(connector : ConnectorInstance, cpi : ContinuousPortInstance) : ContinuousPortInstance =
+if (cpi.connectorInstances->at(1) = connector) then
+	if (cpi.connectorInstances->at(2).connectorEndpointInstances->at(1) = cpi) then
+		if (cpi.connectorInstances->at(2).connectorEndpointInstances->at(2).connectorInstances->size()>1) then
+			getContinuousPortInstance(cpi.connectorInstances->at(2), cpi.connectorInstances->at(2).connectorEndpointInstances->at(2).oclAsType(ContinuousPortInstance))
+		else
+			cpi.connectorInstances->at(2).connectorEndpointInstances->at(2).oclAsType(ContinuousPortInstance)
+		endif
+	else
+		if (cpi.connectorInstances->at(2).connectorEndpointInstances->at(1).connectorInstances->size()>1) then
+			getContinuousPortInstance(cpi.connectorInstances->at(2), cpi.connectorInstances->at(2).connectorEndpointInstances->at(1).oclAsType(ContinuousPortInstance))
+		else
+			cpi.connectorInstances->at(2).connectorEndpointInstances->at(1).oclAsType(ContinuousPortInstance)
+		endif
+	endif
+else
+	if (cpi.connectorInstances->at(1).connectorEndpointInstances->at(1) = cpi) then
+		if (cpi.connectorInstances->at(1).connectorEndpointInstances->at(2).connectorInstances->size()>1) then
+			getContinuousPortInstance(cpi.connectorInstances->at(1), cpi.connectorInstances->at(1).connectorEndpointInstances->at(2).oclAsType(ContinuousPortInstance))
+		else
+			cpi.connectorInstances->at(1).connectorEndpointInstances->at(2).oclAsType(ContinuousPortInstance)
+		endif
+	else
+		if (cpi.connectorInstances->at(1).connectorEndpointInstances->at(1).connectorInstances->size()>1) then
+			getContinuousPortInstance(cpi.connectorInstances->at(1), cpi.connectorInstances->at(1).connectorEndpointInstances->at(1).oclAsType(ContinuousPortInstance))
+		else
+			cpi.connectorInstances->at(1).connectorEndpointInstances->at(1).oclAsType(ContinuousPortInstance)
+		endif
+	endif
+endif
+/]
+
+[query public getAllStates(rtsc : RealtimeStatechart) : Set(State) =
+	rtsc.states
+/]
+
+
+
+[query public getAllRegions(rtsc : RealtimeStatechart) : Set(Region) =
+	rtsc.eAllContents(Region)->asSet()
+
+/]
+[query public getInitalState(rtsc : RealtimeStatechart) : State =
+	rtsc.states->select(state : State | state.initial)->at(1)
+/]
+
+[query public getAllComponentInstances(ci : ComponentInstance) : Set(ComponentInstance) =
+if (ci.oclIsTypeOf(StructuredComponentInstance)) then
+ci->asSet()->union(ci.oclAsType(StructuredComponentInstance).embeddedCIC.componentInstances->asSet())
+else
+ci->asSet()
+endif
+/]
+
+[query public getAllComponentInstances(cic : ComponentInstanceConfiguration) : Set(ComponentInstance) =
+cic.componentInstances->union(cic.componentInstances->iterate(iterator : ComponentInstance; returnValue : Set(ComponentInstance) = null | getAllComponentInstances(iterator)))
+/]
+
+[query public getAllOperations(cic : ComponentInstanceConfiguration) : Set(Operation) =
+cic.getAllComponentInstances().eAllContents(AtomicComponentInstance)
+->iterate(iterator : AtomicComponentInstance; returnValue : Set(Operation) = null | 
+getAllOperations(iterator))
+
+/]
+
+[query public getAllOperations(ac : AtomicComponentInstance) : Set(Operation) =
+ac.componentType.oclAsType(AtomicComponent).behavior.eAllContents(Operation)->asSet()
+/]
+
+
+[**
+ * @param state
+*/]
+[query public getInnerRegions(state : State) : OrderedSet(Region) = 
+	state.embeddedRegions->sortedBy(priority)->reverse()
+/]
+
+[**
+ * @param region
+*/]
+[query public isExitGenerationNecessary(region : Region) : Boolean =
+	region.eAllContents(Region)->exists(isExitGenerationNecessary()) or 
+	region.eContents(State)->exists(isStateExitGenerationNecessary(false))
+/]
+
+[**
+ * @param state
+*/]
+[query public isStateExitGenerationNecessary(state : State, withInnerRegions : Boolean) : Boolean =
+	not (state.final) and 
+	(
+		not (state.exitEvent.action.oclIsUndefined()) or
+		state.exitEvent.clockResets->size() > 0 or
+		(withInnerRegions and state.embeddedRegions->size() > 0) 
+	)
+/]
+
+
+
+[query public getMainCIC(mec : ModelElementCategory) : ComponentInstanceConfiguration = 
+	mec.modelElements->at(1).oclAsType(ComponentInstanceConfiguration)
+/]
+
+
+
+[query public getBehaviour(component : AtomicComponentInstance) : RealtimeStatechart =
+	component.oclAsType(AtomicComponentInstance).componentType.oclAsType(AtomicComponent).behavior.oclAsType(RealtimeStatechart)
+/]
+
+[query public isDiscreteConnection(cInst : ConnectorInstance) : Boolean =
+	cInst.connectorEndpointInstances->at(1).oclIsKindOf(DiscretePortInstance) and cInst.connectorEndpointInstances->at(2).oclIsKindOf(DiscretePortInstance)
+/]
+
+[query public isBidirectional(cInst : ConnectorInstance) : Boolean =
+	cInst.connectorEndpointInstances->at(1).oclAsType(DiscretePortInstance).portType.oclAsType(DiscretePort).isDiscreteInOutPort
+/]
+
+[query public getEmbeddingComponent(conInst : ConnectorInstance) : StructuredComponentInstance =
+	conInst.connectorEndpointInstances->at(1).oclAsType(PortInstance).componentInstance.parentCIC.parentStructuredComponentInstance
+/]
+
+[query public getSourcePort(conInst : ConnectorInstance) : PortInstance =
+	if ((conInst.connectorEndpointInstances->at(1).oclAsType(DiscretePortInstance).senderMessageTypes->size()>0) and (conInst.connectorEndpointInstances->at(1).oclAsType(DiscretePortInstance).receiverMessageTypes->size()>0)) then
+		conInst.connectorEndpointInstances->at(1).oclAsType(PortInstance)
+	else
+		if (conInst.connectorEndpointInstances->at(1).oclAsType(DiscretePortInstance).senderMessageTypes->size()>0) then
+		conInst.connectorEndpointInstances->at(1).oclAsType(PortInstance)
+		else
+		conInst.connectorEndpointInstances->at(2).oclAsType(PortInstance)
+		endif
+	endif
+/]
+
+[query public getTargetPort(conInst : ConnectorInstance) : PortInstance =
+	if ((conInst.connectorEndpointInstances->at(1).oclAsType(DiscretePortInstance).senderMessageTypes->size()>0) and (conInst.connectorEndpointInstances->at(1).oclAsType(DiscretePortInstance).receiverMessageTypes->size()>0)) then
+		conInst.connectorEndpointInstances->at(2).oclAsType(PortInstance)
+	else
+		if (conInst.connectorEndpointInstances->at(1).oclAsType(DiscretePortInstance).receiverMessageTypes->size()>0) then
+		conInst.connectorEndpointInstances->at(1).oclAsType(PortInstance)
+		else
+		conInst.connectorEndpointInstances->at(2).oclAsType(PortInstance)
+		endif
+	endif
+/]
+
+
+[query public getPortForRegion(region : Region) : DiscretePort =
+	if (region.embeddedStatechart.behavioralElement.oclIsUndefined()) then
+		getPortForRegion(region.parentState.parentStatechart.parentRegion)
+	else
+		region.embeddedStatechart.behavioralElement.oclAsType(DiscretePort)
+	endif
+/]
+[**
+ * computes all messages, that are used in the whole codegen-model (the complete system)
+ * @param codegen a codegen-model
+ * @return Set of all messages used in the given codegen model
+*/]
+[query public getAllUsedMessages (CIs : OrderedSet(ComponentInstance)) : Set(MessageType) = 
+let receiverMessages:Set(MessageType) = CIs.portInstances->asSet()->filter(DiscretePortInstance)->collect(receiverMessageTypes)->asSet() in
+let senderMessages:Set(MessageType) = CIs.portInstances->asSet()->filter(DiscretePortInstance)->collect(senderMessageTypes)->asSet() in
+receiverMessages->union(senderMessages)->asOrderedSet()
+ /]
+
+[query public getAllStructTypes (CIs : OrderedSet(ComponentInstance)) : Set(StructureDataType) = 
+let comps : OrderedSet(AtomicComponent) = CIs->getAllAtomicComponentTypes() in
+let atomics : OrderedSet(AtomicComponent) = comps->select(not (componentKind = ComponentKind::CONTINUOUS_COMPONENT)) in 
+atomics.behavior.oclAsType(RealtimeStatechart).allAvailableVariables.dataType->asSet()->select(oclIsKindOf(StructureDataType))->asOrderedSet()
+
+
+ /]
+
+
+[query public getAllAtomicComponentTypes(CIs : OrderedSet(ComponentInstance)) : OrderedSet(AtomicComponent) = 
+ CIs->selectByKind(AtomicComponentInstance).componentType.oclAsType(AtomicComponent)->asOrderedSet()
+ /]
+
+
+[**
+ * computes an (ordered) set of all DiscretePortInstances of a given codegen-model (the complete system)
+ * @param codegen the codegen-model
+ * @return Set of all DiscretePortInstances
+*/]
+[query public getAllDiscretePortInstances (CIs : OrderedSet(ComponentInstance)) : Set(DiscretePortInstance) = 
+CIs->collect(portInstances)->asOrderedSet()->filter(DiscretePortInstance) /]
+
+[query public getTimeUnitFactor(timeValue : TimeValue) : Real =
+	invoke('de.uni_paderborn.fujaba.muml.codegen.c.helper.TimeHelper', 'getFactor(de.uni_paderborn.fujaba.muml.valuetype.TimeValue)',Sequence{timeValue})
+/]
+
+[query public getRootNode(obj : OclAny) : RootNode =
+if (obj.oclIsKindOf(RootNode) or obj = null) then
+	obj
+else
+	getRootNode(obj.eContainer())
+endif
+ /]
+
+[query public getContainingRepository(op : Operation) : OclAny = 
+let rootNode:RootNode = op.getRootNode() in
+	rootNode.eAllContents(OperationRepository).operations->asSet()
+ /]
+

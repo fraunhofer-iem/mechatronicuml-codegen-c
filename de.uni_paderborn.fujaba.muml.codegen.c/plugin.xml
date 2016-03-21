@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="org.eclipse.acceleo.engine.dynamic.templates" name="org.eclipse.acceleo.engine.dynamic.templates" schema="schema/   &lt;extension-point id=&quot;org.eclipse.acceleo.engine.dynamic.templates&quot; name=&quot;org.eclipse.acceleo.engine.dynamic.templates&quot; schema=&quot;schema/org.eclipse.acceleo.engine.dynamic.templates.exsd&quot;/org.eclipse.acceleo.engine.dynamic.templates&quot; name=&quot;org.eclipse.acceleo.engine.dynamic.templates&quot; schema=&quot;schema/org.eclipse.acceleo.engine.dynamic.templates.exsd&quot;/org.eclipse.acceleo.engine.dynamic.templates.exsd"/>
+
+</plugin>

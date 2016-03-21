@@ -1,0 +1,134 @@
+[comment encoding = UTF-8 /]
+[**
+ * The documentation of the module operations.
+ */]
+[module operations('http://www.fujaba.de/muml/connector/0.4.0', 'http://www.fujaba.de/muml/behavior/0.4.0',
+				'http://www.storydriven.org/core/0.3.1',
+				'http://www.fujaba.de/muml/actionlanguage/0.4.0',
+				'http://www.fujaba.de/muml/msgtype/0.4.0',
+				'http://www.fujaba.de/muml/types/0.4.0',
+				'http://www.fujaba.de/modelinstance/0.4.0',
+				'http://www.fujaba.de/muml/component/0.4.0',
+				'http://www.fujaba.de/muml/instance/0.4.0',
+				'http://www.fujaba.de/muml/realtimestatechart/0.4.0')]
+
+[import de::uni_paderborn::fujaba::muml::codegen::c::queries::stringQueries]
+[import de::uni_paderborn::fujaba::muml::codegen::c::queries::modelQueries]
+[import de::uni_paderborn::fujaba::muml::codegen::c::actionlanguage::operation_queries]
+[import de::uni_paderborn::fujaba::muml::codegen::c::actionlanguage::expression]
+[**
+ * The documentation of the template generateOperationFile.
+ * @param anAbsoluteDeadline
+ */]
+[template public generateOperationFiles(CIs : OrderedSet(ComponentInstance), path : String, useSubDir: Boolean)]
+[file (path+getFileName4Operations(true, useSubDir), false, 'UTF-8')]
+#ifndef OPERATIONS_H_
+#define OPERATIONS_H_
+#ifdef __cplusplus
+  extern "C" {
+#endif
+[let rootNode : RootNode = CIs->any(true).eContainer().eContainer().eContainer().oclAsType(RootNode)]
+[for (opRep: OperationRepository | rootNode.eAllContents(OperationRepository))]
+	[comment generate separate files for each repository /]	
+	[generateOperationRepositoryHeader(opRep, path, useSubDir)/]
+	[generateOperationRepositoryClass(opRep, path, useSubDir)/]
+
+	[comment generate includes for each repository into the operations.h /]
+	#include "[opRep.getFileName(true, false)/]"
+
+[/for]
+[/let]
+
+#ifdef __cplusplus
+  }
+#endif
+#endif /*OPERATIONS_H_ */
+[/file]
+
+[/template]
+
+
+
+
+[**
+ * The documentation of the template generateOperationFile.
+ * @param anAbsoluteDeadline
+ */]
+[template public generateOperationRepositoryHeader(opRep : OperationRepository, path : String, useSubDir: Boolean)]
+
+[file (path+getFileName(opRep, true, useSubDir), false, 'UTF-8')]
+#ifndef [opRep.getName().toUpper()/]_H_
+#define [opRep.getName().toUpper()/]_H_
+#ifdef __cplusplus
+  extern "C" {
+#endif
+
+	#include "[if (useSubDir)]../types/[/if]standardTypes.h"
+	#include "[if (useSubDir)]../types/[/if]customTypes.h"
+
+
+			
+		[for (operation : Operation | opRep.operations)]
+		/**
+		 * @brief Implementation stub of operation [operation.name/]
+ 		 * @details This function shall contain the implementation of the operation [operation.name/].
+		 * [for (p: Parameter | operation.parameters)]@param [p.getName()/] [/for]
+		 */
+		[operation.returnType.getTypeName()/] [operation.getName()/]([for (p: Parameter | operation.parameters) separator(', ')][p.dataType.getTypeName()/] [p.getName()/][/for]);
+[/for]
+
+
+#ifdef __cplusplus
+  }
+#endif
+#endif /*[opRep.getName().toUpper()/]_H_ */
+[/file]
+[/template]
+
+[**
+ * The documentation of the template generateOperationFile.
+ * @param anAbsoluteDeadline
+ */]
+[template public generateOperationRepositoryClass(opRep: OperationRepository, path : String, useSubDir: Boolean)]
+
+[file (path+getFileName(opRep, false, useSubDir), false, 'UTF-8')]
+
+#include "operations.h"
+/** [protected ('User includes **/')] 
+
+
+/**[/protected]**/
+[for (operation : Operation | opRep.operations)]
+
+[operation.returnType.getTypeName()/] [operation.getName()/]([for (p: Parameter | operation.parameters) separator (', ')][p.dataType.getTypeName()/] [p.getName()/][/for]){
+
+[if (operation.implementations->at(1).oclIsUndefined())]
+/** [protected (operation.getName()+' **/')] 
+//@TODO: add your implementation here
+#warning Missing implemenation of repository operation '[operation.getName()/]'
+	[if not (operation.returnType.name = 'VOID' or operation.returnType.name = 'void')]
+	//default return value
+	[operation.returnType.getTypeName()/] ret = [operation.returnType.getDefaultValue()/];
+	return ret;
+	[/if]
+/**[/protected]**/
+[else]
+ /** auto generated implementation **/
+[if not (operation.returnType.name = 'VOID' or operation.returnType.name = 'void')]
+	[operation.returnType.getTypeName()/] [operation.getOperationOutputVariableName()/] = [operation.returnType.getDefaultValue()/];
+[/if]
+	[generateExpression(operation.implementations->at(1),'')/]
+[if not (operation.returnType.name = 'VOID' or operation.returnType.name = 'void')]
+	return [operation.getOperationOutputVariableName()/];
+[/if]
+[/if]
+
+}
+
+
+[/for]
+
+
+[/file]
+[/template]
+

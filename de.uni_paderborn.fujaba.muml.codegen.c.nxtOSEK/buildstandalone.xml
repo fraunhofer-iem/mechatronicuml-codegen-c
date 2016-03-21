@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="compile" name="de.uni_paderborn.fujaba.codegen.c.nxtOSEK">
+    
+    <property name="ECLIPSE_HOME" value="C:/data/Software/eclipse-juno_32_muml"/>
+    <property name="ECLIPSE_WORKSPACE" value="../"/>
+
+    <property name="SOURCE_FOLDER" value="${basedir}/src/"/>    
+    <property name="OUTPUT_FOLDER" value="${basedir}/bin/"/>
+
+    <path id="de.uni_paderborn.fujaba.muml.codegen.c.nxtOSEK.classpath">
+        <path refid="de.uni_paderborn.fujaba.muml.codegen.c.nxtOSEK.libraryclasspath" />
+    </path>
+
+    <!-- The classpath with only the dependencies used by the project (a dependency with the parser is required) -->
+    <path id="de.uni_paderborn.fujaba.muml.codegen.c.nxtOSEK.libraryclasspath">
+        <pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml.codegen.c/bin"/>
+        <pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml.codegen.c.nxtOSEK/bin"/>
+        <pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml.codegen.c.beautifier/bin"/>
+    	<pathelement location="${ECLIPSE_WORKSPACE}/sdm/org.storydriven.core/target/classes"/>
+    	<pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml/bin"/>
+    	<pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.modelinstance/bin"/>
+    	<pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml.actionlanguage/bin"/>
+    	<pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.core.runtime_3.8.0.v20120912-155025.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.osgi_3.8.2.v20130124-134944.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.common_3.6.100.v20120522-1841.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.core.jobs_3.5.300.v20120912-155018.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.core.runtime.compatibility.registry_3.5.101.v20130108-163257/runtime_registry_compatibility.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.registry_3.5.200.v20120522-1841.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.preferences_3.5.1.v20121031-182809.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.core.contenttype_3.4.200.v20120523-2004.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.app_1.3.100.v20120522-1841.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.ecore_2.8.3.v20130125-0546.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.common_2.8.0.v20130125-0546.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.uml2.common_1.7.0.v20130114-0902.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.ecore.xmi_2.8.1.v20130125-0546.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.cdo_4.1.2.v20130122-0633.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.cdo.common_4.1.2.v20130122-0633.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.net4j.util_3.2.2.v20121028-0914.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.ocl_3.2.1.v20130128-1158.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/lpg.runtime.java_2.0.17.v201004271640.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.ocl.common_1.0.2.v20130125-1817.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.ocl.ecore_3.2.0.v20130125-1817.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.acceleo.common_3.3.2.201302130808.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.acceleo.model_3.3.2.201302130808.jar"/>
+    	<pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.acceleo.parser_3.3.2.201302130808.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.acceleo.profiler_3.3.2.201302130808.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.acceleo.engine_3.3.2.201302130808.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.codegen.ecore_2.8.2.v20130125-0826.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.codegen_2.8.0.v20130125-0826.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/com.google.guava_10.0.1.v201203051515.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.m2m.qvt.oml_3.2.0.v20130128-1651.jar"/>
+    </path>
+
+    
+    <taskdef id="acceleoCompiler" name="acceleoCompiler" classname="org.eclipse.acceleo.parser.compiler.AcceleoCompiler" classpathref="de.uni_paderborn.fujaba.muml.codegen.c.nxtOSEK.libraryclasspath" >
+    </taskdef>
+
+    <!-- Change the value of the property SOURCE_FOLDERS to match the configuration of your project. -->
+    <target name="compile">
+        <acceleoCompiler sourceFolder="${SOURCE_FOLDER}"
+                         outputFolder="${OUTPUT_FOLDER}"
+                         dependencies="C:\\Users\\muml-ci\\.jenkins\\workspace\\MUML\\de.uni_paderborn.fujaba.muml.codegen.c\\bin\\de\\uni_paderborn\\fujaba\\muml\\codegen\\c\\main"
+                         binaryResource="false"
+    					 packagesToRegister="de.uni_paderborn.fujaba.muml.MumlPackage;de.uni_paderborn.fujaba.muml.instance.InstancePackage;de.uni_paderborn.fujaba.muml.component.ComponentPackage;de.uni_paderborn.fujaba.muml.actionlanguage.ActionlanguagePackage;de.uni_paderborn.fujaba.muml.behavior.BehaviorPackage;org.storydriven.core.CorePackage;de.uni_paderborn.fujaba.muml.connector.ConnectorPackage;de.uni_paderborn.fujaba.muml.protocol.ProtocolPackage;de.uni_paderborn.fujaba.muml.realtimestatechart.RealtimestatechartPackage;de.uni_paderborn.fujaba.muml.types.TypesPackage;de.uni_paderborn.fujaba.muml.valuetype.ValuetypePackage;de.uni_paderborn.fujaba.modelinstance.ModelinstancePackage;org.storydriven.core.expressions.ExpressionsPackage;org.storydriven.core.expressions.common.CommonExpressionsPackage">
+        </acceleoCompiler>
+    </target>
+</project>

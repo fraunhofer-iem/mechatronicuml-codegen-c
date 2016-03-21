@@ -1,0 +1,1123 @@
+[comment encoding = UTF-8 /]
+[**
+ * The documentation of the module generate.
+ */]
+[module stringQueries('http://www.fujaba.de/muml/connector/0.4.0', 'http://www.fujaba.de/muml/behavior/0.4.0',
+				'http://www.storydriven.org/core/0.3.1',
+				'http://www.fujaba.de/muml/actionlanguage/0.4.0',
+				'http://www.fujaba.de/muml/msgtype/0.4.0',
+				'http://www.fujaba.de/muml/types/0.4.0',
+				'http://www.fujaba.de/modelinstance/0.4.0',
+				'http://www.fujaba.de/muml/component/0.4.0',
+				'http://www.fujaba.de/muml/instance/0.4.0',
+				'http://www.fujaba.de/muml/realtimestatechart/0.4.0')]
+[import de::uni_paderborn::fujaba::muml::codegen::c::queries::modelQueries]
+[**
+ * The documentation of the query generateElement.
+ * @param anOclAny
+ */]
+[query public getHeaderFile (rtsc : RealtimeStatechart) : String = rtsc.getName()+'.h'/]
+
+[query public getMessageBufferSize (mb : MessageBuffer) : String =
+	if (mb.bufferSize.toString() = '*') then '20' else mb.bufferSize endif
+/]
+
+[query public getStateInactiveString(rtsc : RealtimeStatechart) : String = 
+rtsc.getRootRTSC().getQualifiedName().toUpperCase() + '_INACTIVE;'
+
+ /]
+
+[query public getRootRTSC(rtsc : RealtimeStatechart) : RealtimeStatechart = 
+if (rtsc.embedded) then 
+	getRootRTSC(rtsc.parentRegion.parentState.parentStatechart)
+else
+	rtsc
+endif
+
+ /]
+
+
+
+
+
+[**
+ * returns the C-type name for a given MessageType
+ * @param msgT the message type
+ * @return C-type for a the given message type
+*/]
+[query public getTypeName (msgT: MessageType) : String = 
+msgT.getName() + msgT.repository.getName() +'Message'/]
+
+[query public getName(oRep : OperationRepository) : String = 
+oRep.getQualifiedName() /]
+
+
+[query public getBufferName (mb : MessageBuffer, pi : DiscretePortInstance) : String = 
+getName(mb.name) +pi.getName()+ pi.componentInstance.getName() /]
+
+[query public getWriteMethod (cpi : ContinuousPortInstance) : String = 
+	'write_'+cpi.getName()+'_of'+cpi.componentInstance.componentType.getVariableName()+'_'+cpi.componentInstance.getName()
+/]
+
+[query public getSendMsgVariableName (msg:MessageType, t:Transition) : String = 
+	'sendEventOf'+t.source.name+'to'+t.target.name
+/]
+
+[query public getReceiveMsgVariableName (msg:MessageType, t:Transition) : String = 
+	'recEventOf'+t.source.name+'to'+t.target.name
+/]
+
+[query public getReadMethod (cpi : ContinuousPortInstance) : String = 
+' read_'+cpi.getName()+'_of'+cpi.componentInstance.componentType.getVariableName()+'_'+cpi.componentInstance.getName()
+
+/]
+
+[query public getHeaderFile (ci : ComponentInstance) : String = ci.getName()+ci.componentType.getName()+'.h'/]
+
+[**
+ * @param syncChannel
+*/]
+[query public getAddMethodName(component: Component, cPart : ComponentPart) : String =
+	getClassName(component) + '_addTo_'+getName(cPart)
+/]
+
+
+[query public getExecutionVerifierName(rtsc : RealtimeStatechart) : String =
+	rtsc.getName()+'_isExecutable'
+/]
+
+
+
+[**
+ * @param syncChannel
+*/]
+[query public getRemoveMethodName(component : Component, cPart : ComponentPart) : String =
+	getClassName(component) + '_removeFrom_'+getName(cPart)
+/]
+
+[query public getCreateMethodName(port : Port) : String =
+	getClassName(port) + '_create'	
+/]
+
+[query public getMethodName(op : Operation) : String =
+	op.getName()	
+/]
+
+[query public getName(op : Operation) : String =
+if (op.oclIsUndefined()) then
+'#error null value '
+else
+	op.getContainingRepositoryName() + getQualifiedName(op).toLowerFirst()	
+endif
+/]
+
+[query public isRepositoryOperation(op : Operation) : Boolean =
+let rootNode:RootNode = op.getRootNode() in
+if (rootNode.eAllContents(OperationRepository).operations->includes(op)) then
+		true
+	else
+		false
+	endif
+ /]
+
+
+[query public getContainingRepositoryName(op : Operation) : String = 
+	if (op.isRepositoryOperation()) then
+		op.eContainer().oclAsType(OperationRepository).getName()+'_'
+	else
+		''
+	endif
+ /]
+
+
+[query public getName(parameter : Parameter) : String = 
+if (parameter.oclIsUndefined()) then
+'#error null value '
+else
+	getName(parameter.name).toLowerFirst()
+endif
+/]
+
+[query public getProtoBuffVariableName(parameter : Parameter) : String = 
+	'_'+getName(parameter)
+/]
+
+[query public getName(component : Component) : String = 
+	getQualifiedName(component)
+/]
+
+
+[query public getName(attribute : Attribute) : String = 
+	attribute.name.getName()
+/]
+[query public getName(componentPart : ComponentPart) : String = 
+	getQualifiedName(componentPart)
+/]
+
+[query public getName(cInst : ComponentInstance) : String = 
+	getName(cInst.name)
+/]
+
+
+[query public getName(var : Variable) : String = 
+	getName(var.name)
+/]
+
+[query public getName(msgType : MessageType) : String = 
+	getQualifiedName(msgType)
+/]
+
+
+[**query public getName (rtsc : RealtimeStatechart) : String = 
+if (rtsc.parentRegion.oclIsUndefined()) then
+'Root'+getName(rtsc.name)
+else
+getName(rtsc.parentRegion.name)
+endif
+/]
+
+[query public getName (rtsc : RealtimeStatechart) : String = 
+getQualifiedName(rtsc)
+/]
+
+[query public getName (region : Region) : String = 
+getQualifiedName(region.embeddedStatechart)
+/]
+
+[query public getName (rep : MessageTypeRepository) : String = 
+getQualifiedName(rep)
+/]
+
+[query public getName (channel : SynchronizationChannel) : String = 
+getQualifiedName(channel)
+/]
+
+[query public getName(state : State) : String =
+ 
+	'STATE_' + getQualifiedName(state).toUpper() 
+
+/]
+[**
+ * @param port
+*/]
+[query public getName(port : Port) : String = 
+	getName(port.name) 
+/]
+
+[**
+ * @param port
+*/]
+[query public getName(port : HybridPort) : String = 
+	getName(port.name) 
+/]
+
+[**
+ * @param port
+*/]
+[query public getName(portInst : PortInstance) : String = 
+	getName(portInst.name) 
+/]
+[**
+ * @param region
+*/]
+[comment exitRegion...naming? /]
+[query public getExitMethodName(region : Region) : String =
+
+		getClassName(region.embeddedStatechart) + '_exit'
+
+/]
+
+
+
+[**
+ * @param component
+*/]
+[query public getFileName(component : Component, header : Boolean, useSubDir : Boolean) : String = 
+if (component.oclIsUndefined()) then
+'#error null value '
+else
+	if useSubDir then 'components/' else '' endif + 
+		getClassName(component).toLowerFirst()
+	+
+	if (header) then
+		'_Interface.h'
+	else
+		'.c'
+	endif
+endif
+
+/]
+
+[**
+ * @param component
+*/]
+[query public getFileName(opRep : OperationRepository, header : Boolean, useSubDir : Boolean) : String = 
+if (opRep.oclIsUndefined()) then
+'#error null value '
+else
+	if useSubDir then 'operations/' else '' endif + 
+		getClassName(opRep).toLowerFirst()
+	+
+	if (header) then
+		'.h'
+	else
+		'.c'
+	endif
+endif
+
+/]
+
+[query public getFileName(cpart : ComponentPart, header : Boolean) : String = 
+if (cpart.oclIsUndefined()) then
+'#error null value '
+else
+	'components/' + 
+		getClassName(cpart).toLowerFirst()
+	+
+	if (header) then
+		'.h'
+	else
+		'.c'
+	endif
+endif
+/]
+
+
+[**
+ * @param component
+*/]
+[query public getFileName(sync : SynchronizationChannel, header : Boolean) : String =
+if (sync.oclIsUndefined()) then
+'#error null value '
+else
+	'syncChannels/' + getClassName(sync).toLowerFirst() +
+	if (header) then
+		'.h'
+	else
+		'.c'
+	endif
+endif
+/]
+
+[query public getFileName(rtsc : RealtimeStatechart, header : Boolean, useSubDir : Boolean) : String = 
+if (rtsc.oclIsUndefined()) then
+'#error null value '
+else
+		if (useSubDir) then 
+		'RTSCs/' else '' endif + getClassName(rtsc).toLowerFirst()  + 
+		if(header) then
+			'.h'
+		else
+			'.c'
+		endif
+
+endif
+/]
+
+[query public getFileName4ContinuousImpl( header : Boolean, useSubDir : Boolean) : String = 
+
+	if useSubDir then 'continuousComponents/' else '' endif + 
+		'contImplementations'
+	+
+	if (header) then
+		'.h'
+	else
+		'.c'
+	endif
+
+/]
+
+[query public getFileName4CustomTypes( header : Boolean, useSubDir : Boolean) : String = 
+
+	if useSubDir then 'types/' else '' endif + 
+		'customTypes'
+	+
+	if (header) then
+		'.h'
+	else
+		'.c'
+	endif
+
+/]
+[query public getFileName4OS(useSubDir : Boolean) : String = 
+
+	if useSubDir then 'Middleware/' else '' endif + 
+		'OS.h'
+
+
+/]
+
+
+[query public getFileName4GI(useSubDir : Boolean) : String = 
+
+	if useSubDir then 'Middleware/' else '' endif + 
+		'/GlobalIdentifier.h'
+
+
+/]
+
+[query public getFileName4MWInternalLogic( header : Boolean, useSubDir : Boolean) : String = 
+
+	if useSubDir then 'Middleware/' else '' endif + 
+		'MiddlewareInternalLogic'
+	+
+	if (header) then
+		'.h'
+	else
+		'.c'
+	endif
+
+/]
+
+[query public getFileName4MWNetworkInterfaces( header : Boolean, useSubDir : Boolean) : String = 
+
+	if useSubDir then 'Middleware/' else '' endif + 
+		'NetworkInterfaceImplementation'
+	+
+	if (header) then
+		'.h'
+	else
+		'.c'
+	endif
+
+/]
+
+[query public getFileName4MWCore( header : Boolean, useSubDir : Boolean) : String = 
+
+	if useSubDir then 'Middleware/' else '' endif + 
+		'MiddlewareCore'
+	+
+	if (header) then
+		'.h'
+	else
+		'.c'
+	endif
+
+/]
+
+[query public getFileName4ProtoFile(useSubDir : Boolean) : String = 
+
+	if useSubDir then 'messages/' else '' endif + 
+		'Messages.proto'
+
+
+/]
+
+[query public getFileName4MessageTypes(useSubDir : Boolean) : String = 
+
+	if useSubDir then 'messages/' else '' endif + 
+		'messages_types.h'
+
+
+/]
+
+[query public getFileName4Operations( header : Boolean, useSubDir : Boolean) : String = 
+
+	if useSubDir then 'operations/' else '' endif + 
+		'operations'
+	+
+	if (header) then
+		'.h'
+	else
+		'.c'
+	endif
+
+/]
+
+
+
+[query public getFileName(rep : MessageTypeRepository, header : Boolean) : String = 
+if (rep.oclIsUndefined()) then
+'#error null value '
+else	
+		'msg/' + rep.getName().toLowerFirst() + 'Messages'+
+		if(header) then
+			'.h'
+		else
+			'.c'
+		endif
+endif
+/]
+
+
+
+
+
+
+[**
+ * @param component
+*/]
+[query public getClassName(component : Component) : String =
+	getName(component).toUpperFirst() + 'Component' 
+/]
+
+[query public getClassName(opRep : OperationRepository) : String =
+	getName(opRep).toUpperFirst() + 'OpRep' 
+/]
+
+[query public getClassName(componentPart : ComponentPart) : String =
+	getName(componentPart.componentType).toUpperFirst() + 'Component' 
+/]
+
+[query public getClassName(cInst : ComponentInstance) : String =
+	cInst.componentType.getClassName() 
+/]
+
+
+[**
+ * @param syncChannel
+*/]
+[comment TODO selectors/]
+[query public getClassName(syncChannel : SynchronizationChannel) : String = 
+	'SyncChannel'
+/]
+
+[query public getClassName(rtsc: RealtimeStatechart) : String = 
+	getClassName(rtsc, false)
+/]
+
+
+[query public getClassName(rtsc: RealtimeStatechart, enum : Boolean) : String =
+	getName(rtsc).toUpperFirst() + 
+	if (enum) then 
+		'State'
+	else
+		'StateChart'
+	endif
+/]
+
+[query public getClassName(connector : Connector) : String = 
+	if ((connector.connectorEndpoints->at(1).oclIsTypeOf(DiscretePort)) and (connector.connectorEndpoints->at(2).oclIsTypeOf(DiscretePort))) then			
+		'DiscreteConnection'		
+	else
+		'ContinuousConnection'
+	endif
+/]
+
+[query public getSuperClassName(rtsc: RealtimeStatechart) : String = 
+	getSuperClassName(rtsc, false)
+/]
+
+[query public getSuperClassName(rtsc: RealtimeStatechart, enum :Boolean) : String = 
+	if rtsc.parentRegion.oclIsUndefined() then
+		getClassName(rtsc, enum)
+	else
+		getSuperClassName(rtsc.parentRegion.parentState.parentStatechart, enum)
+	endif
+/]
+
+[**
+ * @param port
+*/]
+[query public getClassName(port : Port) : String = 
+	if (port.oclIsTypeOf(DiscretePort)) then
+		'Port'
+	else
+		'#warning Continous ports not supported!'
+	endif
+/]
+
+
+[query public getName(clock : Clock) : String = 
+	getQualifiedName(clock) + getQualifiedName(clock.statechart)
+/]
+
+[query public getName(doEvent : DoEvent) : String = 
+	getQualifiedName(doEvent)
+/]
+
+[query public getTaskName(ci : ComponentInstance) : String = 
+	'Task_'+getVariableName(ci)
+/]
+
+[query public getVariableName(component : Component) : String =
+if (component.oclIsUndefined()) then
+'#error null value '
+else
+		getName(component).toLowerFirst() + 'Component'
+endif
+/]
+
+[query public getVariableName(cInst : ComponentInstance) : String =
+if (cInst.oclIsUndefined()) then
+'#error null value '
+else
+		getName(cInst).toLowerFirst() + 'Component'
+endif
+/]
+
+[query public getVariableName(var : Variable) : String = 
+	getName(var)
+/]
+
+
+[query public getVariableName(syncChannel : SynchronizationChannel) : String = 
+if (syncChannel.oclIsUndefined()) then
+'#error null value '
+else
+	getName(syncChannel).getName().toLowerFirst() + 'SyncChannel'
+endif
+/]
+
+[query public getVariableName(rtsc : RealtimeStatechart) : String =
+	'currentStateOf'+getName(rtsc).toUpperFirst()
+/]
+
+[query public getVariableName(clock : Clock) : String = 
+if (clock.oclIsUndefined()) then
+'#error null value '
+else
+	getName(clock).toLowerFirst() + 'Clock'
+endif
+/]
+
+[query public getClockVariableName(doEvent : DoEvent) : String = 
+
+	getName(doEvent).toLowerFirst() + 'DoEventClock'
+
+/]
+
+
+[query public getVariableName(msgType : MessageType) : String = 
+	msgType.getName() + msgType.repository.getName() +'Message'
+/]
+
+[**
+ * @param port
+*/]
+[query public getVariableName(part : ComponentPart) : String = 
+if (part.oclIsUndefined()) then
+'#error null value '
+else
+	getName(part).toLowerFirst() + 'Component'
+endif
+/]
+
+[query public getVariableName(region : Region) : String =
+	'currentStateOf' + getName(region.embeddedStatechart).toUpperFirst()
+/]
+[**
+ * @param port
+*/]
+[query public getVariableName(port : Port) : String = 
+	getVariableName(port, true)
+/]
+
+
+[**
+ * @param port
+*/]
+[query public getVariableName(port : Port, classVariable : Boolean) : String = 
+if (port.oclIsUndefined()) then
+'#error null value '
+else
+	if (port.oclIsTypeOf(HybridPort) or port.oclIsTypeOf(ContinuousPort)) then
+			getStructVariableName(port)
+	else
+		getName(port) + 'Port'
+	endif
+endif
+/]
+
+[query public getStructVariableName(port : Port) : String = 
+	getName(port.name)
+/]
+
+[**
+ * @param connector
+*/]
+[query public getVariableName(connector : ConnectorInstance) : String = 
+if (connector.oclIsUndefined()) then
+'#error null value '
+else
+		if not (connector.connectorEndpointInstances->at(1).oclAsType(PortInstance).oclIsKindOf(DiscretePortInstance) and connector.connectorEndpointInstances->at(2).oclAsType(PortInstance).oclIsKindOf(DiscretePortInstance)) then
+		getName(connector.connectorEndpointInstances->at(1).oclAsType(PortInstance)).toLowerFirst() + 'Connection'
+	else
+		getName(connector.connectorEndpointInstances->at(1).oclAsType(PortInstance)).toLowerFirst() + getName(connector.connectorEndpointInstances->at(2).oclAsType(PortInstance)).toUpperFirst() + 'Connection'
+	endif
+endif
+/]
+
+
+[query public getConstructorName(rtsc: RealtimeStatechart) : String = 
+	getClassName(rtsc) + '_create'
+/]
+
+
+
+[**
+ * @param operation
+*/]
+[query public getHeaderDefine(component : Component) : String = 
+	getClassName(component).toUpper() + '_INTERFACE_H_'
+/]
+
+
+  
+ [query public getHeaderDefine(rtsc : RealtimeStatechart) : String = 
+ 	getClassName(rtsc).toUpper() + '_H_'	
+/] 
+
+
+
+[**
+ * @param component
+*/]
+[query public getInitializeMethodName(component : Component) : String =
+
+		getClassName(component) + '_initialize'
+
+/]
+
+[**
+ * @param component
+*/]
+[query public getInitializeMethodName(cInst : ComponentInstance) : String =
+
+		getClassName(cInst) + '_initialize'
+
+/]
+
+[query public getInitializeMethodName(cpart : ComponentPart) : String =
+
+		getClassName(cpart) + '_initialize'
+
+/]
+
+[query public getInitializeMethodName(rtsc : RealtimeStatechart) : String = 
+
+		getClassName(rtsc) + '_initialize'
+/]
+
+[query public getInitializeMethodName(region : Region) : String = 
+
+		'initialize' + getName(region).toUpperFirst() + 'Region'
+
+/]
+
+[**
+ * @param component
+*/]
+[query public getDestroyMethodName(component : Component) : String =
+
+		getClassName(component) + '_destroy'
+
+/]
+
+[query public getDestroyMethodName(componentPart : ComponentPart) : String =
+
+		getClassName(componentPart.componentType) + '_destroy'
+
+/]
+
+
+[**
+ * @param connector
+*/]
+[query public getDestroyMethodName(connector : Connector) : String =
+	getClassName(connector) + '_destroy'
+/]
+
+[query public getDestroyMethodName(rtsc : RealtimeStatechart) : String =
+	getClassName(rtsc) + '_destroy'
+/]
+
+[**
+ * @param syncChannel
+*/]
+[query public getDestroyMethodName(syncChannel : SynchronizationChannel) : String =
+	getClassName(syncChannel) + '_destroy'
+/]
+
+[**
+ * @param port
+*/]
+[query public getDestroyMethodName(port : Port) : String =
+	'Port_destroy'
+/]
+
+[**
+ * @param component
+*/]
+[query public getProcessMethodName(component : Component) : String =
+
+		getClassName(component) + '_processStep'
+
+/]
+
+[query public getProcessMethodName(componentPart : ComponentPart) : String =
+
+		getClassName(componentPart.componentType) + '_processStep'
+
+/]
+
+[query public getProcessMethodName(rtsc : RealtimeStatechart) : String =
+		getClassName(rtsc) + '_processStep'
+/]
+
+[query public getExitMethodName(rtsc : RealtimeStatechart) : String =
+		getClassName(rtsc) + '_exit'
+/]
+
+[query public getTerminateMethodName(rtsc : RealtimeStatechart) : String =
+	getClassName(rtsc)  + '_isTerminated'	
+/]
+
+[query public getIsInStateMethodName(rtsc : RealtimeStatechart) : String =
+	getClassName(rtsc)  + '_isInState'	
+/]
+
+[**
+ * @param component
+*/]
+[query public getTerminateMethodName(component : Component) : String =
+
+		getClassName(component) + '_isTerminated'
+
+/]
+
+[query public getTerminateMethodName(componentPart : ComponentPart) : String =
+
+		getClassName(componentPart.componentType) + '_isTerminated'
+
+/]
+
+
+
+
+
+[query public replaceClockNames(rtsc : RealtimeStatechart, expression : String) : String = 
+	rtsc.availableClocks->collect(oclAsType(Clock))->iterate(clock : Clock; returnValue : String = expression | returnValue.replaceAll('\\b' + getName(clock) + '\\b', 'Clock_getTime(stateMachine->' + getVariableName(clock) + ')'))	
+/]
+
+[query public replaceLocalVariableNames(rtsc : RealtimeStatechart, expression : String) : String = 
+	if not rtsc.oclIsUndefined() and rtsc.allAvailableVariables ->size() > 0 then 
+		rtsc.allAvailableVariables->collect(oclAsType(Variable))->iterate(var : Variable; returnValue : String = expression | returnValue.replaceAll('\\b' + getName(var.name) + '\\b', 'stateMachine->' + getVariableName(var)))
+	else
+		expression
+	endif	
+/]
+
+[query public getVerifyMethodName(state : State) : String = 
+	'verifySyncChannelsOf' + getName(state)
+/]
+
+
+[**
+ * @param state
+*/]
+[query public getClockVariableName(state : State) : String = 
+if (state.oclIsUndefined()) then
+'#error null value '
+else
+	getName(state).toLowerFirst() + 'DoClock'
+endif
+/]
+
+[**
+ * @param component
+*/]
+[query public getCreateMethodName(component : Component) : String =
+
+		getClassName(component) + '_create'
+
+/]
+
+[query public getCreateMethodName(cpart : ComponentPart) : String =
+
+		getClassName(cpart) + '_create'
+
+/]
+
+[query public getCreateMethodName(cInst : ComponentInstance) : String =
+
+		getClassName(cInst) + '_create'
+
+/]
+
+[**
+ * @param component
+*/]
+[query public getCreateMethodName(rtsc : RealtimeStatechart) : String =
+	getClassName(rtsc) + '_create'	
+/]
+
+[**
+ * @param syncChannel (specialization of operation, do not change order of templates!)
+*/]
+[query public getCreateMethodName(syncChannel : SynchronizationChannel) : String =
+	getClassName(syncChannel) + '_create'	
+/]
+
+[query public getTypeName(type : StructureDataType) : String = 
+	type.name.getName()
+/]
+
+
+[query public getName(type : StructureDataType) : String = 
+	type.name.getName()
+/]
+
+[query public getTypeName(type : ArrayDataType) : String = 
+		type.type.getTypeName()
+/]
+
+
+[**
+ * @param element
+*/]
+[query public getTypeName(type : PrimitiveDataType) : String = 
+	if (type = PrimitiveTypes::BOOLEAN or type.name = 'boolean') then 'bool_T' else
+	if (type = PrimitiveTypes::DOUBLE or type.name = 'double') then 'double_T' else
+	if (type = PrimitiveTypes::INT8 or type.name = 'int8') then 'int8_T' else
+	if (type = PrimitiveTypes::INT16 or type.name = 'int16') then 'int16_T' else
+	if (type = PrimitiveTypes::INT32 or type.name = 'int32') then 'int32_T' else
+	if (type = PrimitiveTypes::INT64 or type.name = 'int64') then 'int64_T' else
+	if (type = PrimitiveTypes::UINT8 or type.name = 'uint8') then 'uint8_T' else
+	if (type = PrimitiveTypes::UINT16 or type.name = 'uint16') then 'uint16_T' else
+	if (type = PrimitiveTypes::UINT32 or type.name = 'uint32') then 'uint32_T' else
+	if (type = PrimitiveTypes::UINT64 or type.name = 'uint64') then 'uint64_T' else
+	if (type = PrimitiveTypes::VOID or type.name = 'void') then 'void' else
+	'PRIMITIVE TYPE UNDEFINED: '+type
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+/]
+
+[**
+ * @param element
+*/]
+[query public getTypeNameForProtoBuf(type : DataType) : String = 
+	if (type = PrimitiveTypes::BOOLEAN or type.name = 'boolean') then 'bool' else
+	if (type = PrimitiveTypes::DOUBLE or type.name = 'double') then 'double' else
+	if (type = PrimitiveTypes::INT8 or type.name = 'int8') then 'int32' else
+	if (type = PrimitiveTypes::INT16 or type.name = 'int16') then 'int32' else
+	if (type = PrimitiveTypes::INT32 or type.name = 'int32') then 'int32' else
+	if (type = PrimitiveTypes::INT64 or type.name = 'int64') then 'int64' else
+	if (type = PrimitiveTypes::UINT8 or type.name = 'uint8') then 'uint32' else
+	if (type = PrimitiveTypes::UINT16 or type.name = 'uint16') then 'uint32' else
+	if (type = PrimitiveTypes::UINT32 or type.name = 'uint32') then 'uint32' else
+	if (type = PrimitiveTypes::UINT64 or type.name = 'uint64') then 'uint64' else
+	if (type = PrimitiveTypes::VOID or type.name = 'void') then 'void' else
+	'TYPE UNDEFINED: '+type.name
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+/]
+
+
+[query public getTypeName(type : DataType) : String = 
+	if (type.oclIsKindOf(PrimitiveDataType)) then
+		type.oclAsType(PrimitiveDataType).getTypeName()
+	else
+	if (type.oclIsKindOf(ArrayDataType)) then
+		type.oclAsType(ArrayDataType).getTypeName()
+	else
+	if (type.oclIsKindOf(StructureDataType)) then
+		type.oclAsType(StructureDataType).getTypeName()
+	else
+		'DATATYPE UNDEFINED'+ type.name
+	endif
+	endif
+	endif
+/]
+[**
+ * @param element
+*/]
+[query public getDefaultReturn(op : Operation) : String = 
+	getDefaultValue(op.returnType)
+/]
+
+[query public getDefaultValue(type : PrimitiveDataType) : String = 
+	if (type = PrimitiveTypes::BOOLEAN or type.name = 'boolean') then 'false' else
+	if (type = PrimitiveTypes::DOUBLE or type.name = 'double') then '0' else
+	if (type = PrimitiveTypes::INT8 or type.name = 'int8') then '0' else
+	if (type = PrimitiveTypes::INT16 or type.name = 'int16') then '0' else
+	if (type = PrimitiveTypes::INT32 or type.name = 'int32') then '0' else
+	if (type = PrimitiveTypes::INT64 or type.name = 'int64') then '0' else
+	if (type = PrimitiveTypes::UINT8 or type.name = 'uint8') then '0' else
+	if (type = PrimitiveTypes::UINT16 or type.name = 'uint16') then '0' else
+	if (type = PrimitiveTypes::UINT32 or type.name = 'uint32') then '0' else
+	if (type = PrimitiveTypes::UINT64 or type.name = 'uint64') then '0' else
+	'PRIMITIVE TYPE UNDEFINED: '+type
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+
+/]
+
+[query public getReferenceVariableName(cpi : ContinuousPortInstance) : String = 
+cpi.getQualifiedName() + '_Reference'
+
+ /]
+
+[query public getDefaultValue(type : StructureDataType) : String = 
+	'#warning structs have to be initialized explicitly'
+/]
+
+[query public getInitializeExpressionImplementation(variable : Variable) : String = 
+	'UNKNOWN'
+/]
+
+
+[query public getDefaultValue(type : ArrayDataType) : String = 
+	type.type.getDefaultValue()
+/]
+
+
+[query public getDefaultValue(type : DataType) : String = 
+	if (type.oclIsKindOf(PrimitiveDataType)) then
+		type.oclAsType(PrimitiveDataType).getDefaultValue()
+	else
+	if (type.oclIsKindOf(ArrayDataType)) then
+		type.oclAsType(ArrayDataType).getDefaultValue()
+	else
+	if (type.oclIsKindOf(StructureDataType)) then
+		type.oclAsType(StructureDataType).getDefaultValue()
+	else
+		'TYPE UNDEFINED'+ type.name
+	endif
+	endif
+	endif
+/]
+
+[query public getTypeName(var : Variable) : String = 
+	var.dataType.getTypeName()
+/]
+
+
+[query public getTypeName(attribute : Attribute) : String = 
+	attribute.dataType.getTypeName()
+/]
+[**
+ * 
+*/]
+[query private tokenize(name : String, token : String) : String =
+	if name.contains(token) then 
+		name.tokenize(token)->iterate(iterator : String; returnValue : String = '' | returnValue + iterator.toUpperFirst())
+	else
+		name
+	endif
+/]
+
+[** 
+ * @param name
+*/]
+[query public getName(name : String) : String =
+	Sequence{' ', '-', '.', ';', '*','+', '/', '#', '='}->iterate(iterator : String; returnValue : String = name | tokenize(returnValue, iterator)) 
+/]
+
+
+[query public getOpSymbol(operator : ComparingOperator ) : String =
+	if (operator = ComparingOperator::LESS_OR_EQUAL) then '<=' else 
+	if (operator = ComparingOperator::EQUAL) then '==' else	
+	if (operator = ComparingOperator::GREATER_OR_EQUAL) then '>=' else	
+	if (operator = ComparingOperator::LESS) then '<' else	
+	if (operator = ComparingOperator::GREATER) then '>' else
+	if (operator = ComparingOperator::UNEQUAL) then '!=' else
+	'OPERATOR UNDEFINED'	
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+/]
+
+
+[**
+ * @param port
+*/]
+[query public getGetterName(component : Component) : String = 
+	getClassName(component) + '_getStateMachine'
+/]
+[**
+ * @param port
+*/]
+[query public getGetterName(port : Port) : String = 
+	getClassName(port.component) + '_get' + port.getName()
+
+/]
+
+[**
+ * @param port
+*/]
+[query public getGetterName(port : Port, classVariable : Boolean) : String = 
+	'get' + getVariableName(port, classVariable).toUpperFirst() + '()' 
+/]
+
+
+[query public getType(par:Parameter) : String = 
+	par.dataType.getTypeName() 
+/]
+
+
+
+
+[query public getNumberOfMessageBuffers (port : DiscretePort) : String = 
+if (port.receiverMessageBuffer->size().toString() <> '*') then
+port.receiverMessageBuffer->size().toString()
+else
+'10'
+endif
+/]
+
+[query public getSizeOfMessageBuffer (msgBuffer : MessageBuffer) : String = 
+if (msgBuffer.bufferSize.toString() <> '*') then
+msgBuffer.bufferSize.toString()
+else
+'5'
+endif
+/]
+
+[query public getVariablePathRecursive(ci : ComponentInstance, path : String) : String = 
+	if (ci.parentCIC.parentStructuredComponentInstance.oclIsUndefined()) then
+		getVariableName(ci) +'->'+path
+	else
+	getVariablePathRecursive(ci.parentCIC.parentStructuredComponentInstance,getVariableName(ci) +'->'+path)
+	endif
+/]
+[query public getVariablePath(pi : PortInstance) : String = 
+	if (pi.componentInstance.parentCIC.parentStructuredComponentInstance.oclIsUndefined()) then
+		getVariableName(pi.componentInstance) +'->'+getVariableName(pi.portType)
+	else
+	getVariablePathRecursive(pi.componentInstance.parentCIC.parentStructuredComponentInstance, getVariableName(pi.componentInstance) +'->'+getVariableName(pi.portType))
+	endif
+/]
+
+
+[query public getQualifiedName(mumlObject : OclAny): String = 
+if (mumlObject.oclIsUndefined()) then
+''
+else
+getName(getQualifiedNameJava(mumlObject)) 
+endif
+/]
+
+[query public cdtbeautifier(a : String) : String = invoke('org.eclipse.acceleo.additions.beautifier.CdtBeautifier','beautify(java.lang.String)', Sequence{a}) /]
+
+ [query public getQualifiedNameJava(mumlObject : OclAny): String = invoke('de.uni_paderborn.fujaba.muml.codegen.c.helper.NamingHelper',
+						  'getName(org.eclipse.emf.ecore.EObject)',Sequence{mumlObject}) /]

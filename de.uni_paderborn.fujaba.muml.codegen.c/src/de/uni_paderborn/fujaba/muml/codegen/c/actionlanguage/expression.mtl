@@ -1,0 +1,639 @@
+[module expression('http://www.fujaba.de/muml/connector/0.4.0', 'http://www.fujaba.de/muml/behavior/0.4.0',
+				'http://www.storydriven.org/core/0.3.1',
+				'http://www.fujaba.de/muml/actionlanguage/0.4.0',
+				'http://www.fujaba.de/muml/msgtype/0.4.0',
+				'http://www.fujaba.de/muml/types/0.4.0',
+				'http://www.fujaba.de/modelinstance/0.4.0',
+				'http://www.fujaba.de/muml/component/0.4.0',
+				'http://www.fujaba.de/muml/instance/0.4.0',
+				'http://www.fujaba.de/muml/realtimestatechart/0.4.0')/]
+
+[import de::uni_paderborn::fujaba::muml::codegen::c::actionlanguage::expression_queries]
+[import de::uni_paderborn::fujaba::muml::codegen::c::actionlanguage::variable_queries]
+[import de::uni_paderborn::fujaba::muml::codegen::c::actionlanguage::operation_queries]
+[import de::uni_paderborn::fujaba::muml::codegen::c::queries::stringQueries]
+
+
+[**
+ * Generates a LogicExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : LogicalExpression, parop : LogicOperator , fqname : String) ? (parop = LogicOperator::AND)]
+[if expression.operator = LogicOperator::AND][generateExpression(expression,  fqname) /][else]([generateExpression(expression,  fqname) /])[/if]
+[/template]
+
+[**
+ * Generates a LogicExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : LogicalExpression, parop : LogicOperator , fqname : String) ? (parop <> LogicOperator::AND)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+[**
+ * Generates a LogicExpression
+ * @param expression the expression
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : LogicalExpression , fqname : String)]
+[let op : LogicOperator = expression.operator]
+[generateExpression(expression.leftExpression, op,  fqname)/] [op.getLogicOperator()/] [generateExpression(expression.rightExpression, op,  fqname)/][/let]
+[/template]
+
+
+[**
+ * Generates a ComparisonExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : ComparisonExpression, parop : LogicOperator , fqname : String)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+[**
+ * Generates a ComparisonExpression
+ * @param expression the expression
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : ComparisonExpression , fqname : String)]
+[let op : ComparingOperator = expression.operator]
+[generateExpression(expression.leftExpression, op,  fqname)/] [op.getComparingOperator()/] [generateExpression(expression.rightExpression, op,  fqname)/][/let]
+[/template]
+
+
+[**
+ * Generates an ArithmeticExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : ArithmeticExpression, parop : ComparingOperator , fqname : String)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+[**
+ * Generates an ArithmeticExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : ArithmeticExpression, parop : ArithmeticOperator , fqname : String) ? (Sequence{ArithmeticOperator::TIMES, ArithmeticOperator::DIVIDE}->includes(parop))]
+[if Sequence{ArithmeticOperator::TIMES, ArithmeticOperator::DIVIDE}->includes(expression.operator)][generateExpression(expression,  fqname) /][else]([generateExpression(expression,  fqname) /])[/if]
+[/template]
+
+[**
+ * Generates an ArithmeticExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : ArithmeticExpression, parop : ArithmeticOperator , fqname : String) ? (Sequence{ArithmeticOperator::TIMES, ArithmeticOperator::DIVIDE}->excludes(parop))]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+[**
+ * Generates an ArithmeticExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : ArithmeticExpression, parop : UnaryOperator , fqname : String)]
+([generateExpression(expression,  fqname) /])
+[/template]
+
+[**
+ * Generates an ArithmeticExpression
+ * @param expression the expression
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : ArithmeticExpression , fqname : String)]
+[let op : ArithmeticOperator = expression.operator]
+[generateExpression(expression.leftExpression, op,  fqname)/] [op.getArithmeticOperator()/] [generateExpression(expression.rightExpression, op,  fqname)/][/let]
+[/template]
+
+
+[**
+ * Generates an UnaryExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : UnaryExpression, parop : LogicOperator , fqname : String)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+[**
+ * Generates an UnaryExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : UnaryExpression, parop : ComparingOperator , fqname : String)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+[**
+ * Generates an UnaryExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : UnaryExpression, parop : ArithmeticOperator , fqname : String)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+[**
+ * Generates an UnaryExpression
+ * @param expression the expression
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : UnaryExpression , fqname : String)]
+[let op : UnaryOperator = expression.operator]
+[if Sequence{UnaryOperator::INCREMENT, UnaryOperator::DECREMENT}->includes(op)][generateExpression(expression.enclosedExpression, op,  fqname) /][op.getUnaryOperator() /][else][op.getUnaryOperator() /][generateExpression(expression.enclosedExpression, op,  fqname) /][/if][/let]
+[/template]
+
+[**
+ * Generates an AttributeExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : TypedNamedElementExpression, parop : LogicOperator , fqname : String)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+[**
+ * Generates an AttributeExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : TypedNamedElementExpression, parop : ComparingOperator , fqname : String)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+[**
+ * Generates an AttributeExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : TypedNamedElementExpression, parop : ArithmeticOperator , fqname : String)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+[**
+ * Generates a TypedNamedElementExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : TypedNamedElementExpression, parop : UnaryOperator , fqname : String)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+
+
+
+[template public generateExpression(expression : ArrayIndexExpression , fqname : String)]
+[expression.index.generateExpression('')/]
+[/template]
+
+[template public generateExpression(expression : AttributeAccessorExpression , fqname : String)]
+[expression.attribute.name/]
+[/template]
+
+[**
+ * Generates a TypedNamedElementExpression (prefix attribute with fqname.)
+ * @param expression the expression
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : TypedNamedElementExpression , fqname : String)]
+[expression.typedNamedElement.getFullyQualifiedName(fqname)/][generateIndices(expression, fqname)/]
+[/template]
+
+[**
+ * Generates indices for a TypedNamedElementExpression with indices
+ * @param expression the typed named element expression
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string 
+*/]
+[template private generateIndices(expression : TypedNamedElementExpression, fqname : String) ? (expression.elementAccessors->notEmpty())]
+[for (index : Expression | expression.elementAccessors)]
+[if (not index.oclIsKindOf(ArrayIndexExpression))].[generateExpression(index, fqname)/][else]
+['['/][generateExpression(index, fqname)/] - 1[']'/][/if][/for]
+[/template]
+
+[**
+ * Generates an array initialize expression.
+ * @param expression the array initialize expression
+ * @param usePre use pre construct for rhs variables and for guards
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template private generateExpression(expression : ArrayInitializeExpression, fqname : String)]
+[comment]
+{[for (expr : Expression | expression.expressions) separator(', ')][generateExpression(expr, fqname)/][/for]}
+[/comment]
+[/template]
+
+[template public generateArrayInitializer(var : Variable)]
+[if (var.dataType.oclIsKindOf(ArrayDataType) and not var.initializeExpression.oclIsUndefined() )]
+[let initExp : ArrayInitializeExpression  = var.initializeExpression.oclAsType(ArrayInitializeExpression)]
+	[for (expression : Expression | initExp.expressions)]
+		stateChart->[getVariableName(var)/][ '[' /][i-1/][ ']' /]  =  [generateExpression(expression, '')/];
+	[/for]
+[/let][/if]
+[/template]
+
+
+[**
+ * Generates a LiteralExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : LiteralExpression, parop : LogicOperator , fqname : String)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+
+
+[**
+ * Generates a LiteralExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : LiteralExpression, parop : ComparingOperator , fqname : String)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+[**
+ * Generates a LiteralExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : LiteralExpression, parop : ArithmeticOperator , fqname : String)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+[**
+ * Generates a LiteralExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : LiteralExpression, parop : UnaryOperator , fqname : String)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+[**
+ * Generates a LiteralExpression
+ * @param expression the expression
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : LiteralExpression , fqname : String)]
+[expression.value /]
+[/template]
+
+[**
+ * Generates a TriggerMessageExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : TriggerMessageExpression, parop : LogicOperator , fqname : String)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+[**
+ * Generates a TriggerMessageExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : TriggerMessageExpression, parop : ComparingOperator , fqname : String)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+[**
+ * Generates a TriggerMessageExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : TriggerMessageExpression, parop : ArithmeticOperator , fqname : String)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+[**
+ * Generates a TriggerMessageExpression
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : TriggerMessageExpression, parop : UnaryOperator , fqname : String)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+[**
+ * Generates a TriggerMessageExpression
+ * @param expression the expression
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : TriggerMessageExpression , fqname : String)]
+[expression.getTriggerMessageEventParameterVariableFullyQualifiedName() /]
+[/template]
+
+[**
+ * Generates an Assignment
+ * @param expression the expression
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : Assignment , fqname : String)? (not expression.rhs_assignExpression.oclIsUndefined())]
+[generateExpression(expression.lhs_typedNamedElementExpression, fqname) /] = [generateExpression(expression.rhs_assignExpression,  fqname) /];
+[/template]
+
+[template public generateExpression(expression : Assignment , fqname : String)? (expression.rhs_assignExpression.oclIsUndefined())]
+[generateExpression(expression.lhs_typedNamedElementExpression, fqname) /][expression.incrementDecrementOperator.getIncrementDecremetOperator()/];
+[/template]
+
+[**
+ * Generates a Block
+ * @param block the block
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(block : Block , fqname : String)]
+[for (expression : Expression | block.expressions)]
+[generateExpression(expression, fqname) /]
+[/for]
+[/template]
+
+
+
+[**
+ * Generates an If statement
+ * @param expression the expression
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : IfStatement , fqname : String)]
+[comment or should we use pre = true ? /]
+if ([generateExpression(expression.ifCondition, fqname) /]){
+	[generateExpression(expression.ifBlock, fqname) /]
+}
+[if expression.elseIfStatements->size() > 0/]
+[for (elseifExp : ElseIfStatement | expression.elseIfStatements)]
+else if ([generateExpression(elseifExp.elseIfCondition, fqname)/]){
+[generateExpression(elseifExp.elseIfBlock, fqname)/]
+}
+[/for]
+[if/]
+
+
+[if not expression.elseBlock.oclIsUndefined()]
+else {
+	[generateExpression(expression.elseBlock, fqname) /]
+}
+[/if]
+[/template]
+
+
+
+[**
+ * Generates a for loop (will be rewritten to a while loop).
+ * @param expression the expression
+ * @param usePre use pre construct for rhs variables
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : ForLoop, usePre : Boolean, fqname : String)]
+[generateExpression(expression.initializeExpression, fqname)/]
+while ([generateExpression(expression.loopTest, fqname)/]) {
+	[generateExpression(expression.block, fqname)/]
+	[generateExpression(expression.countingExpression, fqname)/]
+}
+[/template]
+
+[**
+ * Generates a Return statement
+ * @param expression the ReturnStatement
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : ReturnStatement , fqname : String)]
+[if expression.expression.oclIsUndefined()]
+[comment a simple "return" is not yet supported /]
+unsupported simple return statement
+[else]
+[expression.getContainingOperation().getOperationOutputVariableName()/] = [generateExpression(expression.expression,  fqname)/];
+[/if]
+[/template]
+
+[**
+ * Generates a LocalVariableDeclarationStatement
+ * No local variable will be defined here - it just does the initialization
+ * @param expression the LocalVariableDeclarationStatement
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : LocalVariableDeclarationStatement , fqname : String)]
+[if expression.variable.initializeExpression.oclIsUndefined()]
+// local variable declaration (name: [expression.variable.name/]) but no initialization
+[else]
+[expression.variable.dataType.getTypeName()/] [expression.variable.getFullyQualifiedName(fqname)/] = [generateExpression(expression.variable.initializeExpression,  fqname)/];[/if]
+[/template]
+
+[**
+ * Generates a OperationCall
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : OperationCall, parop : LogicOperator , fqname : String)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+[**
+ * Generates a OperationCall
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : OperationCall, parop : ComparingOperator , fqname : String)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+[**
+ * Generates a OperationCall
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : OperationCall, parop : ArithmeticOperator , fqname : String)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+[**
+ * Generates a OperationCall
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : OperationCall, parop : UnaryOperator , fqname : String)]
+[generateExpression(expression,  fqname) /]
+[/template]
+
+[** Generates a TypeCast
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : TypeCastExpression , parop : UnaryOperator, fqname : String)]
+([expression.dataType.getTypeName()/]) [generateExpression(expression.enclosedExpression,  fqname) /]
+[/template]
+[** Generates a TypeCast
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : TypeCastExpression , parop : ArithmeticOperator, fqname : String)]
+([expression.dataType.getTypeName()/]) [generateExpression(expression.enclosedExpression,  fqname) /]
+[/template]
+[** Generates a TypeCast
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : TypeCastExpression , parop : ComparingOperator, fqname : String)]
+([expression.dataType.getTypeName()/]) [generateExpression(expression.enclosedExpression,  fqname) /]
+[/template]
+
+[** Generates a TypeCast
+ * @param expression the expression
+ * @param parop the parent operator
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : TypeCastExpression , parop : LogicOperator, fqname : String)]
+([expression.dataType.getTypeName()/]) [generateExpression(expression.enclosedExpression,  fqname) /]
+[/template]
+
+[** Generates a TypeCast
+ * @param expression the expression
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : TypeCastExpression, fqname : String)]
+([expression.dataType.getTypeName()/]) [generateExpression(expression.enclosedExpression,  fqname) /]
+[/template]
+
+[**
+ * Generates an while loop.
+ * @param expression the expression
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : WhileLoop , fqname : String)]
+[comment or should we use pre = true ? /]
+while ([generateExpression(expression.loopTest,  fqname) /]){
+	[generateExpression(expression.block,  fqname) /]
+}
+
+[/template]
+
+[template public generateExpression(expression : TextualExpression , fqname : String)]
+[expression.expressionText.toString() /]
+[/template]
+
+
+
+
+
+[**
+ * Generates an OperationCall
+ * @param expression the OperationCall
+ * @param usePre use pre construct for rhs variables (and for guards)
+ * @param fqname a fully qualified name or the empty string
+*/]
+[template public generateExpression(expression : OperationCall , fqname : String)]
+[expression.operation.getMethodName()/]([if (not expression.operation.isRepositoryOperation())]stateChart [if (expression.operation.parameters->size() > 0)],[/if][/if][for (pBinding:ParameterBinding | expression.parameterBinding) separator(', ')] [pBinding.getValue()/][/for]);[/template]
+
+[template public generateExpression(expression : Expression , fqname : String)]
+unexpected expression class: [expression.eClass().name /]
+[/template]
+
+[template public generateExpression(expression : Expression, parop : LogicOperator , fqname : String)]
+unexpected expression class with log op: [expression.eClass().name/]
+[/template]
+
+[template public generateExpression(expression : Expression, parop : ComparingOperator , fqname : String)]
+unexpected expression class with cmp op: [expression.eClass().name/]
+[/template]
+
+[template public generateExpression(expression : Expression, parop : ArithmeticOperator , fqname : String)]
+unexpected expression class with arith op: [expression.eClass().name/]
+[/template]
+
+[template public generateExpression(expression : Expression, parop : UnaryOperator , fqname : String)]
+unexpected expression class with unary op: [expression.eClass().name/]
+[/template]
+
+[query public getValue(binding : ParameterBinding) : String =
+	binding.value.generateExpression('')
+/]
+
+[query public getDefaultValue(var : Variable, fqname : String) : String = 
+	if (var.initializeExpression.oclIsUndefined()) then
+		fqname+var.getVariableName() +'='+getDefaultValue(var.dataType)+';'
+	else 
+	if (var.dataType.oclIsKindOf(StructureDataType)) then 
+		generateExpression(var.initializeExpression, fqname+var.getVariableName()) 
+	else 
+
+		generateExpression(var.initializeExpression, fqname+var.getVariableName())
+	endif
+	endif
+/]
+
+[template public generateStrutInit(var : Variable, fqName : String)]
+	template_expression
+[/template]

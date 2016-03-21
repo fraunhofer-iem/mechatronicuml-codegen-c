@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MechatronicUML nxtOSEK code generator
+Bundle-SymbolicName: de.uni_paderborn.fujaba.muml.codegen.c.nxtOSEK
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: de.uni_paderborn.fujaba.muml.codegen.c.nxtOSEK.Activator
+Bundle-Vendor: %Bundle-Vendor
+Require-Bundle: org.eclipse.core.runtime,
+ org.muml.ape,
+ org.muml.core.modelinstance,
+ org.muml.pim,
+ org.muml.pim.actionlanguage,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.xmi,
+ org.eclipse.ocl,
+ org.eclipse.ocl.ecore,
+ org.eclipse.acceleo.common;bundle-version="3.3.0",
+ org.eclipse.acceleo.model;bundle-version="3.3.0",
+ org.eclipse.acceleo.profiler;bundle-version="3.3.0",
+ org.eclipse.acceleo.engine;bundle-version="3.3.0",
+ de.uni_paderborn.fujaba.muml.codegen.c;bundle-version="0.4.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Eclipse-LazyStart: true
+Export-Package: de.uni_paderborn.fujaba.muml.codegen.c.nxtOSEK.main
+
