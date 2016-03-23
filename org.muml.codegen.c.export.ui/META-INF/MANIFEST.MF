@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Ui
 Bundle-SymbolicName: org.muml.codegen.c.export.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: de.uni_paderborn.fujaba.muml.codegen.export.ui.Activator
+Bundle-Activator: org.muml.codegen.c.export.ui.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.muml.core.export,
@@ -15,4 +15,4 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.equinox.registry
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Export-Package: de.uni_paderborn.fujaba.muml.codegen.export.ui
+Export-Package: org.muml.codegen.c.export.ui

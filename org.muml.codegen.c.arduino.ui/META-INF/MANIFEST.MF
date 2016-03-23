@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Acceleo Arduino Module IDE Plug-in
 Bundle-SymbolicName: org.muml.codegen.c.arduino.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: de.uni_paderborn.fujaba.muml.codegen.c.arduino.ui.Activator
+Bundle-Activator: org.muml.codegen.c.arduino.ui.Activator
 Bundle-Vendor: Eclipse Modeling Project
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

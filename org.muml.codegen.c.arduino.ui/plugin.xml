@@ -4,7 +4,7 @@
    <extension
          point="de.uni_paderborn.fujaba.muml.codegen.targetPlatformExtension">
       <targetPlatform
-            class="de.uni_paderborn.fujaba.muml.codegen.c.arduino.ui.export.ArduinoSourceCodeExport"
+            class="org.muml.codegen.c.arduino.ui.export.ArduinoSourceCodeExport"
             name="Arduino">
       </targetPlatform>
    </extension>

@@ -6,7 +6,7 @@
          point="org.eclipse.ui.exportWizards">
          <wizard
             category="de.uni_paderborn.fujaba.export"
-            class="de.uni_paderborn.fujaba.muml.codegen.export.ui.FujabaSourceCodeExportWizard"
+            class="org.muml.codegen.c.export.ui.FujabaSourceCodeExportWizard"
             id="de.uni_paderborn.fujaba.codegen.c.export"
             name="SourceCode">
       </wizard>
