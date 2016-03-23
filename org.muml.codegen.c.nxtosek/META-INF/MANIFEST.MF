@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: MechatronicUML nxtOSEK code generator
-Bundle-SymbolicName: org.muml.codegen.c.nxtOSEK
+Bundle-SymbolicName: org.muml.codegen.c.nxtosek
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.uni_paderborn.fujaba.muml.codegen.c.nxtOSEK.Activator
 Bundle-Vendor: %Bundle-Vendor
