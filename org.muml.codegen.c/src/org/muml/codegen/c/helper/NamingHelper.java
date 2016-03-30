@@ -1,7 +1,7 @@
 package org.muml.codegen.c.helper;
 
-import de.uni_paderborn.fujaba.muml.common.naming.*;
 import org.eclipse.emf.ecore.EObject;
+import org.muml.pim.common.naming.*;
 
 	public class NamingHelper {
 		

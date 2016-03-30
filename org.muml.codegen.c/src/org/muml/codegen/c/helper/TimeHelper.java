@@ -1,6 +1,6 @@
 package org.muml.codegen.c.helper;
 
-import de.uni_paderborn.fujaba.muml.valuetype.TimeValue;
+import org.muml.pim.valuetype.TimeValue;
 	
 	public class TimeHelper {
 	        public double getFactor(TimeValue timeValue) {

@@ -33,8 +33,7 @@ import org.muml.core.export.pages.AbstractFujabaExportSourcePage;
 import org.muml.core.export.pages.AbstractFujabaExportTargetPage;
 import org.muml.core.export.pages.ElementSelectionMode;
 import org.muml.core.export.wizard.AbstractFujabaExportWizard;
-
-import de.uni_paderborn.fujaba.muml.instance.ComponentInstanceConfiguration;
+import org.muml.pim.instance.ComponentInstanceConfiguration;
 
 public class FujabaSourceCodeExportWizard extends AbstractFujabaExportWizard {
 

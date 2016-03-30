@@ -8,8 +8,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.muml.codegen.c.export.ui.ITargetPlatformGenerator;
 import org.muml.codegen.c.ui.common.GenerateAllnxtOSEK;
-
-import de.uni_paderborn.fujaba.muml.instance.ComponentInstanceConfiguration;
+import org.muml.pim.instance.ComponentInstanceConfiguration;
 
 public class nxtOSEKSourceCodeExport implements ITargetPlatformGenerator {
 

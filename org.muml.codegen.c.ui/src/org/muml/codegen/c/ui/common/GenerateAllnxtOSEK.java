@@ -32,6 +32,7 @@ import org.eclipse.gmf.runtime.notation.Diagram;
 import org.muml.core.ExtendableElement;
 import org.muml.core.modelinstance.ModelElementCategory;
 import org.muml.core.modelinstance.RootNode;
+import org.muml.pim.instance.ComponentInstanceConfiguration;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -39,8 +40,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.framework.Bundle;
-
-import de.uni_paderborn.fujaba.muml.instance.ComponentInstanceConfiguration;
 
 
 
