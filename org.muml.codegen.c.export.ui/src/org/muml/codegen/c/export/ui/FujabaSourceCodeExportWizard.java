@@ -27,13 +27,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.muml.codegen.c.export.ui.TargetPlatformExtension.TargetPlatformDescription;
+import org.muml.core.export.operation.AbstractFujabaExportOperation;
+import org.muml.core.export.operation.IFujabaExportOperation;
+import org.muml.core.export.pages.AbstractFujabaExportSourcePage;
+import org.muml.core.export.pages.AbstractFujabaExportTargetPage;
+import org.muml.core.export.pages.ElementSelectionMode;
+import org.muml.core.export.wizard.AbstractFujabaExportWizard;
 
-import de.uni_paderborn.fujaba.export.operation.AbstractFujabaExportOperation;
-import de.uni_paderborn.fujaba.export.operation.IFujabaExportOperation;
-import de.uni_paderborn.fujaba.export.pages.AbstractFujabaExportSourcePage;
-import de.uni_paderborn.fujaba.export.pages.AbstractFujabaExportTargetPage;
-import de.uni_paderborn.fujaba.export.pages.ElementSelectionMode;
-import de.uni_paderborn.fujaba.export.wizard.AbstractFujabaExportWizard;
 import de.uni_paderborn.fujaba.muml.instance.ComponentInstanceConfiguration;
 
 public class FujabaSourceCodeExportWizard extends AbstractFujabaExportWizard {
