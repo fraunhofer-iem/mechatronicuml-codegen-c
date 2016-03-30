@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project default="main" name="de.uni_paderborn.fujaba.muml.codegen.c">
-    <property name="ECLIPSE_HOME" value="../../../Documents/MUML/eclipse"/>
+<project default="main" name="org.muml.codegen.c">
+    <property name="ECLIPSE_HOME" value="../../../eclipse"/>
     <property name="ECLIPSE_WORKSPACE" value="../.."/>
 
     <!-- The classpath with only the dependencies used by the project -->
-    <path id="de.uni_paderborn.fujaba.muml.codegen.c.libraryclasspath">
-        <pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml.codegen.c/bin"/>
+    <path id="org.muml.codegen.c.libraryclasspath">
+        <pathelement location="${ECLIPSE_WORKSPACE}/org.muml.codegen.c/bin"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.core.runtime_3.11.1.v20150903-1804.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/javax.annotation_1.2.0.v201401042248.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/javax.inject_1.0.0.v20091030.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.osgi_3.10.102.v20160118-1700.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.osgi_3.10.101.v20150820-1432.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.osgi.compatibility.state_1.0.100.v20150402-1551.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.common_3.7.0.v20150402-1709.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.core.jobs_3.7.0.v20150330-2103.jar"/>
@@ -18,9 +18,9 @@
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.preferences_3.5.300.v20150408-1437.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.core.contenttype_3.5.0.v20150421-2214.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.app_1.3.300.v20150423-1356.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.ecore_2.11.2.v20160208-0816.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.common_2.11.1.v20160208-0816.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.ecore.xmi_2.11.1.v20160208-0816.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.ecore_2.11.1.v20150805-0538.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.common_2.11.0.v20150805-0538.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.ecore.xmi_2.11.1.v20150805-0538.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.ocl_3.5.0.v20150521-1211.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/lpg.runtime.java_2.0.17.v201004271640.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.ocl.common_1.3.0.v20150519-0914.jar"/>
@@ -30,39 +30,28 @@
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.acceleo.model_3.6.1.201509091420.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.acceleo.profiler_3.6.1.201509091420.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.acceleo.engine_3.6.1.201509091420.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.codegen.ecore_2.11.1.v20160208-0841.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.codegen_2.11.0.v20160208-0841.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/de.uni_paderborn.fujaba.muml.actionlanguage_0.5.0.201603071851.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/de.uni_paderborn.fujaba.muml_0.5.0.201603071851.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/de.uni_paderborn.fujaba.common_0.5.0.201602230943.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/de.uni_paderborn.fujaba.modelinstance_0.5.0.201602230943.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.storydriven.core_1.0.1.201602230943.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.uml2.common_2.1.0.v20160201-0816.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/de.uni_paderborn.fujaba.muml.common_0.5.0.201603071851.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/de.uni_paderborn.fujaba.muml.types_0.5.0.201603071851.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/de.uni_paderborn.fujaba.muml.psm_1.0.0.201603071900.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/de.uni_paderborn.fujaba.muml.hardware_1.0.0.201603071900.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/de.uni_paderborn.fujaba.muml.swplatform_0.5.0.201603071900.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/de.uni_paderborn.fujaba.muml.actionlanguage.xtext_0.5.0.201603071851.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.codegen.ecore_2.11.0.v20150806-0404.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.codegen_2.11.0.v20150806-0404.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.uml2.common_2.1.0.v20150906-1225.jar"/>
     </path>
 
-    <path id="de.uni_paderborn.fujaba.muml.codegen.c.classpath">
-        <path refid="de.uni_paderborn.fujaba.muml.codegen.c.libraryclasspath"/>
+    <path id="org.muml.codegen.c.classpath">
+        <path refid="org.muml.codegen.c.libraryclasspath"/>
     </path>
 
     <!-- The classpath with only the jars available in the plugin folder of Eclipse -->
-    <path id="de.uni_paderborn.fujaba.muml.codegen.c.libraryclasspath.alljars">
-        <pathelement location="../de.uni_paderborn.fujaba.muml.codegen.c/bin"/>
+    <path id="org.muml.codegen.c.libraryclasspath.alljars">
+        <pathelement location="../org.muml.codegen.c/bin"/>
         <fileset dir="${ECLIPSE_HOME}/plugins/" includes="*.jar"/>
     </path>
 
-    <path id="de.uni_paderborn.fujaba.muml.codegen.c.classpath.alljars">
-        <path refid="de.uni_paderborn.fujaba.muml.codegen.c.libraryclasspath.alljars"/>
+    <path id="org.muml.codegen.c.classpath.alljars">
+        <path refid="org.muml.codegen.c.libraryclasspath.alljars"/>
     </path>
 
     <!-- The default task with the jars used by this project -->
     <target name="main">
-        <java classname="de.uni_paderborn.fujaba.muml.codegen.c.main.Main" classpathref="de.uni_paderborn.fujaba.muml.codegen.c.classpath">
+        <java classname="org.muml.codegen.c.main.Main" classpathref="org.muml.codegen.c.classpath">
             <arg value="${model}"/>
             <arg value="${target}"/>
         </java>
@@ -73,7 +62,7 @@
         Keep in mind that having two versions of the same jar can create problems
     -->
     <target name="main.alljars">
-        <java classname="de.uni_paderborn.fujaba.muml.codegen.c.main.Main" classpathref="de.uni_paderborn.fujaba.muml.codegen.c.classpath">
+        <java classname="org.muml.codegen.c.main.Main" classpathref="org.muml.codegen.c.classpath">
             <arg value="${model}"/>
             <arg value="${target}"/>
         </java>

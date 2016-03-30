@@ -50,7 +50,7 @@
 
     <!-- The default task with the jars used by this project -->
     <target name="main">
-        <java classname="de.uni_paderborn.fujaba.muml.codegen.c.arduino.main.Main" classpathref="org.muml.codegen.c.arduino.classpath">
+        <java classname="org.muml.codegen.c.arduino.main.Main" classpathref="org.muml.codegen.c.arduino.classpath">
             <arg value="${model}"/>
             <arg value="${target}"/>
         </java>
@@ -61,7 +61,7 @@
         Keep in mind that having two versions of the same jar can create problems
     -->
     <target name="main.alljars">
-        <java classname="de.uni_paderborn.fujaba.muml.codegen.c.arduino.main.Main" classpathref="org.muml.codegen.c.arduino.classpath">
+        <java classname="org.muml.codegen.c.arduino.main.Main" classpathref="org.muml.codegen.c.arduino.classpath">
             <arg value="${model}"/>
             <arg value="${target}"/>
         </java>

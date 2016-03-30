@@ -35,7 +35,7 @@ public class Main extends AbstractAcceleoGenerator {
      *
      * @generated
      */
-    public static final String MODULE_FILE_NAME = "/de/uni_paderborn/fujaba/muml/codegen/c/main/main";
+    public static final String MODULE_FILE_NAME = "/org/muml/codegen/c/main/main";
     
     /**
      * The name of the templates that are to be generated.
@@ -340,45 +340,6 @@ public class Main extends AbstractAcceleoGenerator {
     @Override
     public void registerPackages(ResourceSet resourceSet) {
         super.registerPackages(resourceSet);
-        if (!isInWorkspace(de.uni_paderborn.fujaba.muml.connector.ConnectorPackage.class)) {
-            resourceSet.getPackageRegistry().put(de.uni_paderborn.fujaba.muml.connector.ConnectorPackage.eINSTANCE.getNsURI(), de.uni_paderborn.fujaba.muml.connector.ConnectorPackage.eINSTANCE);
-        }
-        if (!isInWorkspace(de.uni_paderborn.fujaba.muml.behavior.BehaviorPackage.class)) {
-            resourceSet.getPackageRegistry().put(de.uni_paderborn.fujaba.muml.behavior.BehaviorPackage.eINSTANCE.getNsURI(), de.uni_paderborn.fujaba.muml.behavior.BehaviorPackage.eINSTANCE);
-        }
-        if (!isInWorkspace(org.storydriven.core.CorePackage.class)) {
-            resourceSet.getPackageRegistry().put(org.storydriven.core.CorePackage.eINSTANCE.getNsURI(), org.storydriven.core.CorePackage.eINSTANCE);
-        }
-        if (!isInWorkspace(org.storydriven.core.expressions.ExpressionsPackage.class)) {
-            resourceSet.getPackageRegistry().put(org.storydriven.core.expressions.ExpressionsPackage.eINSTANCE.getNsURI(), org.storydriven.core.expressions.ExpressionsPackage.eINSTANCE);
-        }
-        if (!isInWorkspace(org.storydriven.core.expressions.common.CommonExpressionsPackage.class)) {
-            resourceSet.getPackageRegistry().put(org.storydriven.core.expressions.common.CommonExpressionsPackage.eINSTANCE.getNsURI(), org.storydriven.core.expressions.common.CommonExpressionsPackage.eINSTANCE);
-        }
-        if (!isInWorkspace(de.uni_paderborn.fujaba.muml.actionlanguage.ActionlanguagePackage.class)) {
-            resourceSet.getPackageRegistry().put(de.uni_paderborn.fujaba.muml.actionlanguage.ActionlanguagePackage.eINSTANCE.getNsURI(), de.uni_paderborn.fujaba.muml.actionlanguage.ActionlanguagePackage.eINSTANCE);
-        }
-        if (!isInWorkspace(de.uni_paderborn.fujaba.muml.msgtype.MsgtypePackage.class)) {
-            resourceSet.getPackageRegistry().put(de.uni_paderborn.fujaba.muml.msgtype.MsgtypePackage.eINSTANCE.getNsURI(), de.uni_paderborn.fujaba.muml.msgtype.MsgtypePackage.eINSTANCE);
-        }
-        if (!isInWorkspace(de.uni_paderborn.fujaba.muml.types.TypesPackage.class)) {
-            resourceSet.getPackageRegistry().put(de.uni_paderborn.fujaba.muml.types.TypesPackage.eINSTANCE.getNsURI(), de.uni_paderborn.fujaba.muml.types.TypesPackage.eINSTANCE);
-        }
-        if (!isInWorkspace(de.uni_paderborn.fujaba.modelinstance.ModelinstancePackage.class)) {
-            resourceSet.getPackageRegistry().put(de.uni_paderborn.fujaba.modelinstance.ModelinstancePackage.eINSTANCE.getNsURI(), de.uni_paderborn.fujaba.modelinstance.ModelinstancePackage.eINSTANCE);
-        }
-        if (!isInWorkspace(de.uni_paderborn.fujaba.muml.component.ComponentPackage.class)) {
-            resourceSet.getPackageRegistry().put(de.uni_paderborn.fujaba.muml.component.ComponentPackage.eINSTANCE.getNsURI(), de.uni_paderborn.fujaba.muml.component.ComponentPackage.eINSTANCE);
-        }
-        if (!isInWorkspace(de.uni_paderborn.fujaba.muml.instance.InstancePackage.class)) {
-            resourceSet.getPackageRegistry().put(de.uni_paderborn.fujaba.muml.instance.InstancePackage.eINSTANCE.getNsURI(), de.uni_paderborn.fujaba.muml.instance.InstancePackage.eINSTANCE);
-        }
-        if (!isInWorkspace(de.uni_paderborn.fujaba.muml.realtimestatechart.RealtimestatechartPackage.class)) {
-            resourceSet.getPackageRegistry().put(de.uni_paderborn.fujaba.muml.realtimestatechart.RealtimestatechartPackage.eINSTANCE.getNsURI(), de.uni_paderborn.fujaba.muml.realtimestatechart.RealtimestatechartPackage.eINSTANCE);
-        }
-        if (!isInWorkspace(de.uni_paderborn.fujaba.muml.realtimestatechart.one_to_n_schemata.One_to_n_schemataPackage.class)) {
-            resourceSet.getPackageRegistry().put(de.uni_paderborn.fujaba.muml.realtimestatechart.one_to_n_schemata.One_to_n_schemataPackage.eINSTANCE.getNsURI(), de.uni_paderborn.fujaba.muml.realtimestatechart.one_to_n_schemata.One_to_n_schemataPackage.eINSTANCE);
-        }
         
         /*
          * If you want to change the content of this method, do NOT forget to change the "@generated"
