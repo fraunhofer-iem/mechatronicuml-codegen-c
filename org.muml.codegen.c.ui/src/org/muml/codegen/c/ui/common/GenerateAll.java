@@ -33,8 +33,8 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.gmf.runtime.notation.Diagram;
+import org.muml.core.ExtendableElement;
 import org.osgi.framework.Bundle;
-import org.storydriven.core.ExtendableElement;
 
 import de.uni_paderborn.fujaba.modelinstance.ModelElementCategory;
 import de.uni_paderborn.fujaba.modelinstance.RootNode;
