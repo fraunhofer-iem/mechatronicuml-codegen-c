@@ -8,7 +8,7 @@
 				'http://www.fujaba.de/muml/instance/0.4.0',
 				'http://www.fujaba.de/muml/realtimestatechart/0.4.0')/]
 
-[import de::uni_paderborn::fujaba::muml::codegen::c::queries::stringQueries]
+[import de::uni_paderborn::fujaba::muml::codegen::caaa::queries::stringQueries]
 [**
  * Returns the operator of a comparing operator
  * @param comparingOperator the comparing operator
