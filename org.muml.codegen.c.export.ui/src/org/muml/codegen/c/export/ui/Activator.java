@@ -9,7 +9,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "de.uni_paderborn.fujaba.muml.codegen.export.ui"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.muml.codegen.c.export.ui"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;

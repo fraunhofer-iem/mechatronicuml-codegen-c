@@ -21,7 +21,7 @@ public class Activator extends Plugin {
     /**
      * The plug-in ID.
      */
-    public static final String PLUGIN_ID = "de.uni_paderborn.fujaba.muml.codegen.c.arduino";
+    public static final String PLUGIN_ID = "org.muml.codegen.c.arduino";
 
     /**
      * The shared instance.

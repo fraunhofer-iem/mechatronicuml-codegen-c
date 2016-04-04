@@ -21,7 +21,7 @@ public class Activator extends AbstractUIPlugin {
 	/**
 	 * The plug-in ID.
 	 */
-	public static final String PLUGIN_ID = "de.uni_paderborn.fujaba.muml.codegen.c.arduino.ui";
+	public static final String PLUGIN_ID = "org.muml.codegen.c.arduino.ui";
 
 	/**
 	 * The shared instance.
