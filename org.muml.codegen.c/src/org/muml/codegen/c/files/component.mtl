@@ -13,10 +13,10 @@
 				'http://www.fujaba.de/muml/realtimestatechart/0.4.0')]
 
 
-[import de::uni_paderborn::fujaba::muml::codegen::c::queries::stringQueries]
-[import de::uni_paderborn::fujaba::muml::codegen::c::queries::modelQueries]
-[import de::uni_paderborn::fujaba::muml::codegen::c::actionlanguage::expression]
-[import de::uni_paderborn::fujaba::muml::codegen::c::files::RealtimeStatechart]
+[import org::muml::codegen::c::queries::stringQueries]
+[import org::muml::codegen::c::queries::modelQueries]
+[import org::muml::codegen::c::actionlanguage::expression]
+[import org::muml::codegen::c::files::RealtimeStatechart]
 
 
 [**

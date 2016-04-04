@@ -8,7 +8,7 @@
 				'http://www.fujaba.de/muml/instance/0.4.0',
 				'http://www.fujaba.de/muml/realtimestatechart/0.4.0')/]
 
-[import de::uni_paderborn::fujaba::muml::codegen::c::actionlanguage::variable_queries]
+[import org::muml::codegen::c::actionlanguage::variable_queries]
 
 [**
  * Returns the name of an operation's output variable
