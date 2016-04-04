@@ -15,19 +15,19 @@
 				'http://www.fujaba.de/muml/realtimestatechart/0.4.0')]
 
 
-[import de::uni_paderborn::fujaba::muml::codegen::c::main::main]
-[import de::uni_paderborn::fujaba::muml::codegen::c::files::RealtimeStatechart]
-[import de::uni_paderborn::fujaba::muml::codegen::c::files::RealtimeStatechartHeader]
-[import de::uni_paderborn::fujaba::muml::codegen::c::queries::stringQueries]
-[import de::uni_paderborn::fujaba::muml::codegen::c::queries::modelQueries]
-[import de::uni_paderborn::fujaba::muml::codegen::c::files::componentHeader]
-[import de::uni_paderborn::fujaba::muml::codegen::c::files::component]
-[import de::uni_paderborn::fujaba::muml::codegen::c::files::Message]
-[import de::uni_paderborn::fujaba::muml::codegen::c::files::operations]
-[import de::uni_paderborn::fujaba::muml::codegen::c::files::ContinuousPorts]
-[import de::uni_paderborn::fujaba::muml::codegen::c::files::CIC]
+[import org::muml::codegen::c::main::main]
+[import org::muml::codegen::c::files::RealtimeStatechart]
+[import org::muml::codegen::c::files::RealtimeStatechartHeader]
+[import org::muml::codegen::c::queries::stringQueries]
+[import org::muml::codegen::c::queries::modelQueries]
+[import org::muml::codegen::c::files::componentHeader]
+[import org::muml::codegen::c::files::component]
+[import org::muml::codegen::c::files::Message]
+[import org::muml::codegen::c::files::operations]
+[import org::muml::codegen::c::files::ContinuousPorts]
+[import org::muml::codegen::c::files::CIC]
 
-[import de::uni_paderborn::fujaba::muml::codegen::c::nxtOSEK::files::make_nxtOSEK]
+[import org::muml::codegen::c::nxtosek::files::make_nxtOSEK]
 
 
 [**
