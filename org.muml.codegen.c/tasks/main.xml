@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="main" name="org.muml.codegen.c">
-    <property name="ECLIPSE_HOME" value="../../../../../opt/eclipse"/>
+    <property name="ECLIPSE_HOME" value="../../../eclipse"/>
     <property name="ECLIPSE_WORKSPACE" value="../.."/>
 
     <!-- The classpath with only the dependencies used by the project -->
