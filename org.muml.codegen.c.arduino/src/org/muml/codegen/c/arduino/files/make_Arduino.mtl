@@ -1,13 +1,14 @@
 [comment encoding = UTF-8 /]
-[module make_Arduino('http://www.fujaba.de/muml/connector/0.4.0', 'http://www.fujaba.de/muml/behavior/0.4.0',
+[module make_Arduino('http://www.muml.org/pim/connector/1.0.0', 
+				'http://www.muml.org/pim/behavior/1.0.0',
 				'http://www.storydriven.org/core/0.3.1',
-				'http://www.fujaba.de/muml/actionlanguage/0.4.0',
-				'http://www.fujaba.de/muml/msgtype/0.4.0',
-				'http://www.fujaba.de/muml/types/0.4.0',
-				'http://www.fujaba.de/modelinstance/0.4.0',
-				'http://www.fujaba.de/muml/component/0.4.0',
-				'http://www.fujaba.de/muml/instance/0.4.0',
-				'http://www.fujaba.de/muml/realtimestatechart/0.4.0')]
+				'http://www.muml.org/pim/actionlanguage/1.0.0',
+				'http://www.muml.org/pim/msgtype/1.0.0',
+				'http://www.muml.org/pim/types/1.0.0',
+				'http://www.muml.org/modelinstance/1.0.0',
+				'http://www.muml.org/pim/component/1.0.0',
+				'http://www.muml.org/pim/instance/1.0.0',
+				'http://www.muml.org/pim/realtimestatechart/1.0.0')]
 
 [import org::muml::codegen::c::queries::stringQueries]
 [import org::muml::codegen::c::queries::modelQueries]
