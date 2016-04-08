@@ -1,5 +1,5 @@
 [module expression_queries('http://www.muml.org/pim/connector/1.0.0', 'http://www.muml.org/pim/behavior/1.0.0',
-				'http://www.storydriven.org/core/0.3.1',
+				'http://www.muml.org/core/1.0.0',
 				'http://www.muml.org/pim/actionlanguage/1.0.0',
 				'http://www.muml.org/pim/msgtype/1.0.0',
 				'http://www.muml.org/pim/types/1.0.0',
