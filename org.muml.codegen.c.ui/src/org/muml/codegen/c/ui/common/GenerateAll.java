@@ -133,7 +133,7 @@ public class GenerateAll {
 				RootNode rootNode = (RootNode) resource.getContents().get(0);
 
 				for (ModelElementCategory mec : rootNode.getCategories()) {
-					if (mec.getKey().matches("de.uni_paderborn.fujaba.muml.instance.category")) {
+					if (mec.getKey().matches("org.muml.pim.instance.category")) {
 
 						for (ExtendableElement me : mec.getModelElements()) {
 							ComponentInstanceConfiguration cic = (ComponentInstanceConfiguration) me;
