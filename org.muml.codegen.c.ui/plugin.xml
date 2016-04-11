@@ -2,14 +2,14 @@
 <?eclipse version="3.2"?>
 <plugin>
        <extension
-             point="de.uni_paderborn.fujaba.muml.codegen.targetPlatformExtension">
+             point="org.muml.codegen.targetPlatformExtension">
           <targetPlatform
                 class="org.muml.codegen.c.ui.export.C99SourceCodeExport"
                 name="ANSI C99">
           </targetPlatform>
        </extension>
        <extension
-             point="de.uni_paderborn.fujaba.muml.codegen.targetPlatformExtension">
+             point="org.muml.codegen.targetPlatformExtension">
           <targetPlatform
                 class="org.muml.codegen.c.ui.export.nxtOSEKSourceCodeExport"
                 name="nxtOSEK">

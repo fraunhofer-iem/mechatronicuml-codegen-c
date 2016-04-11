@@ -178,7 +178,7 @@ public class GenerateAll {
 		org.muml.codegen.c.arduino.main.Main gen0 = new org.muml.codegen.c.arduino.main.Main(
 				cic, targetFolder.getLocation().toFile(), arguments);
 		String generationID = org.eclipse.acceleo.engine.utils.AcceleoLaunchingUtil.computeUIProjectID(
-				"de.uni_paderborn.fujaba.muml.codegen.arduino.c",
+				"org.muml.codegen.arduino.c",
 				"org.muml.codegen.c.arduino.main.Main", modelURI.toString(),
 				targetFolder.getFullPath().toString(), new ArrayList<String>());
 		gen0.setGenerationID(generationID);

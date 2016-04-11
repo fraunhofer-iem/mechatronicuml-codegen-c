@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="de.uni_paderborn.fujaba.muml.codegen.targetPlatformExtension" name="TargetPlatform" schema="schema/de.uni_paderborn.fujaba.muml.codegen.targetPlatformExtension.exsd"/>
+   <extension-point id="org.muml.codegen.targetPlatformExtension" name="TargetPlatform" schema="schema/org.muml.codegen.targetPlatformExtension.exsd"/>
    <extension
          point="org.eclipse.ui.exportWizards">
          <wizard

@@ -11,7 +11,7 @@ import org.eclipse.core.runtime.Platform;
  */
 public class TargetPlatformExtension {
 	private static final String extensionPointId =
-			"de.uni_paderborn.fujaba.muml.codegen.targetPlatformExtension";
+			"org.muml.codegen.targetPlatformExtension";
 	
 	/**
 	 * Returns descriptions for all registered
