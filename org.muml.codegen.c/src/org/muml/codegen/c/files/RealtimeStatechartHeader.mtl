@@ -11,7 +11,7 @@
 				'http://www.muml.org/pim/component/1.0.0',
 				'http://www.muml.org/pim/instance/1.0.0',
 				'http://www.muml.org/pim/realtimestatechart/1.0.0',
-				'http://www.muml.org/pm/software/platform/1.0.0',
+				'http://www.muml.org/pm/software/1.0.0',
 				'http://www.muml.org/psm/1.0.0')]
 
 [import org::muml::codegen::c::queries::stringQueries]
