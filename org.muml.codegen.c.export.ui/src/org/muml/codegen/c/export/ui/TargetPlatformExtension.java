@@ -5,7 +5,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 
 /**
- * Provides access to registered <code>de.uni_paderborn.fujaba.muml.allocation.algorithm.strategy</code>
+ * Provides access to registered <code>org.muml.psm.allocation.algorithm.strategy</code>
  * extensions.
  *
  */
@@ -15,7 +15,7 @@ public class TargetPlatformExtension {
 	
 	/**
 	 * Returns descriptions for all registered
-	 * <code>de.uni_paderborn.fujaba.muml.allocation.algorithm.strategy</code> extensions.
+	 * <code>org.muml.psm.allocation.algorithm.strategy</code> extensions.
 	 * 
 	 * @return the allocationComputationStrategyDescrptions
 	 */
@@ -33,7 +33,7 @@ public class TargetPlatformExtension {
 	}
 	
 	/**
-	 * Encapsulates <code>de.uni_paderborn.fujaba.muml.allocation.algorithm.strategy</code>
+	 * Encapsulates <code>org.muml.psm.allocation.algorithm.strategy</code>
 	 * extension. It provides access to the strategy name and description.
 	 * Additionally, the concrete <code>IAllocationComputationStrategy</code> can
 	 * be created lazily.
