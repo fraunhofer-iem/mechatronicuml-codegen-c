@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." default="compile" name="de.uni_paderborn.fujaba.muml.codegen.c">
+<project basedir="." default="compile" name="org.muml.codegen.c">
     
     <property name="ECLIPSE_HOME" value="/data/jenkins/jobs/Eclipse Target Platform/lastSuccessful/archive/targetPlatform"/>
     <property name="ECLIPSE_WORKSPACE" value="../"/>
@@ -7,13 +7,13 @@
     <property name="SOURCE_FOLDER" value="${basedir}/src/"/>    
     <property name="OUTPUT_FOLDER" value="${basedir}/bin/"/>
 
-    <path id="de.uni_paderborn.fujaba.muml.codegen.c.classpath">
-        <path refid="de.uni_paderborn.fujaba.muml.codegen.c.libraryclasspath" />
+    <path id="org.muml.codegen.c.classpath">
+        <path refid="org.muml.codegen.c.libraryclasspath" />
     </path>
 
     <!-- The classpath with only the dependencies used by the project (a dependency with the parser is required) -->
-    <path id="de.uni_paderborn.fujaba.muml.codegen.c.libraryclasspath">
-        <pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml.codegen.c.beautifier/bin"/>
+    <path id="org.muml.codegen.c.libraryclasspath">
+        <pathelement location="${ECLIPSE_WORKSPACE}/org.muml.codegen.c.beautifier/bin"/>
     	<pathelement location="${ECLIPSE_WORKSPACE}/org.storydriven.core/target/classes"/>
     	<pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml.hardware/bin"/>
     	<pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml/bin"/>
@@ -27,7 +27,7 @@
     </path>
 
     
-    <taskdef id="acceleoCompiler" name="acceleoCompiler" classname="org.eclipse.acceleo.parser.compiler.AcceleoCompiler" classpathref="de.uni_paderborn.fujaba.muml.codegen.c.libraryclasspath" >
+    <taskdef id="acceleoCompiler" name="acceleoCompiler" classname="org.eclipse.acceleo.parser.compiler.AcceleoCompiler" classpathref="org.muml.codegen.c.libraryclasspath" >
     </taskdef>
 
     <!-- Change the value of the property SOURCE_FOLDERS to match the configuration of your project. -->

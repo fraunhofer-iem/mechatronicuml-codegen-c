@@ -7,15 +7,15 @@
     <property name="SOURCE_FOLDER" value="${basedir}/src/"/>    
     <property name="OUTPUT_FOLDER" value="${basedir}/bin/"/>
 
-    <path id="de.uni_paderborn.fujaba.muml.codegen.c.nxtOSEK.classpath">
-        <path refid="de.uni_paderborn.fujaba.muml.codegen.c.nxtOSEK.libraryclasspath" />
+    <path id="org.muml.codegen.c.nxtOSEK.classpath">
+        <path refid="org.muml.codegen.c.nxtOSEK.libraryclasspath" />
     </path>
 
     <!-- The classpath with only the dependencies used by the project (a dependency with the parser is required) -->
-    <path id="de.uni_paderborn.fujaba.muml.codegen.c.nxtOSEK.libraryclasspath">
-        <pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml.codegen.c/bin"/>
-        <pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml.codegen.c.nxtOSEK/bin"/>
-        <pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml.codegen.c.beautifier/bin"/>
+    <path id="org.muml.codegen.c.nxtOSEK.libraryclasspath">
+        <pathelement location="${ECLIPSE_WORKSPACE}/org.muml.codegen.c/bin"/>
+        <pathelement location="${ECLIPSE_WORKSPACE}/org.muml.codegen.c.nxtOSEK/bin"/>
+        <pathelement location="${ECLIPSE_WORKSPACE}/org.muml.codegen.c.beautifier/bin"/>
     	<pathelement location="${ECLIPSE_WORKSPACE}/sdm/org.storydriven.core/target/classes"/>
     	<pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml/bin"/>
     	<pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.modelinstance/bin"/>
@@ -52,14 +52,14 @@
     </path>
 
     
-    <taskdef id="acceleoCompiler" name="acceleoCompiler" classname="org.eclipse.acceleo.parser.compiler.AcceleoCompiler" classpathref="de.uni_paderborn.fujaba.muml.codegen.c.nxtOSEK.libraryclasspath" >
+    <taskdef id="acceleoCompiler" name="acceleoCompiler" classname="org.eclipse.acceleo.parser.compiler.AcceleoCompiler" classpathref="org.muml.codegen.c.nxtOSEK.libraryclasspath" >
     </taskdef>
 
     <!-- Change the value of the property SOURCE_FOLDERS to match the configuration of your project. -->
     <target name="compile">
         <acceleoCompiler sourceFolder="${SOURCE_FOLDER}"
                          outputFolder="${OUTPUT_FOLDER}"
-                         dependencies="C:\\Users\\muml-ci\\.jenkins\\workspace\\MUML\\de.uni_paderborn.fujaba.muml.codegen.c\\bin\\de\\uni_paderborn\\fujaba\\muml\\codegen\\c\\main"
+                         dependencies="C:\\Users\\muml-ci\\.jenkins\\workspace\\MUML\\org.muml.codegen.c\\bin\\de\\uni_paderborn\\fujaba\\muml\\codegen\\c\\main"
                          binaryResource="false"
     					 packagesToRegister="de.uni_paderborn.fujaba.muml.MumlPackage;de.uni_paderborn.fujaba.muml.instance.InstancePackage;de.uni_paderborn.fujaba.muml.component.ComponentPackage;de.uni_paderborn.fujaba.muml.actionlanguage.ActionlanguagePackage;de.uni_paderborn.fujaba.muml.behavior.BehaviorPackage;org.storydriven.core.CorePackage;de.uni_paderborn.fujaba.muml.connector.ConnectorPackage;de.uni_paderborn.fujaba.muml.protocol.ProtocolPackage;de.uni_paderborn.fujaba.muml.realtimestatechart.RealtimestatechartPackage;de.uni_paderborn.fujaba.muml.types.TypesPackage;de.uni_paderborn.fujaba.muml.valuetype.ValuetypePackage;de.uni_paderborn.fujaba.modelinstance.ModelinstancePackage;org.storydriven.core.expressions.ExpressionsPackage;org.storydriven.core.expressions.common.CommonExpressionsPackage">
         </acceleoCompiler>

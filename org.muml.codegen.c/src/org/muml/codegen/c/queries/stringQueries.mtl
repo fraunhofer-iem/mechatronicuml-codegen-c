@@ -1119,5 +1119,5 @@ endif
 
 [query public cdtbeautifier(a : String) : String = invoke('org.eclipse.acceleo.additions.beautifier.CdtBeautifier','beautify(java.lang.String)', Sequence{a}) /]
 
- [query public getQualifiedNameJava(mumlObject : OclAny): String = invoke('de.uni_paderborn.fujaba.muml.codegen.c.helper.NamingHelper',
+ [query public getQualifiedNameJava(mumlObject : OclAny): String = invoke('org.muml.codegen.c.helper.NamingHelper',
 						  'getName(org.eclipse.emf.ecore.EObject)',Sequence{mumlObject}) /]

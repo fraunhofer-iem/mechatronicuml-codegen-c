@@ -97,8 +97,8 @@ public class GenerateAllnxtOSEK {
 			targetFolder.getLocation().toFile().mkdirs();
 		}
 		
-		// final URI template0 = getTemplateURI("de.uni_paderborn.fujaba.muml.codegen.c", new Path("/de/uni_paderborn/fujaba/muml/model/gen/c/main/main.emtl"));
-		// de.uni_paderborn.fujaba.muml.codegen.c.main.Main gen0 = new de.uni_paderborn.fujaba.muml.codegen.c.main.Main(modelURI, targetFolder.getLocation().toFile(), arguments) {
+		// final URI template0 = getTemplateURI("org.muml.codegen.c", new Path("/de/uni_paderborn/fujaba/muml/model/gen/c/main/main.emtl"));
+		// org.muml.codegen.c.main.Main gen0 = new org.muml.codegen.c.main.Main(modelURI, targetFolder.getLocation().toFile(), arguments) {
 		//	protected URI createTemplateURI(String entry) {
 		//		return template0;
 		//	}
@@ -145,7 +145,7 @@ public class GenerateAllnxtOSEK {
 							this.copyFolder(sourceFolder, target);
 							monitor.worked(++monitorCounter);
 							
-							String generationID = org.eclipse.acceleo.engine.utils.AcceleoLaunchingUtil.computeUIProjectID("de.uni_paderborn.fujaba.muml.codegen.c", "de.uni_paderborn.fujaba.muml.codegen.c.main.Main", modelURI.toString(), targetFolder.getFullPath().toString(), new ArrayList<String>());
+							String generationID = org.eclipse.acceleo.engine.utils.AcceleoLaunchingUtil.computeUIProjectID("org.muml.codegen.c", "org.muml.codegen.c.main.Main", modelURI.toString(), targetFolder.getFullPath().toString(), new ArrayList<String>());
 							gen0.setGenerationID(generationID);
 							gen0.doGenerate(BasicMonitor.toMonitor(monitor));
 
@@ -169,7 +169,7 @@ public class GenerateAllnxtOSEK {
 
 		monitor.subTask("generating "+cic.getName()+"...");
 		org.muml.codegen.c.nxtosek.main.Main gen0 = new org.muml.codegen.c.nxtosek.main.Main(cic, targetFolder.getLocation().toFile(), arguments);
-		String generationID = org.eclipse.acceleo.engine.utils.AcceleoLaunchingUtil.computeUIProjectID("de.uni_paderborn.fujaba.muml.codegen.c.nxtOSEK", "de.uni_paderborn.fujaba.muml.codegen.c.nxtOSEK.main.Main", modelURI.toString(), targetFolder.getFullPath().toString(), new ArrayList<String>());
+		String generationID = org.eclipse.acceleo.engine.utils.AcceleoLaunchingUtil.computeUIProjectID("org.muml.codegen.c.nxtOSEK", "org.muml.codegen.c.nxtOSEK.main.Main", modelURI.toString(), targetFolder.getFullPath().toString(), new ArrayList<String>());
 		gen0.setGenerationID(generationID);
 		gen0.doGenerate(BasicMonitor.toMonitor(monitor));
 		monitor.worked(1);

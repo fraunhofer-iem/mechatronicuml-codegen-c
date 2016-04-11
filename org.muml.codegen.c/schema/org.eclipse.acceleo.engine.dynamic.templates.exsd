@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="de.uni_paderborn.fujaba.muml.codegen.c" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.muml.codegen.c" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="de.uni_paderborn.fujaba.muml.codegen.c" id="org.eclipse.acceleo.engine.dynamic.templates" name="org.eclipse.acceleo.engine.dynamic.templates"/>
+         <meta.schema plugin="org.muml.codegen.c" id="org.eclipse.acceleo.engine.dynamic.templates" name="org.eclipse.acceleo.engine.dynamic.templates"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]

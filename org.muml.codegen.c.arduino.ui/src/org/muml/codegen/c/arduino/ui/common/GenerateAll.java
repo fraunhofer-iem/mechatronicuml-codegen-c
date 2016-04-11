@@ -94,10 +94,10 @@ public class GenerateAll {
 		}
 
 		// final URI template0 =
-		// getTemplateURI("de.uni_paderborn.fujaba.muml.codegen.c", new
+		// getTemplateURI("org.muml.codegen.c", new
 		// Path("/de/uni_paderborn/fujaba/muml/model/gen/c/main/main.emtl"));
-		// de.uni_paderborn.fujaba.muml.codegen.c.main.Main gen0 = new
-		// de.uni_paderborn.fujaba.muml.codegen.c.main.Main(modelURI,
+		// org.muml.codegen.c.main.Main gen0 = new
+		// org.muml.codegen.c.main.Main(modelURI,
 		// targetFolder.getLocation().toFile(), arguments) {
 		// protected URI createTemplateURI(String entry) {
 		// return template0;
@@ -152,8 +152,8 @@ public class GenerateAll {
 							monitor.worked(++monitorCounter);
 
 							String generationID = org.eclipse.acceleo.engine.utils.AcceleoLaunchingUtil
-									.computeUIProjectID("de.uni_paderborn.fujaba.muml.codegen.c",
-											"de.uni_paderborn.fujaba.muml.codegen.c.main.Main", modelURI.toString(),
+									.computeUIProjectID("org.muml.codegen.c",
+											"org.muml.codegen.c.main.Main", modelURI.toString(),
 											targetFolder.getFullPath().toString(), new ArrayList<String>());
 							gen0.setGenerationID(generationID);
 							gen0.doGenerate(BasicMonitor.toMonitor(monitor));
@@ -179,7 +179,7 @@ public class GenerateAll {
 				cic, targetFolder.getLocation().toFile(), arguments);
 		String generationID = org.eclipse.acceleo.engine.utils.AcceleoLaunchingUtil.computeUIProjectID(
 				"de.uni_paderborn.fujaba.muml.codegen.arduino.c",
-				"de.uni_paderborn.fujaba.muml.codegen.c.arduino.main.Main", modelURI.toString(),
+				"org.muml.codegen.c.arduino.main.Main", modelURI.toString(),
 				targetFolder.getFullPath().toString(), new ArrayList<String>());
 		gen0.setGenerationID(generationID);
 		gen0.doGenerate(BasicMonitor.toMonitor(monitor));

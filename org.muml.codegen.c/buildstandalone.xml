@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." default="compile" name="de.uni_paderborn.fujaba.muml.codegen.c">
+<project basedir="." default="compile" name="org.muml.codegen.c">
     
     <property name="ECLIPSE_HOME" value="../../../../opt/eclipse"/>
     <property name="ECLIPSE_WORKSPACE" value=".."/>
@@ -7,13 +7,13 @@
     <property name="SOURCE_FOLDER" value="${basedir}/src/"/>    
     <property name="OUTPUT_FOLDER" value="${basedir}/bin/"/>
 
-    <path id="de.uni_paderborn.fujaba.muml.codegen.c.classpath">
-        <path refid="de.uni_paderborn.fujaba.muml.codegen.c.libraryclasspath" />
+    <path id="org.muml.codegen.c.classpath">
+        <path refid="org.muml.codegen.c.libraryclasspath" />
     </path>
 
     <!-- The classpath with only the dependencies used by the project (a dependency with the parser is required) -->
-    <path id="de.uni_paderborn.fujaba.muml.codegen.c.libraryclasspath">
-        <pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml.codegen.c/bin"/>
+    <path id="org.muml.codegen.c.libraryclasspath">
+        <pathelement location="${ECLIPSE_WORKSPACE}/org.muml.codegen.c/bin"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.core.runtime_3.11.1.v20150903-1804.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/javax.annotation_1.2.0.v201401042248.jar"/>
         <pathelement location="${ECLIPSE_HOME}/plugins/javax.inject_1.0.0.v20091030.jar"/>
@@ -44,7 +44,7 @@
     </path>
 
     
-    <taskdef id="acceleoCompiler" name="acceleoCompiler" classname="org.eclipse.acceleo.parser.compiler.AcceleoCompiler" classpathref="de.uni_paderborn.fujaba.muml.codegen.c.libraryclasspath" >
+    <taskdef id="acceleoCompiler" name="acceleoCompiler" classname="org.eclipse.acceleo.parser.compiler.AcceleoCompiler" classpathref="org.muml.codegen.c.libraryclasspath" >
     </taskdef>
 
     <!-- Change the value of the property SOURCE_FOLDERS to match the configuration of your project. -->
