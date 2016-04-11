@@ -15,7 +15,7 @@
     <path id="org.muml.codegen.c.libraryclasspath">
         <pathelement location="${ECLIPSE_WORKSPACE}/org.muml.codegen.c.beautifier/bin"/>
     	<pathelement location="${ECLIPSE_WORKSPACE}/org.muml.core/target/classes"/>
-    	<pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml.hardware/bin"/>
+    	<pathelement location="${ECLIPSE_WORKSPACE}/org.muml.pm.hardware/bin"/>
     	<pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml/bin"/>
     	<pathelement location="${ECLIPSE_WORKSPACE}/org.muml.psm/bin"/>
     	<pathelement location="${ECLIPSE_WORKSPACE}/org.muml.core.modelinstance/bin"/>
@@ -37,7 +37,7 @@
                          dependencies=""
                          binaryResource="false"
     					 usePlatformResourcePath="true"
-    					 packagesToRegister="de.uni_paderborn.fujaba.muml.swplatform.SwplatformPackage;org.muml.psm.PsmPackage;de.uni_paderborn.fujaba.muml.hardware.HardwarePackage;de.uni_paderborn.fujaba.muml.MumlPackage;de.uni_paderborn.fujaba.muml.instance.InstancePackage;de.uni_paderborn.fujaba.muml.component.ComponentPackage;org.muml.pim.actionlanguage.ActionlanguagePackage;de.uni_paderborn.fujaba.muml.behavior.BehaviorPackage;org.muml.core.CorePackage;de.uni_paderborn.fujaba.muml.connector.ConnectorPackage;org.muml.pim.protocol.ProtocolPackage;de.uni_paderborn.fujaba.muml.realtimestatechart.RealtimestatechartPackage;org.muml.core.types.TypesPackage;de.uni_paderborn.fujaba.muml.valuetype.ValuetypePackage;org.muml.core.modelinstance.ModelinstancePackage;org.muml.core.expressions.ExpressionsPackage;org.muml.core.expressions.common.CommonExpressionsPackage;org.muml.core.CorePackage">		
+    					 packagesToRegister="de.uni_paderborn.fujaba.muml.swplatform.SwplatformPackage;org.muml.psm.PsmPackage;org.muml.pm.hardware.HardwarePackage;de.uni_paderborn.fujaba.muml.MumlPackage;de.uni_paderborn.fujaba.muml.instance.InstancePackage;de.uni_paderborn.fujaba.muml.component.ComponentPackage;org.muml.pim.actionlanguage.ActionlanguagePackage;de.uni_paderborn.fujaba.muml.behavior.BehaviorPackage;org.muml.core.CorePackage;de.uni_paderborn.fujaba.muml.connector.ConnectorPackage;org.muml.pim.protocol.ProtocolPackage;de.uni_paderborn.fujaba.muml.realtimestatechart.RealtimestatechartPackage;org.muml.core.types.TypesPackage;de.uni_paderborn.fujaba.muml.valuetype.ValuetypePackage;org.muml.core.modelinstance.ModelinstancePackage;org.muml.core.expressions.ExpressionsPackage;org.muml.core.expressions.common.CommonExpressionsPackage;org.muml.core.CorePackage">		
         </acceleoCompiler>
     </target>
 </project>
