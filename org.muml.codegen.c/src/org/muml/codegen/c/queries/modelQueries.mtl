@@ -310,7 +310,7 @@ atomics.behavior.oclAsType(RealtimeStatechart).allAvailableVariables.dataType->a
 CIs->collect(portInstances)->asOrderedSet()->filter(DiscretePortInstance) /]
 
 [query public getTimeUnitFactor(timeValue : TimeValue) : Real =
-	invoke('org.muml.codegen.c.helper.TimeHelper', 'getFactor(de.uni_paderborn.fujaba.muml.valuetype.TimeValue)',Sequence{timeValue})
+	invoke('org.muml.codegen.c.helper.TimeHelper', 'getFactor(org.muml.pim.valuetype.TimeValue)',Sequence{timeValue})
 /]
 
 [query public getRootNode(obj : OclAny) : RootNode =
