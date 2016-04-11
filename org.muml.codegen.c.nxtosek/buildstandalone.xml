@@ -61,7 +61,7 @@
                          outputFolder="${OUTPUT_FOLDER}"
                          dependencies="C:\\Users\\muml-ci\\.jenkins\\workspace\\MUML\\org.muml.codegen.c\\bin\\de\\uni_paderborn\\fujaba\\muml\\codegen\\c\\main"
                          binaryResource="false"
-    					 packagesToRegister="de.uni_paderborn.fujaba.muml.MumlPackage;de.uni_paderborn.fujaba.muml.instance.InstancePackage;de.uni_paderborn.fujaba.muml.component.ComponentPackage;org.muml.pim.actionlanguage.ActionlanguagePackage;de.uni_paderborn.fujaba.muml.behavior.BehaviorPackage;org.muml.core.CorePackage;de.uni_paderborn.fujaba.muml.connector.ConnectorPackage;org.muml.pim.protocol.ProtocolPackage;de.uni_paderborn.fujaba.muml.realtimestatechart.RealtimestatechartPackage;org.muml.core.types.TypesPackage;de.uni_paderborn.fujaba.muml.valuetype.ValuetypePackage;org.muml.core.modelinstance.ModelinstancePackage;org.muml.core.expressions.ExpressionsPackage;org.muml.core.expressions.common.CommonExpressionsPackage">
+    					 packagesToRegister="org.muml.pim.PimPackage;de.uni_paderborn.fujaba.muml.instance.InstancePackage;de.uni_paderborn.fujaba.muml.component.ComponentPackage;org.muml.pim.actionlanguage.ActionlanguagePackage;org.muml.pim.behavior.BehaviorPackage;org.muml.core.CorePackage;de.uni_paderborn.fujaba.muml.connector.ConnectorPackage;org.muml.pim.protocol.ProtocolPackage;de.uni_paderborn.fujaba.muml.realtimestatechart.RealtimestatechartPackage;org.muml.core.types.TypesPackage;org.muml.pim.valuetype.ValuetypePackage;org.muml.core.modelinstance.ModelinstancePackage;org.muml.core.expressions.ExpressionsPackage;org.muml.core.expressions.common.CommonExpressionsPackage">
         </acceleoCompiler>
     </target>
 </project>

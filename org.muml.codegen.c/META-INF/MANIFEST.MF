@@ -27,7 +27,7 @@ Eclipse-LazyStart: true
 Export-Package: org.muml.codegen.c;uses:="org.osgi.framework,org.eclipse.core.runtime",
  org.muml.codegen.c.actionlanguage,
  org.muml.codegen.c.files,
- org.muml.codegen.c.helper;uses:="org.eclipse.emf.ecore,de.uni_paderborn.fujaba.muml.valuetype,org.muml.pim.common.naming",
+ org.muml.codegen.c.helper;uses:="org.eclipse.emf.ecore,org.muml.pim.valuetype,org.muml.pim.common.naming",
  org.muml.codegen.c.main;
   uses:="org.eclipse.emf.ecore,
    org.eclipse.emf.common.util,
