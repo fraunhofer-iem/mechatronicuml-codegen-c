@@ -17,46 +17,6 @@
       %license
    </license>
 
-   <requires>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.jface.text" version="3.8.2" match="greaterOrEqual"/>
-      <import plugin="org.apache.commons.logging" version="1.0.4" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.emf.ecore"/>
-      <import plugin="org.eclipse.emf.ecore.xmi"/>
-      <import plugin="org.eclipse.ocl"/>
-      <import plugin="org.eclipse.ocl.ecore"/>
-      <import plugin="org.eclipse.acceleo.model" version="3.2.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.acceleo.engine" version="3.2.1" match="greaterOrEqual"/>
-      <import plugin="org.muml.pim" version="0.4.0" match="greaterOrEqual"/>
-      <import plugin="org.muml.core.modelinstance" version="0.4.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.osgi"/>
-      <import plugin="org.eclipse.swt"/>
-      <import plugin="org.eclipse.gmf.runtime.notation"/>
-      <import plugin="org.muml.codegen.c.nxtosek" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.acceleo.common" version="3.2.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.acceleo.profiler" version="3.2.1" match="greaterOrEqual"/>
-      <import plugin="org.muml.pim.actionlanguage" version="0.4.0" match="greaterOrEqual"/>
-      <import plugin="org.muml.codegen.c.beautifier" version="0.4.0" match="greaterOrEqual"/>
-      <import plugin="org.muml.ape"/>
-      <import plugin="org.eclipse.acceleo.common" version="3.3.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.acceleo.model" version="3.3.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.acceleo.profiler" version="3.3.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.acceleo.engine" version="3.3.0" match="greaterOrEqual"/>
-      <import plugin="org.muml.codegen.c" version="0.4.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.cdt.core" version="5.4.1" match="greaterOrEqual"/>
-      <import plugin="org.muml.core.export" version="0.4.0" match="greaterOrEqual"/>
-      <import plugin="org.muml.pim.common" version="0.5.0" match="greaterOrEqual"/>
-      <import plugin="org.muml.psm" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.common"/>
-      <import plugin="org.eclipse.e4.core.di" version="1.4.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.equinox.registry"/>
-      <import plugin="org.muml.codegen.c.export.ui" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.gmf.runtime.notation.edit"/>
-      <import plugin="org.muml.codegen.c" version="0.5.0" match="greaterOrEqual"/>
-   </requires>
-
    <plugin
          id="org.muml.codegen.c.beautifier"
          download-size="0"
