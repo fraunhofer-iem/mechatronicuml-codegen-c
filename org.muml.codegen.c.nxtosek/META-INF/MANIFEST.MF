@@ -7,7 +7,6 @@ Bundle-Activator: org.muml.codegen.c.nxtosek.Activator
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.core.runtime,
  org.muml.ape,
- org.muml.core.modelinstance,
  org.muml.pim,
  org.muml.pim.actionlanguage,
  org.eclipse.emf.ecore,
