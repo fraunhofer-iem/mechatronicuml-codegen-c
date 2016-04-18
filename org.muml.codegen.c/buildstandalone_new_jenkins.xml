@@ -18,7 +18,7 @@
     	<pathelement location="${ECLIPSE_WORKSPACE}/org.muml.pm.hardware/bin"/>
     	<pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml/bin"/>
     	<pathelement location="${ECLIPSE_WORKSPACE}/org.muml.psm/bin"/>
-    	<pathelement location="${ECLIPSE_WORKSPACE}/org.muml.core.modelinstance/bin"/>
+    	<pathelement location="${ECLIPSE_WORKSPACE}/org.muml.core/bin"/>
     	<pathelement location="${ECLIPSE_WORKSPACE}/org.muml.pim.actionlanguage/bin"/>
     	<pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml.swplatform/bin"/>
     	<fileset dir="${ECLIPSE_HOME}/plugins">

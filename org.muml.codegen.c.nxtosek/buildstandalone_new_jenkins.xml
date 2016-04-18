@@ -18,7 +18,7 @@
 		<pathelement location="${ECLIPSE_WORKSPACE}/org.muml.codegen.c.beautifier/bin" />
 		<pathelement location="${ECLIPSE_WORKSPACE}/org.muml.core/target/classes" />
 		<pathelement location="${ECLIPSE_WORKSPACE}/de.uni_paderborn.fujaba.muml/bin" />
-		<pathelement location="${ECLIPSE_WORKSPACE}/org.muml.core.modelinstance/bin" />
+		<pathelement location="${ECLIPSE_WORKSPACE}/org.muml.core/bin" />
 		<pathelement location="${ECLIPSE_WORKSPACE}/org.muml.pim.actionlanguage/bin" />
 		<fileset dir="${ECLIPSE_HOME}/plugins/">
 			<include name="*.jar" />
