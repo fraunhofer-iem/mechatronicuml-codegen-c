@@ -7,7 +7,7 @@
          <wizard
             category="org.muml.core.export"
             class="org.muml.codegen.c.export.ui.FujabaSourceCodeExportWizard"
-            id="de.uni_paderborn.fujaba.codegen.c.export"
+            id="org.muml.codegen.c.export"
             name="SourceCode">
       </wizard>
    </extension>
