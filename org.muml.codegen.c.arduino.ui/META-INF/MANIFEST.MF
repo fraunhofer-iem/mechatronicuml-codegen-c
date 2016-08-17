@@ -15,11 +15,11 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ocl.ecore,
  org.eclipse.acceleo.model,
  org.eclipse.acceleo.engine,
- org.muml.codegen.c.export.ui;bundle-version="1.0.0",
+ org.muml.codegen.c.export.ui,
  org.muml.pim,
  org.eclipse.gmf.runtime.notation.edit,
- org.muml.codegen.c;bundle-version="0.5.0",
- org.apache.commons.io;bundle-version="2.2.0"
+ org.muml.codegen.c,
+ org.apache.commons.io
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Eclipse-LazyStart: true
