@@ -108,7 +108,7 @@
 			[/if]
 					stateChart->[getVariableName(region)/] = [getName(firstState)/];
 	
-					[entryActions(rtsc, firstState)/]
+					[comment entryActions(rtsc, firstState)/] 
 	
 					[for (innerRegion : Region | firstState.embeddedRegions)]
 						[getInitializeMethodName(innerRegion)/](stateChart);
@@ -159,7 +159,7 @@
 				//initialize init state
 				stateChart->[getVariableName(rtsc)/] = [getName(firstState)/];
 
-				[entryActions(rtsc, firstState)/]
+				[comment entryActions(rtsc, firstState)/]
 
 				[for (innerRegion : Region | firstState.embeddedRegions)]
 					[getInitializeMethodName(innerRegion)/](stateChart);
