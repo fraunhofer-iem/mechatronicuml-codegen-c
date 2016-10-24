@@ -184,6 +184,7 @@ public class GenerateAll {
 		Double finalTime = Double.valueOf(Double.valueOf(System.currentTimeMillis() - start)
 				.doubleValue() / 1000d);
 		System.err.println("Time to generate C99-Code: "+finalTime);
+		System.err.flush();
 		monitor.worked(1);
 		URL resources = FileLocator.toFileURL(Platform
 				.getBundle(org.muml.codegen.c.Activator.PLUGIN_ID).getEntry("resources"));
