@@ -178,7 +178,12 @@ public class GenerateAll {
 				"org.muml.codegen.c", "org.muml.codegen.c.main.Main",
 				modelURI.toString(), targetFolder.getFullPath().toString(), new ArrayList<String>());
 		gen0.setGenerationID(generationID);
+		long start;
+		start = System.currentTimeMillis();
 		gen0.doGenerate(BasicMonitor.toMonitor(monitor));
+		Double finalTime = Double.valueOf(Double.valueOf(System.currentTimeMillis() - start)
+				.doubleValue() / 1000d);
+		System.out.println("Time to generate C99-Code: "+finalTime);
 		monitor.worked(1);
 		URL resources = FileLocator.toFileURL(Platform
 				.getBundle(org.muml.codegen.c.Activator.PLUGIN_ID).getEntry("resources"));
