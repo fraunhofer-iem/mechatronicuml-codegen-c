@@ -185,8 +185,6 @@ public class GenerateAll {
 		gen0.doGenerate(BasicMonitor.toMonitor(monitor));
 		Double finalTime = Double.valueOf(Double.valueOf(System.currentTimeMillis() - start)
 				.doubleValue() / 1000d);
-		System.err.println("Time to generate C99-Code: "+finalTime);
-		System.err.flush();
 		Status logTransformationTime = new Status(Status.INFO,Activator.PLUGIN_ID,"Time to generate C99-Code: "+finalTime);
 		Activator.getDefault().getLog().log(logTransformationTime);
 		monitor.worked(1);
