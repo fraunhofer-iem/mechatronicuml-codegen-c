@@ -15,11 +15,11 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.model;bundle-version="3.2.1",
  org.eclipse.acceleo.profiler;bundle-version="3.2.1",
  org.eclipse.acceleo.engine;bundle-version="3.2.1",
- org.muml.pim.actionlanguage;bundle-version="0.4.0",
- org.muml.pim;bundle-version="0.4.0",
- org.muml.codegen.c.beautifier;bundle-version="0.4.0",
- org.muml.pim.common;bundle-version="0.5.0",
- org.muml.psm;bundle-version="1.0.0"
+ org.muml.pim.actionlanguage,
+ org.muml.pim,
+ org.muml.codegen.c.beautifier,
+ org.muml.pim.common,
+ org.muml.psm
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Eclipse-LazyStart: true
