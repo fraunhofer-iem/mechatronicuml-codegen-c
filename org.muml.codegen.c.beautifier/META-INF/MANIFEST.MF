@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Additions
 Bundle-SymbolicName: org.muml.codegen.c.beautifier
-Bundle-Version: 0.5.0.qualifier
+Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jface.text;bundle-version="3.8.2",

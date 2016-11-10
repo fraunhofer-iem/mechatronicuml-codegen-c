@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: MechatronicUML C Codegenerator UI
 Bundle-SymbolicName: org.muml.codegen.c.ui;singleton:=true
-Bundle-Version: 0.5.0.qualifier
+Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.muml.codegen.c.ui.Activator
 Bundle-Vendor: Software Engineering Group, Heinz Nixdorf Institute, Paderborn University, and Fraunhofer Research Institution for Mechatronic Systems Design IEM, Germany
 Require-Bundle: org.eclipse.ui,
