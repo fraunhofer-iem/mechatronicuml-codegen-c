@@ -4,7 +4,7 @@ Bundle-Name: Acceleo Arduino Module IDE Plug-in
 Bundle-SymbolicName: org.muml.codegen.c.arduino.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.muml.codegen.c.arduino.ui.Activator
-Bundle-Vendor: Eclipse Modeling Project
+Bundle-Vendor: Software Engineering Group, Heinz Nixdorf Institute, Paderborn University, and Fraunhofer Research Institution for Mechatronic Systems Design IEM, Germany
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,

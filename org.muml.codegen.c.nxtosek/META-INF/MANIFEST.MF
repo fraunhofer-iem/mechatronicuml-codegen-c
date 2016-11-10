@@ -4,7 +4,7 @@ Bundle-Name: MechatronicUML nxtOSEK code generator
 Bundle-SymbolicName: org.muml.codegen.c.nxtosek
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.muml.codegen.c.nxtosek.Activator
-Bundle-Vendor: %Bundle-Vendor
+Bundle-Vendor: Software Engineering Group, Heinz Nixdorf Institute, Paderborn University, and Fraunhofer Research Institution for Mechatronic Systems Design IEM, Germany
 Require-Bundle: org.eclipse.core.runtime,
  org.muml.ape,
  org.muml.pim,
