@@ -19,7 +19,7 @@ typedef long Clock;
 
 #ifdef C99
 #include <time.h>
-#include <stdtypes.h>
+#include <stdint.h>
 typedef uint64_t Clock;
 static inline Clock Clock_getTime2(Clock aClock) {
 	struct timespec spec;
