@@ -8,7 +8,7 @@
             category="org.muml.core.export"
             class="org.muml.codegen.c.export.ui.FujabaSourceCodeExportWizard"
             id="org.muml.codegen.c.export"
-            name="SourceCode">
+            name="Source Code">
       </wizard>
    </extension>
 
