@@ -176,12 +176,6 @@
 			<url>${repobase}/PlatformSpecificModeling-Maven/${repopath}org.muml.psm.repository/target/repository</url>
 		</repository>
 		<repository>
-			<id>Codegen</id>
-			<layout>p2</layout>
-			<!--<url>file:///data/jenkins/jobs/Codegen_C/lastSuccessful/archive/targetPlatform/</url> -->
-			<url> http://muml-build.cs.upb.de/job/Codegen_C/lastSuccessfulBuild/artifact/targetPlatform/</url> 
-		</repository>
-		<repository>
 			<id>EMM</id>
 			<layout>p2</layout>
 			<url>${repobase}/ModelMigration-Maven/${repopath}org.muml.emm.repository/target/repository</url>
