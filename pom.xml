@@ -78,18 +78,22 @@
           <pomDependencies>consider</pomDependencies>
         </configuration>
       </plugin>
-      <plugin>
-       <groupId>org.eclipse.acceleo</groupId>
-       <artifactId>org.eclipse.acceleo.maven</artifactId>
-       <version>3.6.0-SNAPSHOT</version>
-       <executions>
-          <execution>
-			<goals>
-				<goal>acceleo-compile</goal>
-			</goals>
-          </execution>
-        </executions>
-     </plugin>
+		<plugin>
+		   <groupId>org.eclipse.acceleo</groupId>
+		   <artifactId>org.eclipse.acceleo.maven</artifactId>
+		   <version>3.6.0-SNAPSHOT</version>
+		   <executions>
+			  <execution>
+				<goals>
+					<goal>acceleo-compile</goal>
+				</goals>
+			  </execution>
+			</executions>
+			<configuration>
+			  <useBinaryResources>false</useBinaryResources>
+			  <usePlatformResourcePath>true</usePlatformResourcePath>
+			</configuration>  
+		</plugin>	    
 		<plugin>
 		  <groupId>org.eclipse.tycho</groupId>
 		  <artifactId>tycho-compiler-plugin</artifactId>
@@ -169,6 +173,16 @@
 			<id>APE</id>
 			<layout>p2</layout>
 			<url>${repobase}/APE-Maven/${repopath}org.muml.ape.repository/target/repository</url>
+		</repository>
+		<repository>
+			<id>ModelCopy</id>
+			<layout>p2</layout>
+			<url>${repobase}/ModelCopy-Maven/${repopath}org.muml.modelcopy.repository/target/repository</url>
+		</repository>
+		<repository>
+			<id>ExternalDependencies</id>
+			<layout>p2</layout>
+			<url>${repobase}/ExternalDependencies-Maven/${repopath}org.muml.external.repository/target/repository</url>
 		</repository>
 		<repository>
 			<id>PSM</id>
