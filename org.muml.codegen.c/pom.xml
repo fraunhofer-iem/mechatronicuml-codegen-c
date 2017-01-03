@@ -34,7 +34,7 @@
 				 <entries>
 				 <entry>
 					<input>src/</input>
-					<output>target/classes/org/muml/codegen/c</output>
+					<output>target/classes/</output>
 				  </entry> 
 				</entries>
 			  </acceleoProject>
