@@ -34,7 +34,7 @@
 				 <entries>
 				 <entry>
 					<input>src/</input>
-					<output>${project.basedir}</output> 
+					<output>target/classes</output> 
 				  </entry> 
 				</entries>
 			  </acceleoProject>

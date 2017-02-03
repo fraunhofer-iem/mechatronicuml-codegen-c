@@ -1,7 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<feature id="org.muml.codegen.c.feature" 
-label="%featureName" provider-name="%providerName" 
-version="1.0.0.qualifier">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><feature id="org.muml.codegen.c.feature" label="%featureName" provider-name="%providerName" version="1.0.0.qualifier">
 
    <description>
       %description
@@ -26,14 +23,8 @@ version="1.0.0.qualifier">
       <import feature="org.muml.pm.software.feature" version="1.0.0.qualifier"/>
    </requires>
 
-   <plugin download-size="0" id="org.muml.codegen.c.beautifier" install-size="0" unpack="false" version="0.0.0"/>
+   <plugin download-size="0" id="org.muml.codegen.c.arduino" install-size="0" version="0.0.0"/>
 
-   <plugin download-size="0" id="org.muml.codegen.c.ui" install-size="0" unpack="false" version="0.0.0"/>
-
-   <plugin download-size="0" id="org.muml.codegen.c" install-size="0" version="0.0.0"/>
-
-   <plugin download-size="0" id="org.muml.codegen.c.nxtosek" install-size="0" version="0.0.0"/>
-
-   <plugin download-size="0" id="org.muml.codegen.c.export.ui" install-size="0" unpack="false" version="0.0.0"/>
+   <plugin download-size="0" id="org.muml.codegen.c.arduino.ui" install-size="0" unpack="false" version="0.0.0"/>
 
 </feature>

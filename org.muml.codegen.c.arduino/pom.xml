@@ -3,11 +3,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.muml.codegen.c.group</groupId>
-    <artifactId>Codegen_C</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+	  <groupId>org.muml.codegen.c.arduino.group</groupId>
+	  <artifactId>Codegen.C.Arduino</artifactId>
+	  <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <groupId>org.muml.codegen.c.group</groupId>
+  <groupId>org.muml.codegen.c.arduino.group</groupId>
   <artifactId>org.muml.codegen.c.arduino</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
@@ -36,8 +36,11 @@
 					<output>target/classes/</output>
 				  </entry> 
 				</entries>
+			<!--	<jars>
+				   <jar>${project.basedir}\lib\org.muml.codegen.c-1.0.0-SNAPSHOT.jar</jar>
+				 </jars> -->
 			  </acceleoProject>
-			<!--<packagesToRegister>
+			<packagesToRegister>
 				<packageToRegister>org.muml.pm.software.SoftwarePackage</packageToRegister> 
 				 <packageToRegister>org.muml.psm.PsmPackage</packageToRegister> 
 				 <packageToRegister>org.muml.pm.hardware.HardwarePackage</packageToRegister> 
@@ -45,7 +48,7 @@
 				 <packageToRegister>org.muml.pim.actionlanguage.ActionlanguagePackage</packageToRegister> 
 				 <packageToRegister>org.muml.core.CorePackage</packageToRegister> 
 				 <packageToRegister>org.muml.core.modelinstance.ModelinstancePackage</packageToRegister> 
-			  </packagesToRegister> -->
+			  </packagesToRegister>
 			</configuration>
 		 </plugin>
 	 </plugins>
