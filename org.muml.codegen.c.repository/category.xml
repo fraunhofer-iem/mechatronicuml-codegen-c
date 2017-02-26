@@ -3,8 +3,8 @@
    <feature url="features/org.muml.codegen.c.feature_1.0.0.qualifier.jar" id="org.muml.codegen.c.feature" version="1.0.0.qualifier">
       <category name="org.muml.codegen.c.repository.category"/>
    </feature>
-   <!--<feature url="features/org.muml.codegen.c.feature_1.0.0.qualifier-source-feature.jar" id="org.muml.codegen.c.feature.source" version="1.0.0.qualifier">
+   <feature url="features/org.muml.codegen.c.feature_1.0.0.qualifier-source-feature.jar" id="org.muml.codegen.c.feature.source" version="1.0.0.qualifier">
       <category name="org.muml.codegen.c.repository.category"/>
-   </feature> -->
+   </feature>
    <category-def name="org.muml.codegen.c.repository.category" label="Codegen C"/>
 </site>

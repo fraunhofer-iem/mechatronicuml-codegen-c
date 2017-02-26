@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.muml.codegen.c.group</groupId>
-  <artifactId>Codegen_C</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.muml.codegen.c.group</groupId>
+	<artifactId>Codegen_C</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	
    <properties>
        <tycho-version>0.26.0</tycho-version>
   </properties>
@@ -245,9 +245,9 @@
 			<url>${repobase}/APE-Maven/${repopath}org.muml.ape.repository/target/repository</url>
 		</repository>
 		<repository>
-			<id>ModelCopy</id>
+			<id>ImplicitCopy</id>
 			<layout>p2</layout>
-			<url>${repobase}/ModelCopy-Maven/${repopath}org.muml.modelcopy.repository/target/repository</url>
+			<url>${repobase}/ImplicitCopy-Maven/${repopath}org.muml.implicitcopy.repository/target/repository</url>
 		</repository>
 		<repository>
 			<id>ExternalDependencies</id>
