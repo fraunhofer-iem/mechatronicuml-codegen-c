@@ -1,18 +1,16 @@
 package org.muml.codegen.c.export.ui;
 
-
-
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -144,12 +142,18 @@ public class FujabaSourceCodeExportWizard extends AbstractFujabaExportWizard {
 		private static final String invalidSelection =
 				"Please select a target platform.";
 		private ListViewer listViewer;
-		private IStructuredSelection structuredSelection;
+		private ITargetPlatformGenerator targetPlatformGenerator;
 
 		public TargetPlatformSelectionPage(String pageName) {
 			super(pageName);
 			setTitle(title);
 			setDescription(description);
+			try {
+				TargetPlatformDescription[] descriptions = TargetPlatformExtension.getDescriptions();
+				targetPlatformGenerator = descriptions[0].getTargetPlatform();
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
 		}
 
 		@Override
@@ -180,9 +184,9 @@ public class FujabaSourceCodeExportWizard extends AbstractFujabaExportWizard {
 				public void selectionChanged(SelectionChangedEvent event) {
 					if (event.getSelection() instanceof IStructuredSelection) {
 						IStructuredSelection ssel = (IStructuredSelection) event.getSelection();
-						structuredSelection = ssel;
 						if (ssel.getFirstElement() instanceof ITargetPlatformGenerator) {
-							String text = ((ITargetPlatformGenerator) ssel.getFirstElement())
+							targetPlatformGenerator = (ITargetPlatformGenerator) ssel.getFirstElement();
+							String text = targetPlatformGenerator
 									.getDescription();
 							label.setText(text);
 						}
@@ -196,22 +200,19 @@ public class FujabaSourceCodeExportWizard extends AbstractFujabaExportWizard {
 		
 		@Override
 		public void setVisible(boolean visible) {
-			
 			super.setVisible(visible);
 			if (visible) {
-				TargetPlatformDescription[] descriptions =
-						TargetPlatformExtension.getDescriptions();
+				TargetPlatformDescription[] descriptions = TargetPlatformExtension.getDescriptions();
 				listViewer.setInput(descriptions);
-				if (descriptions.length > 0 && structuredSelection == null) {
-					structuredSelection = new StructuredSelection(
-							descriptions[0]);
+				if (targetPlatformGenerator != null) {
+					ISelection sel = new StructuredSelection(targetPlatformGenerator);
+					listViewer.setSelection(sel, true);
 				}
-				listViewer.setSelection(structuredSelection, true);
 			}
 		}
 		
 		protected void validatePage() {
-			boolean isValid = structuredSelection.getFirstElement() instanceof TargetPlatformDescription;
+			boolean isValid = targetPlatformGenerator != null;
 			setPageComplete(isValid);
 			if (!isValid) {
 				setErrorMessage(invalidSelection);
@@ -220,16 +221,7 @@ public class FujabaSourceCodeExportWizard extends AbstractFujabaExportWizard {
 		
 		
 		public ITargetPlatformGenerator getTargetPlatform() {
-			if (structuredSelection == null) {
-				throw new IllegalStateException("structuredSelection is null (should not happen");
-			}
-			
-			try {
-				return ((TargetPlatformDescription) structuredSelection.getFirstElement()).getTargetPlatform();
-			} catch (CoreException e) {
-				// TODO Auto-generated catch block
-				throw new IllegalStateException("Failed to create target platform.", e);
-			}
+			return targetPlatformGenerator;
 		}
 		
 	}
