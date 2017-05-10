@@ -1,7 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<feature id="org.muml.codegen.c.feature" 
-label="%featureName" provider-name="%providerName" 
-version="1.0.0.qualifier">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><feature id="org.muml.codegen.c.feature" label="%featureName" provider-name="%providerName" version="1.0.0.qualifier">
 
    <description>
       %description
