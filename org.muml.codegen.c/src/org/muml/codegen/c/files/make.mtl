@@ -22,7 +22,7 @@ OPR = [for (opRep : OperationRepository | rootNode.eAllContents(OperationReposit
 LIB = [if CIs.componentType->select( c | c.componentKind=ComponentKind::CONTINUOUS_COMPONENT)->size()>0]contImplementations.o[/if] port.o MessageBuffer.o NetworkMessageBuffer.o NetworkInterface.o Messages.o Debug.o
 MW = MiddlewareCore.o MiddlewareInternalLogic.o NetworkInterfaceImplementation.o
 CC = gcc
-CFLAGS = -c
+CFLAGS = -c -DC99 -DDEBUG
 all: protobuf app
 protobuf: messages/Messages.proto
 	java -jar messages/protoc-1.0M4.jar -I=messages --c_out=messages Messages.proto
