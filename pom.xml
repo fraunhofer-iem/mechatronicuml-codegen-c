@@ -180,95 +180,36 @@
 	</pluginManagement>
   </build>
   
-  
-  <profiles>
+  	<profiles>
         <profile>
-          <id>Local</id> <!-- local build, uses local maven repositories -->
-          <activation>
-            <property>
-              <name>env</name>
-              <value>local</value>
-            </property>
-          </activation>
-          <properties>
-            <repobase>file:///${userpath}</repobase>
-            <repopath></repopath>
-          </properties>
-        </profile>
-        <profile>
-          <id>Jenkins</id> <!-- Jenkins build, only works on Jenkins file system -->
-          <activation>
-            <property>
-              <name>env</name>
-              <value>!local</value>
-            </property>
-          </activation>
-          <properties>
-            <repobase>file:///data/jenkins/jobs</repobase>
-            <repopath>lastSuccessful/archive/</repopath>
-          </properties>
-        </profile>
-        <profile>
-          <id>localJenkins</id> <!-- build this locally, but download other projects from Jenkins-->
+          <id>localJenkins</id> 
           <activation>
             <property>
               <name>env</name>
               <value>localJenkins</value>
             </property>
           </activation>
-          <properties>
-            <repobase>http://muml-build.cs.upb.de/job</repobase>
-            <repopath>lastSuccessfulBuild/artifact/</repopath>
-          </properties>
+		  <repositories>	
+			  <repository>
+				<id>UpdateSite</id>
+				<layout>p2</layout>
+				<url>https://muml-build.cs.upb.de/job/UpdateSite-Maven/lastSuccessfulBuild/artifact/org.muml.releng.site.repository/target/repository</url>
+			</repository>
+		</repositories>		  
         </profile>
   </profiles>
   
     <repositories>
 		<repository>
-			<id>Core</id>
-			<layout>p2</layout>
-			<url>${repobase}/Core-Maven/${repopath}org.muml.core.repository/target/repository</url>
-		</repository>
-		<repository>
-			<id>PIM</id>
-			<layout>p2</layout>
-			<url>${repobase}/PlatformIndependentModeling-Maven/${repopath}org.muml.pim.repository/target/repository</url>
-		</repository>
-		<repository>
-			<id>PM</id>
-			<layout>p2</layout>
-			<url>${repobase}/PlatformModeling-Maven/${repopath}org.muml.pm.repository/target/repository</url>
-		</repository>
-		<repository>
-			<id>APE</id>
-			<layout>p2</layout>
-			<url>${repobase}/APE-Maven/${repopath}org.muml.ape.repository/target/repository</url>
-		</repository>
-		<repository>
-			<id>ImplicitCopy</id>
-			<layout>p2</layout>
-			<url>${repobase}/ImplicitCopy-Maven/${repopath}org.muml.implicitcopy.repository/target/repository</url>
-		</repository>
-		<repository>
-			<id>ExternalDependencies</id>
-			<layout>p2</layout>
-			<url>${repobase}/ExternalDependencies-Maven/${repopath}org.muml.external.repository/target/repository</url>
-		</repository>
-		<repository>
-			<id>PSM</id>
-			<layout>p2</layout>
-			<url>${repobase}/PlatformSpecificModeling-Maven/${repopath}org.muml.psm.repository/target/repository</url>
-		</repository>
-		<repository>
-			<id>EMM</id>
-			<layout>p2</layout>
-			<url>${repobase}/ModelMigration-Maven/${repopath}org.muml.emm.repository/target/repository</url>
-		</repository>
-		<repository>
-		  <id>eclipse-platform</id>
+		  <id>eclipse-oxygen</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/releases/neon/</url>
+		  <url>http://download.eclipse.org/releases/oxygen/</url>
 		</repository>
+		<repository>
+			<id>gmf-tooling</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/modeling/gmp/gmf-tooling/updates/releases/</url>
+        </repository>
 		<repository>
 		  <id>uml-to-java</id>
 		  <layout>p2</layout>
