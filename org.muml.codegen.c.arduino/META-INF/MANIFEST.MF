@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.muml.codegen.c.arduino
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.muml.codegen.c.arduino.Activator
 Bundle-Vendor: Software Engineering Group, Heinz Nixdorf Institute, Paderborn University, and Fraunhofer Research Institution for Mechatronic Systems Design IEM, Germany
+Eclipse-BundleShape: dir
 Require-Bundle: org.eclipse.core.runtime,
  org.muml.ape,
  org.muml.pim,
